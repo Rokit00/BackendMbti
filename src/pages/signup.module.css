@@ -1,0 +1,127 @@
+* {
+  box-sizing: border-box;
+}
+
+.container {
+  align-items: center;
+  justify-content: center;
+  border-color: #fff;
+  border-radius: 10px;
+  border: 2px solid #fff;
+  margin: 10vh 0;
+  width: 1000px;
+  position: relative;
+  display: flex;
+}
+
+.signup_title {
+  color: #ffffff;
+  text-align: right;
+}
+
+.form {
+  margin: 16px 50px;
+  width: 100%;
+  flex: 1; 
+}
+
+label {
+  color: #ffffff;
+  display: block;
+  margin: 16px 0 8px;
+}
+
+.form_element > .input {
+  border: 1px solid #ffffff;
+  background-color: black;
+  color: #ffffff;
+  display: block;
+  font-size: 16px;
+  line-height: 24px;
+  margin: 8px 0;
+  padding: 10px 15px;
+  width: 80%;
+}
+
+.form_element > .idWrap {
+  display: flex;
+}
+
+.idInput {
+  border: 1px solid #ffffff;
+  width: 80%;
+  background-color: black;
+  color: #ffffff;
+  font-size: 16px;
+  line-height: 24px;
+  margin: 8px 0;
+  padding: 10px 15px;
+ 
+}
+
+.idWrap > .doubleCheck {
+  display: inline-block;
+  background: #fff;
+  width: 50px;
+  margin: 10px;
+}
+
+
+
+.errorMessage {
+  margin-top: 5px;
+  color:red;
+  text-align: left;
+  font-size: 12px; 
+}
+
+.checkbox {
+  display: inline-block;
+  width: 80%;
+  background-color:#ffffff;
+  color: black;
+  line-height: 15px;
+  margin-top: 10px;
+}
+
+input:focus, .input:focus {
+  outline: 0;
+  border-color: #91C5EB;
+  border-width: 3px;
+}
+
+.signup_button {
+  background: #1890E7;
+  border: none;
+  color: #ffffff;
+  display: block;
+  font-size: 18px;
+  font-weight: 700;
+  margin: 24px 0;
+  padding: 16px;
+  width: 80%;
+}
+
+.signup_button:disabled {
+  background: #91C5EB;
+}
+
+.red {
+  color: red;
+}
+
+.black {
+  color:black;
+}
+
+.right {
+  flex: 1;
+  background-color:#fff;
+  height: 500px;
+  margin: 10px 50px;
+  text-align: center;
+  display: flex; 
+  align-items: center; 
+  justify-content: center;
+  font-size: 50px;
+}
