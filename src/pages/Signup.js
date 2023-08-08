@@ -1,66 +1,46 @@
+// Signup.js
 import React, { useEffect, useState } from "react";
-import styles from "../pages/signup.module.css";
+import styles from "../pages/Signup.module.css";
+import useInput from "../hook/useInput"; // Import the custom hook
 
 function Signup() {
-  const [userId, setUserId] = useState("");
-  const [password, setPassword] = useState("");
-  const [nick, setNick] = useState("");
-  const [email, setEmail] = useState("");
-  const [birthdate, setBirthdate] = useState("");
-  const [term, setTerm] = useState(false);
+  const idValidator = (id) => /^[A-Za-z0-9]{6,20}$/.test(id);
+  const pwValidator = (pw) => /^[A-Za-z0-9]{8,20}$/.test(pw);
+  const emailValidator = (email) =>
+    /^[A-Za-z0-9]([-_.]?[A-Za-z0-9])*@[A-Za-z0-9]([-_.]?[A-Za-z0-9])*\.[A-Za-z]{2,3}$/.test(
+      email
+    );
+  const birthdateValidator = (date) => {
+    const today = new Date();
+    const selectedDate = new Date(date);
+    return selectedDate <= today;
+  };
 
-  const [idValid, setIdValid] = useState(false);
-  const [pwValid, setPwValid] = useState(false);
-  const [emailValid, setEmailValid] = useState(false);
-  const [birthdateValid, setBirthdateValid] = useState(false);
+  const userId = useInput("", idValidator);
+  const password = useInput("", pwValidator);
+  const email = useInput("", emailValidator);
+  const birthdate = useInput("", birthdateValidator);
+  const [nick, setNick] = useState("");
+  const [term, setTerm] = useState(false);
   const [notAllow, setNotAllow] = useState(true);
 
-  const handleId = (e) => {
-    setUserId(e.target.value);
-    const regex = /^[A-Za-z0-9]{5,20}$/;
-    if (regex.test(userId)) {
-      setIdValid(true);
-    } else {
-      setIdValid(false);
-    }
-  };
-
-  const handlePassword = (e) => {
-    setPassword(e.target.value);
-    const regex = /^[A-Za-z0-9]{8,20}$/;
-    if (regex.test(password)) {
-      setPwValid(true);
-    } else {
-      setPwValid(false);
-    }
-  };
-
-  const handleEmail = (e) => {
-    setEmail(e.target.value);
-    const regEmail =
-      /^[A-Za-z0-9]([-_.]?[A-Za-z0-9])*@[A-Za-z0-9]([-_.]?[A-Za-z0-9])*\.[A-Za-z]{2,3}$/;
-    if (regEmail.test(email)) {
-      setEmailValid(true);
-    } else {
-      setEmailValid(false);
-    }
-  };
-
-  const handleBirthdate = (e) => {
-    const value = e.target.value;
-    setBirthdate(value);
-    const today = new Date();
-    const selecttedDate = new Date(value);
-    setBirthdateValid(selecttedDate <= today);
-  };
-
   useEffect(() => {
-    if (idValid && pwValid && emailValid && birthdateValid && term) {
-      setNotAllow(false);
-      return;
-    }
-    setNotAllow(true);
-  }, [idValid, pwValid, emailValid, birthdateValid, term]);
+    setNotAllow(
+      !(
+        userId.isValid &&
+        password.isValid &&
+        email.isValid &&
+        birthdate.isValid &&
+        term
+      )
+    );
+  }, [
+    userId.isValid,
+    password.isValid,
+    email.isValid,
+    birthdate.isValid,
+    term,
+  ]);
 
   return (
     <div className={styles.container}>
@@ -71,16 +51,16 @@ function Signup() {
           <div className={styles.idWrap}>
             <input
               id="id"
-              value={userId}
+              value={userId.value}
               className={`${styles.input} ${styles.idInput}`}
-              onChange={handleId}
+              onChange={userId.onChange}
               required
             />
             <button className={styles.doubleCheck}>중복체크</button>
           </div>
 
           <div className={styles.errorMessage}>
-            {!idValid && userId.length > 0 && (
+            {!userId.isValid && userId.value.length > 0 && (
               <div>아이디는 6글자 이상의 영문과 숫자 조합으로 가능합니다.</div>
             )}
           </div>
@@ -91,17 +71,18 @@ function Signup() {
           <input
             type="password"
             id="password"
-            value={password}
+            value={password.value}
             className={styles.input}
-            onChange={handlePassword}
+            onChange={password.onChange}
             required
           />
           <div className={styles.errorMessage}>
-            {!pwValid && password.length > 0 && (
-              <div>
-                비밀번호는 8글자 이상의 영문과 숫자 조합으로 가능합니다.
-              </div>
-            )}
+            {!password.isValid &&
+              password.value.length > 0 && ( // Updated here
+                <div>
+                  비밀번호는 8글자 이상의 영문과 숫자 조합으로 가능합니다.
+                </div>
+              )}
           </div>
         </div>
 
@@ -124,13 +105,13 @@ function Signup() {
           <input
             type="email"
             id="email"
-            value={email}
+            value={email.value}
             className={styles.input}
-            onChange={handleEmail}
+            onChange={email.onChange}
             required
           />
           <div className={styles.errorMessage}>
-            {!emailValid && email.length > 0 && (
+            {!email.isValid && email.value.length > 0 && (
               <div>올바른 이메일 형식이 아닙니다.</div>
             )}
           </div>
@@ -141,13 +122,13 @@ function Signup() {
           <input
             type="date"
             id="birthdate"
-            value={birthdate}
+            value={birthdate.value}
             className={styles.input}
-            onChange={handleBirthdate}
+            onChange={birthdate.onChange}
             required
           />
           <div className={styles.errorMessage}>
-            {!birthdateValid && birthdate.length > 0 && (
+            {!birthdate.isValid && birthdate.length > 0 && (
               <div>미래 날짜는 선택할 수 없습니다.</div>
             )}
           </div>

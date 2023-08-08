@@ -1,28 +1,26 @@
-import React, { useState } from "react";
+// LoginModal.js
+import React from "react";
 import { useNavigate } from "react-router-dom";
-import styles from "./login.module.css";
+import styles from "./Login.module.css";
 import logo from "../images/Rectangle 94.png";
 import kakao from "../images/kakao_login.png";
 import HorizonLine from "../utils/horizonLine";
+import useInput from "../hook/useInput"; // Import the custom hook
 
 function LoginModal() {
   const navigate = useNavigate();
-  const handleSignUp = () => {
-    navigate("/signup");
-  };
-
-  const [userId, setUserId] = useState("");
-  const [password, setPassword] = useState("");
+  const userId = useInput("");
+  const password = useInput("");
 
   const handleLogin = (e) => {
     e.preventDefault();
-
-    console.log("User ID:", userId);
-    console.log("Password:", password);
+    console.log("User ID:", userId.value);
+    console.log("Password:", password.value);
   };
 
-  const handleID = (e) => setUserId(e.target.value);
-  const handlePw = (e) => setPassword(e.target.value);
+  const handleSignUp = () => {
+    navigate("/signup");
+  };
 
   return (
     <div className={styles.card}>
@@ -30,7 +28,6 @@ function LoginModal() {
         <div>
           <img src={logo} alt="We-ing" className={styles.image} />
           <img src={kakao} className={styles.kakao_image} alt="kakao" />
-
           <HorizonLine text="   or  " />
         </div>
         <div className={styles.form_down}>
@@ -39,8 +36,7 @@ function LoginModal() {
               type="text"
               id="username"
               placeholder="아이디"
-              value={userId}
-              onChange={handleID}
+              {...userId}
               required
             />
           </div>
@@ -49,8 +45,7 @@ function LoginModal() {
               type="password"
               id="password"
               placeholder="비밀번호"
-              value={password}
-              onChange={handlePw}
+              {...password}
               required
             />
           </div>
@@ -66,4 +61,5 @@ function LoginModal() {
     </div>
   );
 }
+
 export default LoginModal;
