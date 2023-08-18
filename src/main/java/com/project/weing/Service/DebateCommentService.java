@@ -1,6 +1,7 @@
 package com.project.weing.Service;
 
 import com.project.weing.Entity.DebateComment;
+
 import java.util.List;
 
 
@@ -17,4 +18,8 @@ public interface DebateCommentService {
 
     List<DebateComment> getOptionACommentsForDebate(String writerNum);
     List<DebateComment> getOptionBCommentsForDebate(Long writerNum, String optionSelected);
+
+    int countSpecificComment(List<DebateComment> comments, String optionSelected);
+
+    double calculatePercentage(int specificCount, int totalCount);
 }

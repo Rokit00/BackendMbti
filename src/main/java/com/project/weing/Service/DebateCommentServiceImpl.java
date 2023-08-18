@@ -1,9 +1,10 @@
 package com.project.weing.Service;
 
-import com.project.weing.Repository.DebateCommentRepository;
 import com.project.weing.Entity.DebateComment;
+import com.project.weing.Repository.DebateCommentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
@@ -61,6 +62,25 @@ public class DebateCommentServiceImpl implements DebateCommentService {
     @Override
     public List<DebateComment> getOptionBCommentsForDebate(Long writerNum, String optionSelected) {
         return debateCommentRepository.findByDebateWrite_WriteNumAndOptionSelected(writerNum.toString(), optionSelected);
+    }
+
+    // 특정 댓글 수 세기
+    @Override
+    public int countSpecificComment(List<DebateComment> comments, String optionSelected) {
+        long count = comments.stream()
+                .filter(comment -> optionSelected.equals(comment.getOptionSelected()))
+                .count();
+
+        return (int) count;
+    }
+
+    // 백분율 계산
+    @Override
+    public double calculatePercentage(int specificCount, int totalCount) {
+        if (totalCount == 0) {
+            return 0.0; // 0으로 나누지 않기
+        }
+        return (specificCount * 100.0) / totalCount;
     }
 
 }

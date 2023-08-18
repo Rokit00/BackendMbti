@@ -1,11 +1,12 @@
 package com.project.weing.Controller;
 
-import com.project.weing.Service.DebateCommentService;
 import com.project.weing.Entity.DebateComment;
+import com.project.weing.Service.DebateCommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -64,6 +65,22 @@ public class DebateCommentController {
 
         return new ResponseEntity<>(debateComments, HttpStatus.OK); // 모든 댓글 반환
     }
+
+    // A, B 댓글 수 기준으로 나누어 % 보여주기
+    @GetMapping("/debate/{writeNum}/percentage")
+    public ResponseEntity<Double> getPercentageForSpecificComment(
+            @PathVariable Long writeNum,
+            @RequestParam String optionSelected) {
+
+        List<DebateComment> debateComments = debateCommentService.getCommentsForDebate(writeNum);
+        int specificCount = debateCommentService.countSpecificComment(debateComments, optionSelected);
+        int totalCount = debateComments.size();
+
+        double percentage = debateCommentService.calculatePercentage(specificCount, totalCount);
+
+        return new ResponseEntity<>(percentage, HttpStatus.OK);
+    }
+
 }
 
 
