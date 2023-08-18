@@ -7,7 +7,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
@@ -68,21 +70,23 @@ public class DebateCommentController {
 
     // A, B 댓글 수 기준으로 나누어 % 보여주기
     @GetMapping("/debate/{writeNum}/percentage")
-    public ResponseEntity<Double> getPercentageForSpecificComment(
-            @PathVariable Long writeNum,
-            @RequestParam String optionSelected) {
+    public ResponseEntity<Map<String, Double>> getPercentageForComments(
+            @PathVariable Long writeNum) {
 
         List<DebateComment> debateComments = debateCommentService.getCommentsForDebate(writeNum);
-        int specificCount = debateCommentService.countSpecificComment(debateComments, optionSelected);
-        int totalCount = debateComments.size();
 
-        double percentage = debateCommentService.calculatePercentage(specificCount, totalCount);
+        int totalComments = debateComments.size();
+        int optionACount = debateCommentService.countSpecificComment(debateComments, "A");
+        int optionBCount = debateCommentService.countSpecificComment(debateComments, "B");
 
-        return new ResponseEntity<>(percentage, HttpStatus.OK);
+        double optionAPercentage = debateCommentService.calculatePercentage(optionACount, totalComments);
+        double optionBPercentage = debateCommentService.calculatePercentage(optionBCount, totalComments);
+
+        Map<String, Double> percentageMap = new HashMap<>();
+        percentageMap.put("optionA", optionAPercentage);
+        percentageMap.put("optionB", optionBPercentage);
+
+        return new ResponseEntity<>(percentageMap, HttpStatus.OK);
     }
 
 }
-
-
-
-
