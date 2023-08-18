@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -49,7 +50,6 @@ public class PostServiceImpl implements PostService{
         return postRepository.save(modifyPost);
     }
 
-
     //글 삭제
     @Override
     public void deleteById(Long writerNum) {
@@ -65,6 +65,7 @@ public class PostServiceImpl implements PostService{
         if(postRepository.findByWriterNumAndMember(writerNum, member) == null) {
             post.setMember(member);
             post.setBookmark(true);
+            //post.getMember().add(member);
             postRepository.save(post);
         }
     }
@@ -79,20 +80,41 @@ public class PostServiceImpl implements PostService{
         }
     }
 
+    //A,B 댓글수 기준으로 나누어 데이터 보내주기
+    @Override
+    public int getCountByChoice(String optionAorB) {
+        return commentRepository.countByOptionAorB(optionAorB);
+    }
+
     //댓글수
     @Override
     public int getCommentCount(Long writerNum) {
-        return commentRepository.countByWriterNum(writerNum);
+        Optional<Post> postOptional = postRepository.findById(writerNum);
+        return postOptional.map(post -> post.getComments().size()).orElse(0);
     }
+
 
 
     //좋아요 count
     @Override
-    public void updateLikeCount(Post post, boolean b) {
-        if(b) {
-
-        }
+    public int getLikeCount(Long writerNum) {
+        Optional<Post> postOptional = postRepository.findById(writerNum);
+        return postOptional.map(Post::getLikeCount).orElse(0);
     }
+
+    @Override
+    public void likePost(Long writerNum) {
+        Optional<Post> postOptional = postRepository.findById(writerNum);
+        postOptional.ifPresent(Post::incrementLikeCount);
+    }
+
+    @Override
+    public void unlikePost(Long writerNum) {
+        Optional<Post> postOptional = postRepository.findById(writerNum);
+        postOptional.ifPresent(Post::decrementLikeCount);
+    }
+
+
 
 
 }

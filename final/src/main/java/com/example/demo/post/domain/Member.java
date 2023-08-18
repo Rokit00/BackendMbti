@@ -4,6 +4,8 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -32,6 +34,14 @@ public class Member {
     @Column
     private Date birthday;
 
-    @Column
-    private char gender;
+    @Column(columnDefinition = "char")
+    private String gender;
+
+//    @ManyToMany
+//    @JoinColumn(name = "posts")
+//    private Set<Post> posts = new HashSet<>();
+
+//    @JoinTable(name = "member_bookmarked_posts",
+//            joinColumns = @JoinColumn(name = "member_id"),
+//            inverseJoinColumns = @JoinColumn(name = "post_id"))
 }

@@ -29,11 +29,15 @@ public interface PostService {
     void removeBookmark(Long writerNum, Long memberId);
 
     //A,B 댓글수 기준으로 나누어 데이터 보내주기
-
+    int getCountByChoice(String optionAorB);
 
     //댓글수 보여주기
     int getCommentCount(Long writeNum);
     
     //좋아요수 보여주기
-    void updateLikeCount(Post post, boolean b);
+    int getLikeCount(Long writerNum);
+
+    void likePost(Long writerNum);
+
+    void unlikePost(Long writerNum);
 }

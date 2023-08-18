@@ -1,5 +1,6 @@
 package com.example.demo.post.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
 import javax.persistence.*;
