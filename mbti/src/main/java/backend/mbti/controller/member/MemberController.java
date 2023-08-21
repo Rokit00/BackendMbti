@@ -28,11 +28,11 @@ public class MemberController {
     @PostMapping("/join")
     public ResponseEntity<String> join(@RequestBody MemberJoinRequest memberJoinRequest) {
         memberService.join(
-                memberJoinRequest.getUserId()
-                , memberJoinRequest.getPassword()
-                , memberJoinRequest.getNickName()
-                , memberJoinRequest.getBirthday()
-                , memberJoinRequest.getEmail()
+                memberJoinRequest.getUserId(),
+                memberJoinRequest.getPassword(),
+                memberJoinRequest.getNickName(),
+                memberJoinRequest.getBirthday(),
+                memberJoinRequest.getEmail()
         );
         return ResponseEntity.ok().body("회원가입 축하합니다.");
     }

@@ -1,25 +1,17 @@
 {
   "files": {
-    "main.css": "/static/css/main.16045cd7.css",
-    "main.js": "/static/js/main.55633244.js",
+    "main.css": "/static/css/main.9ef70abc.css",
+    "main.js": "/static/js/main.1ccdb38d.js",
     "static/js/787.22edae46.chunk.js": "/static/js/787.22edae46.chunk.js",
     "static/media/Chemi.png": "/static/media/Chemi.dacba409348a6347bfde.png",
-    "static/media/S.png": "/static/media/S.6169f41f4ded4b180946.png",
-    "static/media/N.png": "/static/media/N.f6dcf3dccaa2f1c2ce07.png",
-    "static/media/J.png": "/static/media/J.cf08bbc0e788e1858c61.png",
-    "static/media/P.png": "/static/media/P.271fea154c61161d3988.png",
-    "static/media/E.png": "/static/media/E.5d8484d924b07926121c.png",
-    "static/media/T.png": "/static/media/T.bd434beaf7cff2a7bef1.png",
-    "static/media/F.png": "/static/media/F.e828ad27f27c5415db72.png",
     "static/media/logo.png": "/static/media/logo.61f21718499e12523d68.png",
-    "static/media/I.png": "/static/media/I.5c128e2d3c57b880c7e6.png",
     "index.html": "/index.html",
-    "main.16045cd7.css.map": "/static/css/main.16045cd7.css.map",
-    "main.55633244.js.map": "/static/js/main.55633244.js.map",
+    "main.9ef70abc.css.map": "/static/css/main.9ef70abc.css.map",
+    "main.1ccdb38d.js.map": "/static/js/main.1ccdb38d.js.map",
     "787.22edae46.chunk.js.map": "/static/js/787.22edae46.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.16045cd7.css",
-    "static/js/main.55633244.js"
+    "static/css/main.9ef70abc.css",
+    "static/js/main.1ccdb38d.js"
   ]
 }
