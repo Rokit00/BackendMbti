@@ -67,25 +67,25 @@ public class DebateController {
     }
 
     // A, B 댓글 수 기준으로 나누어 % 보여주기
-    @GetMapping("/debate/{writeNum}/percentage")
-    public ResponseEntity<Map<String, Double>> getPercentageForComments(
-            @PathVariable Long writeNum) {
-
-        List<DebateComment> debateComments = debateCommentService.getCommentsForDebate(writeNum);
-
-        int totalComments = debateComments.size();
-        int optionACount = debateCommentService.countSpecificComment(debateComments, "A");
-        int optionBCount = debateCommentService.countSpecificComment(debateComments, "B");
-
-        double optionAPercentage = debateCommentService.calculatePercentage(optionACount, totalComments);
-        double optionBPercentage = debateCommentService.calculatePercentage(optionBCount, totalComments);
-
-        Map<String, Double> percentageMap = new HashMap<>();
-        percentageMap.put("optionA", optionAPercentage);
-        percentageMap.put("optionB", optionBPercentage);
-
-        return new ResponseEntity<>(percentageMap, HttpStatus.OK);
-    }
+//    @GetMapping("/debate/{writeNum}/percentage")
+//    public ResponseEntity<Map<String, Double>> getPercentageForComments(
+//            @PathVariable Long writeNum) {
+//
+//        List<DebateComment> debateComments = debateCommentService.getCommentsForDebate(writeNum);
+//
+//        int totalComments = debateComments.size();
+//        int optionACount = debateCommentService.countSpecificComment(debateComments, "A");
+//        int optionBCount = debateCommentService.countSpecificComment(debateComments, "B");
+//
+//        double optionAPercentage = debateCommentService.calculatePercentage(optionACount, totalComments);
+//        double optionBPercentage = debateCommentService.calculatePercentage(optionBCount, totalComments);
+//
+//        Map<String, Double> percentageMap = new HashMap<>();
+//        percentageMap.put("optionA", optionAPercentage);
+//        percentageMap.put("optionB", optionBPercentage);
+//
+//        return new ResponseEntity<>(percentageMap, HttpStatus.OK);
+//    }
 
     // 좋아요 기능 추가
 
