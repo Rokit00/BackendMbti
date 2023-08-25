@@ -1,0 +1,29 @@
+.section-one {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  height: 100vh;
+  padding: 20px;
+  background-color: #000;
+}
+
+.logo img {
+  width: 250px;
+}
+.banner-title {
+  color: #fff;
+}
+.banner-info {
+  color: #fff;
+}
+.banner img {
+  width: 400px;
+}
+
+.banner p {
+  margin-top: 20px;
+}
+
+.banner button {
+  margin-top: 20px;
+}

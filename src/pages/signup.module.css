@@ -1,127 +1,162 @@
-* {
-  box-sizing: border-box;
-}
-
+/* Signup.module.css */
 .container {
+  display: flex;
   align-items: center;
   justify-content: center;
-  border-color: #fff;
-  border-radius: 10px;
-  border: 2px solid #fff;
-  margin: 10vh 0;
-  width: 1000px;
-  position: relative;
-  display: flex;
+  min-height: 100vh;
+  background-color: #000;
+  flex-direction: column;
+  color: #fff;
 }
 
-.signup_title {
-  color: #ffffff;
-  text-align: right;
+.modalWrapper {
+  display: flex;
+  background-color: #111;
+  padding: 40px;
+  border-radius: 8px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+  width: 80%;
+  max-width: 800px;
+  align-items: flex-start;
+  border: 5px solid #fff;
 }
 
 .form {
-  margin: 16px 50px;
-  width: 100%;
-  flex: 1; 
+  flex: 1;
 }
 
-label {
-  color: #ffffff;
-  display: block;
-  margin: 16px 0 8px;
+.signup_title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 30px;
+  text-align: center;
 }
 
-.form_element > .input {
-  border: 1px solid #ffffff;
-  background-color: black;
-  color: #ffffff;
-  display: block;
-  font-size: 16px;
-  line-height: 24px;
-  margin: 8px 0;
-  padding: 10px 15px;
-  width: 80%;
+.form_element {
+  position: relative;
+  margin-bottom: 10px;
 }
-
-.form_element > .idWrap {
+.inputWithError {
   display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  height: 70px;
 }
 
-.idInput {
-  border: 1px solid #ffffff;
-  width: 80%;
-  background-color: black;
-  color: #ffffff;
+.input {
+  width: 90%;
+  padding: 10px;
+  border: 1px solid #333;
+  border-radius: 4px;
   font-size: 16px;
-  line-height: 24px;
-  margin: 8px 0;
-  padding: 10px 15px;
- 
+  background-color: #fff;
 }
-
-.idWrap > .doubleCheck {
-  display: inline-block;
-  background: #fff;
-  width: 50px;
-  margin: 10px;
-}
-
-
 
 .errorMessage {
-  margin-top: 5px;
-  color:red;
-  text-align: left;
-  font-size: 12px; 
+  display: block;
+  color: #ffcccc;
+  font-size: 12px;
+  font-weight: bolder;
 }
-
 .checkbox {
-  display: inline-block;
-  width: 80%;
-  background-color:#ffffff;
-  color: black;
-  line-height: 15px;
-  margin-top: 10px;
-}
-
-input:focus, .input:focus {
-  outline: 0;
-  border-color: #91C5EB;
-  border-width: 3px;
+  display: flex;
+  align-items: center;
+  color: #fff;
 }
 
 .signup_button {
-  background: #1890E7;
-  border: none;
-  color: #ffffff;
   display: block;
-  font-size: 18px;
-  font-weight: 700;
-  margin: 24px 0;
-  padding: 16px;
-  width: 80%;
+  width: 100%;
+  padding: 10px;
+  background-color: #3498db;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
 }
 
 .signup_button:disabled {
-  background: #91C5EB;
+  background-color: #aaa;
+  cursor: not-allowed;
 }
 
-.red {
-  color: red;
+.signup_button:hover {
+  background-color: #2980b9;
 }
 
-.black {
-  color:black;
+.dateInputWrapper {
+  display: flex;
+  align-items: center;
+}
+
+.datepicker_button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 10px;
+  display: inline-flex;
+  color: #fff;
+}
+
+.right {
+  margin-top: 20px;
+  text-align: center;
+  color: #fff;
 }
 
 .right {
   flex: 1;
-  background-color:#fff;
-  height: 500px;
-  margin: 10px 50px;
-  text-align: center;
-  display: flex; 
-  align-items: center; 
-  justify-content: center;
-  font-size: 50px;
+  margin-left: 40px;
+  padding: 20px;
+  border-left: 1px solid #ccc;
+  overflow-y: auto;
+  height: 100%;
+  color: #fff;
+}
+
+.right h2 {
+  margin-bottom: 20px;
+}
+.errorMessage {
+  color: red;
+  font-size: 12px;
+  margin-top: -15px;
+  margin-left: 10px;
+  height: 20px;
+}
+.autocomplete {
+  position: absolute;
+  top: 80%;
+  left: 10px;
+  width: 90%;
+  z-index: 10;
+  background-color: #fff;
+  border: 1px solid #333;
+  border-radius: 4px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.autocomplete div {
+  padding: 10px;
+  cursor: pointer;
+  border-bottom: 1px solid #ddd;
+  color: #000;
+}
+
+.autocomplete div:last-child {
+  border-bottom: none;
+}
+
+.autocomplete div:hover {
+  background-color: #f0f0f0;
+}
+.label {
+  margin-left: 10px;
+}
+@media screen and (max-width: 600px) {
+  .form {
+    padding: 20px;
+  }
 }

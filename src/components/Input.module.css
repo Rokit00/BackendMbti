@@ -1,0 +1,185 @@
+@import url("https://fonts.googleapis.com/css2?family=Monoton&display=swap");
+.content {
+  padding: 20px;
+  text-align: center;
+  color: #fff;
+  background-color: #000;
+}
+
+.mbti-check-heading {
+  font-size: 32px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+#nameLabel {
+  color: #fff;
+}
+
+input {
+  margin-bottom: 20px;
+  padding: 10px;
+  margin: 10px;
+}
+
+.image-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  gap: 10px;
+}
+
+.image-grid img {
+  width: 100%;
+  height: 100px;
+  object-fit: cover;
+  filter: brightness(20%);
+  cursor: pointer;
+}
+
+.image-grid img.selected {
+  filter: brightness(100%);
+  transition: filter 0.3s ease;
+}
+
+button {
+  font-size: 16px;
+  padding: 10px 20px;
+  display: inline-block;
+  border-radius: 25px;
+  border: none;
+  font-weight: bold;
+}
+
+.left-content {
+  border: 5px solid #fff;
+  border-radius: 10px;
+  margin: 20px;
+  padding: 20px;
+  flex: 1;
+}
+
+.right-content {
+  border: 5px solid #fff;
+  border-radius: 10px;
+  margin: 20px;
+  padding: 20px;
+  flex: 1;
+  color: #fff;
+  max-height: 584px;
+  overflow-y: auto;
+  width: 500px;
+}
+
+.right-content h3 {
+  font-size: 50px;
+}
+
+.right-content p {
+  font-size: 15px;
+  margin-bottom: 20px;
+}
+
+.right-content::-webkit-scrollbar {
+  width: 0.5em;
+}
+
+.content-container {
+  display: flex;
+}
+
+.mbti-check-left-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+}
+
+.right-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+}
+
+.success-message {
+  margin-bottom: 20px;
+}
+.saved-data {
+  padding-right: 30px;
+}
+.data-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+.result-texts {
+  text-align: center;
+}
+.result-text {
+  width: 50px;
+  height: 100px;
+  display: inline-block;
+  font-family: "Monoton", cursive;
+  font-size: 50px;
+  cursor: pointer;
+  text-align: center;
+  line-height: 100px;
+  transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+.result-btn {
+  font-size: 16px;
+  padding: 10px 20px;
+  border-radius: 25px;
+  border: none;
+  font-weight: bold;
+  background-color: #4caf50;
+  color: #fff;
+}
+.text-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  gap: 10px;
+}
+
+.text-grid span {
+  font-family: "Monoton", cursive;
+  font-size: 50px;
+  cursor: pointer;
+  text-align: center;
+  line-height: 100px; /* 이미지 높이와 동일하게 설정 */
+  transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+/* .text-grid span.selected {
+  color: #fff;
+  text-shadow: 0px 0px 5px #fff;
+} */
+.I.selected,
+.E.selected {
+  color: #e9738d;
+  text-shadow: 0px 0px 5px #ff3399, 0px 0px 30px #ff3399, 0px 0px 40px #ff3399,
+    0px 0px 50px #fff, 0px 0px 6px #ff3399;
+}
+.S.selected,
+.N.selected {
+  color: #fade85;
+  text-shadow: 0px 0px 5px #ffd400, 0px 0px 30px #ffd400, 0px 0px 40px #ffd400,
+    0px 0px 50px #fff, 0px 0px 6px #ffd400;
+}
+
+.F.selected,
+.T.selected {
+  color: #bae1d3;
+  text-shadow: 0px 0px 5px #83dcb7, 0px 0px 30px #83dcb7, 0px 0px 40px #83dcb7,
+    0px 0px 50px #fff, 0px 0px 6px #83dcb7;
+}
+.P.selected,
+.J.selected {
+  color: #cca9dd;
+  text-shadow: 0px 0px 5px #6937a1, 0px 0px 30px #6937a1, 0px 0px 40px #6937a1,
+    0px 0px 50px #fff, 0px 0px 6px #6937a1;
+}

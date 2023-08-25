@@ -11,9 +11,8 @@ const HorizonLine = ({ text }) => {
         margin: "10px 0 20px",
       }}
     >
-      <span style={{ color: "#ffffff", padding: "0 20px" }}>{ text }</span>
+      <span style={{ color: "#ffffff", padding: "0 20px" }}>{text}</span>
     </div>
   );
 };
-
 export default HorizonLine;

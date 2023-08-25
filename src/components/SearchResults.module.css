@@ -1,0 +1,12 @@
+/* SearchResults.module.css */
+.cardRow {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.sortSelectContainer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: right;
+}
