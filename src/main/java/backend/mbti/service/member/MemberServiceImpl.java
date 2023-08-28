@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService{
@@ -43,6 +45,7 @@ public class MemberServiceImpl implements MemberService{
         return "SUCCESS";
     }
 
+    // 로그인
     @Override
     public String login(String userId, String password) {
         // 아이디 없음
@@ -55,5 +58,28 @@ public class MemberServiceImpl implements MemberService{
         String token = JwtTokenUtil.createToken(selectedUser.getUserId(), key, expireTimeMs);
         // 앞에서 Exception(예외) 안났으면 토큰 ㄱㄱ
         return token;
+    }
+
+    // 회원 탈퇴
+    @Override
+    public boolean deleteMember(Long memberId) {
+        Optional<Member> memberOptional = memberRepository.findById(memberId);
+        if (memberOptional.isPresent()) {
+            Member member = memberOptional.get();
+            // 회원 관련 데이터를 삭제하거나 비활성화 로직을 수행합니다.
+            // 예를 들어, 회원 데이터를 삭제하는 경우:
+            memberRepository.deleteById(memberId);
+            return true;
+        }
+        return false;
+    }
+
+    // 아이디 찾기
+    public String findUsernameByEmailAndPhoneNumber(String birthday, String email) {
+        Member member = memberRepository.findByBirthdayAndEmail(birthday, email);
+        if (member != null) {
+            return member.getUserId();
+        }
+        return null;
     }
 }

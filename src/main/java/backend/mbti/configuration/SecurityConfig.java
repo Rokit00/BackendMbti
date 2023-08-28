@@ -17,7 +17,8 @@ public class SecurityConfig {
                 .csrf().disable()
                 .cors().and()
                 .authorizeRequests()
-                .antMatchers("/members").permitAll()
+                .antMatchers("/members/**").permitAll()
+                .antMatchers("/members/{id}").authenticated() // 탈퇴
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
