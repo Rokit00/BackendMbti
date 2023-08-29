@@ -18,7 +18,6 @@ import java.util.Map;
 @RequiredArgsConstructor
 @RequestMapping("/sec3")
 public class PostController {
-
     private final PostService postService;
 
     //게시물 내림차순으로 출력 (x - 직렬화 오류 : 해결)
@@ -55,19 +54,14 @@ public class PostController {
         postService.deleteById(writerNum);
     }
 
-
-//    //북마크 x - requestParam?
-//    @PostMapping("/3/{writerNum}")
-//    public ResponseEntity<String> bookmark(@PathVariable Long writerNum, @RequestParam(required = false) Long memberId) {
-//        postService.bookmark(writerNum,memberId);
-//        return ResponseEntity.ok("북마크 완료");
-//    }
-//
-//    //북마크 삭제
-//    @DeleteMapping("/3/{writerNum}")
-//    public void deleteBookmark(@PathVariable Long writerNum, @RequestParam(required = false) Long memberId) { //The given id must not be null
-//        postService.removeBookmark(writerNum, memberId);
-//    }
+    //북마크
+    @PostMapping("/{writerNum}/bookmark")
+    public ResponseEntity<String> bookmarkPost(@PathVariable Long writerNum) {
+        boolean bookmarked = postService.bookmarkPost(writerNum);
+        if(bookmarked) {
+            return ResponseEntity.ok("현재 북마크 상태 저장 완료");
+        }else return ResponseEntity.badRequest().body("북마크 실패");
+    }
 
     //A,B 댓글수 기준으로 나누어 데이터 보내주기
     @GetMapping("/3/commentAorB/{writerNum}")
@@ -89,25 +83,22 @@ public class PostController {
     }
 
 
-    // 좋아요 수 (오류)
-//    @GetMapping("/3/like/{writerNum}")
-//    public ResponseEntity<Integer> getLikeCount(@PathVariable Long writerNum) {
-//        int likeCount = postService.getLikeCount(writerNum);
-//        return ResponseEntity.ok(likeCount);
-//    }
+    //좋아요수
+    @GetMapping("/3/like/{writerNum}")
+    public ResponseEntity<Integer> getLikeCount(@PathVariable Long writerNum) {
+        int likeCount = postService.getLikeCount(writerNum);
+        return ResponseEntity.ok(likeCount);
+    }
 
-    // 오류
-//    @PostMapping("/3/like/{writerNum}")
-//    public ResponseEntity<String> likePost(@PathVariable Long writerNum) {
-//        postService.likePost(writerNum);
-//        return ResponseEntity.ok("좋아요");
-//    }
-//    @PostMapping("/3/unlike/{writerNum}")
-//    public ResponseEntity<String> unlikePost(@PathVariable Long writerNum) {
-//        postService.unlikePost(writerNum);
-//        return ResponseEntity.ok("좋아요 취소");
-//    }
+    @PostMapping("/3/like/{writerNum}")
+    public ResponseEntity<String> likePost(@PathVariable Long writerNum) {
+        postService.likePost(writerNum);
+        return ResponseEntity.ok("좋아요");
+    }
 
-
-
+    @DeleteMapping("/3/unlike/{writerNum}")
+    public ResponseEntity<String> unlikePost(@PathVariable Long writerNum) {
+        postService.unlikePost(writerNum);
+        return ResponseEntity.ok("좋아요 취소");
+    }
 }

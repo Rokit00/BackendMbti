@@ -17,7 +17,6 @@ import java.util.stream.Collectors;
 @RequestMapping("/sec3")
 @RequiredArgsConstructor
 public class DebateController {
-
     private final DebateCommentService debateCommentService;
 
     // 댓글 생성 API
@@ -67,24 +66,37 @@ public class DebateController {
     }
 
     // A, B 댓글 수 기준으로 나누어 % 보여주기
-    @GetMapping("/debate/{writeNum}/percentage")
-    public ResponseEntity<Map<String, Double>> getPercentageForComments(
-            @PathVariable Long writeNum) {
+//    @GetMapping("/debate/{writeNum}/percentage")
+//    public ResponseEntity<Map<String, Double>> getPercentageForComments(
+//            @PathVariable Long writeNum) {
+//
+//        List<DebateComment> debateComments = debateCommentService.getCommentsForDebate(writeNum);
+//
+//        int totalComments = debateComments.size();
+//        int optionACount = debateCommentService.countSpecificComment(debateComments, "A");
+//        int optionBCount = debateCommentService.countSpecificComment(debateComments, "B");
+//
+//        double optionAPercentage = debateCommentService.calculatePercentage(optionACount, totalComments);
+//        double optionBPercentage = debateCommentService.calculatePercentage(optionBCount, totalComments);
+//
+//        Map<String, Double> percentageMap = new HashMap<>();
+//        percentageMap.put("optionA", optionAPercentage);
+//        percentageMap.put("optionB", optionBPercentage);
+//
+//        return new ResponseEntity<>(percentageMap, HttpStatus.OK);
+//    }
 
-        List<DebateComment> debateComments = debateCommentService.getCommentsForDebate(writeNum);
+    // 좋아요 기능 추가
 
-        int totalComments = debateComments.size();
-        int optionACount = debateCommentService.countSpecificComment(debateComments, "A");
-        int optionBCount = debateCommentService.countSpecificComment(debateComments, "B");
-
-        double optionAPercentage = debateCommentService.calculatePercentage(optionACount, totalComments);
-        double optionBPercentage = debateCommentService.calculatePercentage(optionBCount, totalComments);
-
-        Map<String, Double> percentageMap = new HashMap<>();
-        percentageMap.put("optionA", optionAPercentage);
-        percentageMap.put("optionB", optionBPercentage);
-
-        return new ResponseEntity<>(percentageMap, HttpStatus.OK);
+    @PostMapping("/debate/{commentId}/like")
+    public ResponseEntity<DebateComment> likeComment(@PathVariable Long commentId) {
+        DebateComment likedComment = debateCommentService.likeComment(commentId);
+        return new ResponseEntity<>(likedComment, HttpStatus.OK);
     }
 
+    @GetMapping("/debate/{commentId}/likeCount")
+    public ResponseEntity<Integer> getLikeCount(@PathVariable Long commentId) {
+        int likeCount = debateCommentService.getLikeCount(commentId);
+        return new ResponseEntity<>(likeCount, HttpStatus.OK);
+    }
 }

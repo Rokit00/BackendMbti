@@ -83,4 +83,22 @@ public class DebateCommentServiceImpl implements DebateCommentService {
         return (specificCount * 100.0) / totalCount;
     }
 
+    // 좋아요 기능 추가
+    @Override
+    public DebateComment likeComment(Long commentId) {
+        DebateComment debateComment = debateCommentRepository.findById(commentId)
+                .orElseThrow(() -> new EntityNotFoundException("해당 댓글을 찾을 수 없습니다"));
+
+        debateComment.setLikeCount(debateComment.getLikeCount() + 1);
+
+        return debateCommentRepository.save(debateComment);
+    }
+
+    @Override
+    public int getLikeCount(Long commentId) {
+        DebateComment debateComment = debateCommentRepository.findById(commentId)
+                .orElseThrow(() -> new EntityNotFoundException("해당 댓글을 찾을 수 없습니다"));
+
+        return debateComment.getLikeCount();
+    }
 }

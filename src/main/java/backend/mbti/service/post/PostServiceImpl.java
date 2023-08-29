@@ -15,7 +15,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class PostServiceImpl implements PostService{
     private final PostRepository postRepository;
-//    private final MemberRepository memberRepository;
     private final CommentRepository commentRepository;
 
 
@@ -55,29 +54,20 @@ public class PostServiceImpl implements PostService{
         postRepository.deleteById(writerNum);
     }
 
-//    //북마크
-//    @Override
-//    public void bookmark(Long writerNum,Long memberId) {
-//        Post post = postRepository.findById(writerNum).orElse(null);
-//        Member member = memberRepository.findById(memberId).orElse(null);
-//
-//        if(postRepository.findByWriterNumAndMember(writerNum, member) == null) {
-//            post.setMember(member);
-//            post.setBookmark(true);
-//            //post.getMember().add(member);
-//            postRepository.save(post);
-//        }
-//    }
+    //북마크 저장 + 삭제
+    @Override
+    public Boolean bookmarkPost(Long writerNum) {
+        Optional<Post> postOptional = postRepository.findById(writerNum);
+        if(postOptional.isPresent()) {
+            Post post = postOptional.get();
+            boolean newBookmarkStatus = !post.isBookmark();
+            post.setBookmark(newBookmarkStatus);
+            postRepository.save(post);
+            return newBookmarkStatus;
+        }
+        return false;
+    }
 
-//    //북마크 삭제
-//    @Override
-//    public void removeBookmark(Long writerNum,Long memberId) {
-//        Member member = memberRepository.findById(memberId).orElse(null);
-//
-//        if(postRepository.findByWriterNumAndMember(writerNum, member) != null) {
-//            postRepository.deleteByMemberId(member.getId());
-//        }
-//    }
 
     //A,B 댓글수 기준으로 나누어 데이터 보내주기
     @Override
@@ -94,26 +84,26 @@ public class PostServiceImpl implements PostService{
 
 
 
-//    //좋아요 count
-//    @Override
-//    public int getLikeCount(Long writerNum) {
-//        Optional<Post> postOptional = postRepository.findById(writerNum);
-//        return postOptional.map(Post::getLikeCount).orElse(0);
-//    }
-//
-//    @Override
-//    public void likePost(Long writerNum) {
-//        Optional<Post> postOptional = postRepository.findById(writerNum);
-//        postOptional.ifPresent(Post::incrementLikeCount);
-//    }
-//
-//    @Override
-//    public void unlikePost(Long writerNum) {
-//        Optional<Post> postOptional = postRepository.findById(writerNum);
-//        postOptional.ifPresent(Post::decrementLikeCount);
-//    }
+    //좋아요 count
+    @Override
+    public int getLikeCount(Long writerNum) {
+        Post post = postRepository.findById(writerNum).orElse(null);
+        return post.getGood();
+    }
 
+    @Override
+    public void likePost(Long writerNum) {
+        Post post = postRepository.findById(writerNum).orElse(null);
+        int currentGoodCount = post.getGood();
+        post.setGood(currentGoodCount + 1);
+        postRepository.save(post);
+    }
 
-
-
+    @Override
+    public void unlikePost(Long writerNum) {
+        Post post = postRepository.findById(writerNum).orElse(null);
+        int currentGoodCount = post.getGood();
+        post.setGood(currentGoodCount - 1);
+        postRepository.save(post);
+    }
 }

@@ -6,7 +6,6 @@ import java.util.List;
 
 
 public interface DebateCommentService {
-
     DebateComment createComment(DebateComment debateComment);
 
     DebateComment updateComment(Long commentId, DebateComment debateComment);
@@ -22,4 +21,9 @@ public interface DebateCommentService {
     int countSpecificComment(List<DebateComment> comments, String optionSelected);
 
     double calculatePercentage(int specificCount, int totalCount);
+
+    // 좋아요 기능 추가
+    DebateComment likeComment(Long commentId);
+
+    int getLikeCount(Long commentId);
 }

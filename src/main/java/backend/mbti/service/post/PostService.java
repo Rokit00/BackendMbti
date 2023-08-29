@@ -8,7 +8,6 @@ import java.util.List;
 
 @Service
 public interface PostService {
-
     //게시물 내림차순으로 출력
     List<Post> getPostListDesc();
 
@@ -24,9 +23,8 @@ public interface PostService {
     //글 삭제
     void deleteById(Long writerNum);
 
-//    //북마크 기능 (사용자 - 게시글간의 테이블 생성)
-//    void bookmark(Long writerNum, Long memberId);
-//    void removeBookmark(Long writerNum, Long memberId);
+    //북마크
+    Boolean bookmarkPost(Long writerNum);
 
     //A,B 댓글수 기준으로 나누어 데이터 보내주기
     int getCountByChoice(String optionAorB);
@@ -34,10 +32,12 @@ public interface PostService {
     //댓글수 보여주기
     int getCommentCount(Long writeNum);
 
-//    //좋아요수 보여주기
-//    int getLikeCount(Long writerNum);
-//
-//    void likePost(Long writerNum);
-//
-//    void unlikePost(Long writerNum);
+    //좋아요수 보여주기
+    int getLikeCount(Long writerNum);
+
+    //좋아요수 증가
+    void likePost(Long writerNum);
+
+    //좋아요수 감소
+    void unlikePost(Long writerNum);
 }
