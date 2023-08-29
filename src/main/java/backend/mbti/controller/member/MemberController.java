@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -64,6 +65,15 @@ public class MemberController {
     }
 
     // 회원 가입 시 아이디 중복
+    @GetMapping("/check-duplicate")
+    public ResponseEntity<String> checkDuplicateUserId(@RequestParam("userId") String userId) {
+        boolean isDuplicate = memberService.isUserIdDuplicate(userId);
+        if (isDuplicate) {
+            return ResponseEntity.badRequest().body("이미 사용 중인 아이디입니다.");
+        } else {
+            return ResponseEntity.ok().body("사용 가능한 아이디입니다.");
+        }
+    }
 
     // 아이디 찾기
     @PutMapping("/find-username")
@@ -78,6 +88,27 @@ public class MemberController {
 
 
     // 비밀번호 찾기
+    @PostMapping("/password-reset/request")
+    public ResponseEntity<String> requestPasswordReset(@RequestParam String userId, @RequestParam String email) {
+        String newPassword = memberService.requestPasswordReset(userId, email);
+        if (newPassword != null) {
+
+            return ResponseEntity.ok().body("비밀번호 재설정 완료." + newPassword);
+        } else {
+            return ResponseEntity.badRequest().body("오류.");
+        }
+    }
+
+    // 회원 정보 수정
+    @PutMapping("/{id}")
+    public ResponseEntity<String> updateMember(@PathVariable Long id, @RequestBody Map<String, String> updates) {
+        boolean success = memberService.updateMember(id, updates);
+        if (success) {
+            return ResponseEntity.ok().body("회원 정보가 수정되었습니다.");
+        } else {
+            return ResponseEntity.badRequest().body("회원 정보 수정에 실패했습니다.");
+        }
+    }
 
     // 모두 조회 (관리자 페이지 예정)
     @GetMapping("")

@@ -10,7 +10,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
 import java.util.Optional;
+import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
@@ -19,10 +21,13 @@ public class MemberServiceImpl implements MemberService{
     private final MemberRepository memberRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
+
+    // Jwt 키, 만료 시간
     @Value("${jwt.secret}")
     private String key;
     private Long expireTimeMs = 1000 * 60 * 60L; // 1시간
 
+    // 회원가입
     @Override
     public String join(String userId, String password, String nickName, String birthday, String email) {
 
@@ -56,8 +61,12 @@ public class MemberServiceImpl implements MemberService{
             throw new AppException(ErrorCode.INVALID_PASSWORD, "패스워드 틀림");
         }
         String token = JwtTokenUtil.createToken(selectedUser.getUserId(), key, expireTimeMs);
-        // 앞에서 Exception(예외) 안났으면 토큰 ㄱㄱ
+        // 앞에서 Exception(예외) 안났으면 토큰 반환
         return token;
+    }
+
+    public boolean isUserIdDuplicate(String userId) {
+        return memberRepository.findByUserId(userId).isPresent();
     }
 
     // 회원 탈퇴
@@ -66,8 +75,6 @@ public class MemberServiceImpl implements MemberService{
         Optional<Member> memberOptional = memberRepository.findById(memberId);
         if (memberOptional.isPresent()) {
             Member member = memberOptional.get();
-            // 회원 관련 데이터를 삭제하거나 비활성화 로직을 수행합니다.
-            // 예를 들어, 회원 데이터를 삭제하는 경우:
             memberRepository.deleteById(memberId);
             return true;
         }
@@ -81,5 +88,66 @@ public class MemberServiceImpl implements MemberService{
             return member.getUserId();
         }
         return null;
+    }
+
+    // 비밀번호 찾기
+    public String requestPasswordReset(String userId, String email) {
+        Member member = memberRepository.findByUserIdAndEmail(userId, email);
+
+        if (member != null) {
+            String temporaryPassword = generateTemporaryPassword();
+            member.setPassword(temporaryPassword);
+            memberRepository.save(member);
+
+            return temporaryPassword;
+        }
+        return null;
+    }
+
+    public String generateTemporaryPassword() {
+        int length = 8;
+        String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        StringBuilder temporaryPassword = new StringBuilder();
+
+        Random random = new Random();
+        for (int i = 0; i < length; i++) {
+            int index = random.nextInt(characters.length());
+            temporaryPassword.append(characters.charAt(index));
+        }
+
+        return temporaryPassword.toString();
+    }
+
+    // 회원 정보 수정
+    public boolean updateMember(Long id, Map<String, String> updates) {
+        Optional<Member> optionalMember = memberRepository.findById(id);
+
+        if (optionalMember.isPresent()) {
+            Member member = optionalMember.get();
+
+            if (updates.containsKey("userId")) {
+                member.setUserId(updates.get("userId"));
+            }
+
+            if (updates.containsKey("password")) {
+                member.setPassword(bCryptPasswordEncoder.encode(updates.get("password")));
+            }
+
+            if (updates.containsKey("nickName")) {
+                member.setNickName(updates.get("nickName"));
+            }
+
+            if (updates.containsKey("email")) {
+                member.setEmail(updates.get("email"));
+            }
+
+            if (updates.containsKey("birthday")) {
+                member.setBirthday(updates.get("birthday"));
+            }
+
+            memberRepository.save(member);
+            return true;
+        }
+        return false;
     }
 }
