@@ -18,6 +18,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 @RequestMapping("/sec3")
 public class PostController {
+
     private final PostService postService;
 
     //게시물 내림차순으로 출력 (x - 직렬화 오류 : 해결)
@@ -65,13 +66,8 @@ public class PostController {
 
     //A,B 댓글수 기준으로 나누어 데이터 보내주기
     @GetMapping("/3/commentAorB/{writerNum}")
-    public ResponseEntity<Map<String, Long>> getCountBychoice() {
-        long countA = postService.getCountByChoice("a");
-        long countB = postService.getCountByChoice("b");
-
-        Map<String, Long> counts = new HashMap<>();
-        counts.put("a", countA);
-        counts.put("b", countB);
+    public ResponseEntity<Map<String, Long>> getCountByChoice(@PathVariable Long writerNum) {
+        Map<String, Long> counts = postService.getCountByChoice(writerNum);
         return ResponseEntity.ok(counts);
     }
 
@@ -82,23 +78,12 @@ public class PostController {
         return ResponseEntity.ok(commentCount);
     }
 
-
-    //좋아요수
-    @GetMapping("/3/like/{writerNum}")
-    public ResponseEntity<Integer> getLikeCount(@PathVariable Long writerNum) {
-        int likeCount = postService.getLikeCount(writerNum);
-        return ResponseEntity.ok(likeCount);
+    //조회수
+    @GetMapping("/3/hitCount/{writerNum}")
+    public ResponseEntity<Post> getHitCount(@PathVariable Long writerNum) {
+        Post post = postService.getIncrementHit(writerNum);
+        return ResponseEntity.ok(post);
     }
 
-    @PostMapping("/3/like/{writerNum}")
-    public ResponseEntity<String> likePost(@PathVariable Long writerNum) {
-        postService.likePost(writerNum);
-        return ResponseEntity.ok("좋아요");
-    }
 
-    @DeleteMapping("/3/unlike/{writerNum}")
-    public ResponseEntity<String> unlikePost(@PathVariable Long writerNum) {
-        postService.unlikePost(writerNum);
-        return ResponseEntity.ok("좋아요 취소");
-    }
 }

@@ -4,10 +4,12 @@ import backend.mbti.domain.post.Post;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 
 @Service
 public interface PostService {
+
     //게시물 내림차순으로 출력
     List<Post> getPostListDesc();
 
@@ -27,17 +29,12 @@ public interface PostService {
     Boolean bookmarkPost(Long writerNum);
 
     //A,B 댓글수 기준으로 나누어 데이터 보내주기
-    int getCountByChoice(String optionAorB);
+    Map<String, Long> getCountByChoice(Long writerNum);
 
     //댓글수 보여주기
     int getCommentCount(Long writeNum);
 
-    //좋아요수 보여주기
-    int getLikeCount(Long writerNum);
+    //조회수
+    Post getIncrementHit(Long writetNum);
 
-    //좋아요수 증가
-    void likePost(Long writerNum);
-
-    //좋아요수 감소
-    void unlikePost(Long writerNum);
 }
