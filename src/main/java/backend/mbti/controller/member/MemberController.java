@@ -36,7 +36,7 @@ public class MemberController {
                 , memberJoinRequest.getBirthday()
                 , memberJoinRequest.getEmail()
         );
-        return ResponseEntity.ok().body("회원가입 축하합니다.");
+        return ResponseEntity.ok().body("회원가입 축하합니다");
     }
 
     // 로그인
