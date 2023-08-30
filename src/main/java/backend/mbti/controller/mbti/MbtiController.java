@@ -19,7 +19,11 @@ public class MbtiController {
     private final MbtiService mbtiService;
 
     // 그룹네임 MBTI 퍼센트
+<<<<<<< HEAD
     @GetMapping
+=======
+    @GetMapping("/{groupName}")
+>>>>>>> fd206f63f270cde53a4899f04f8eefe6701d2d4c
     public ResponseEntity<Map<String, Map<String, Double>>> getGroupMatchPercentages(@RequestParam String groupName) {
         Map<String, Map<String, Double>> groupMatchPercentages = mbtiService.calculateGroupMatchPercentages(groupName);
         return new ResponseEntity<>(groupMatchPercentages, HttpStatus.OK);

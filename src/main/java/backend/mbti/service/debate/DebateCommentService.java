@@ -6,7 +6,10 @@ import java.util.List;
 
 
 public interface DebateCommentService {
+<<<<<<< HEAD
 
+=======
+>>>>>>> fd206f63f270cde53a4899f04f8eefe6701d2d4c
     DebateComment createComment(DebateComment debateComment);
 
     DebateComment updateComment(Long commentId, DebateComment debateComment);
@@ -27,6 +30,10 @@ public interface DebateCommentService {
     DebateComment likeComment(Long commentId);
 
     int getLikeCount(Long commentId);
+<<<<<<< HEAD
 
 }
 
+=======
+}
+>>>>>>> fd206f63f270cde53a4899f04f8eefe6701d2d4c

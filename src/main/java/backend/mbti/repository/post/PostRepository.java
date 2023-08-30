@@ -11,6 +11,7 @@ import java.util.List;
 
 @Repository
 public interface PostRepository extends JpaRepository<Post, Long> {
+<<<<<<< HEAD
     //void updateCount(Post post, boolean ture);
     //@Query(value = "SELECT p FROM Post p ORDER BY p.createAt DESC", nativeQuery = true) //error : Unknown column 'p' in 'field list'
     List<Post> findAllByOrderByCreateAtDesc();
@@ -18,4 +19,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 //    Post findByWriterNumAndMember(Long writerNum, Member member);
 
 
+=======
+    List<Post> findAllByOrderByCreateAtDesc();
+>>>>>>> fd206f63f270cde53a4899f04f8eefe6701d2d4c
 }

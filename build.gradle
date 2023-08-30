@@ -5,6 +5,9 @@ plugins {
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> fd206f63f270cde53a4899f04f8eefe6701d2d4c
 group = 'backend'
 version = '0.0.1-SNAPSHOT'
 
@@ -24,6 +27,9 @@ repositories {
 
 dependencies {
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> fd206f63f270cde53a4899f04f8eefe6701d2d4c
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	compileOnly 'org.projectlombok:lombok'
@@ -31,8 +37,14 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	runtimeOnly 'com.mysql:mysql-connector-j'
+<<<<<<< HEAD
 	implementation 'io.jsonwebtoken:jjwt:0.9.1'
 
+=======
+
+
+	implementation 'io.jsonwebtoken:jjwt:0.9.1'
+>>>>>>> fd206f63f270cde53a4899f04f8eefe6701d2d4c
 }
 
 tasks.named('test') {
