@@ -1,6 +1,6 @@
 package backend.mbti.controller.mbti;
 
-import backend.mbti.domain.dto.MbtiGroupRequest;
+import backend.mbti.domain.dto.mbti.MbtiGroupRequest;
 import backend.mbti.service.mbti.MbtiService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,14 +18,7 @@ public class MbtiController {
 
     private final MbtiService mbtiService;
 
-    // 그룹네임 MBTI 퍼센트
-    @GetMapping("/{groupName}")
-    public ResponseEntity<Map<String, Map<String, Double>>> getGroupMatchPercentages(@RequestParam String groupName) {
-        Map<String, Map<String, Double>> groupMatchPercentages = mbtiService.calculateGroupMatchPercentages(groupName);
-        return new ResponseEntity<>(groupMatchPercentages, HttpStatus.OK);
-    }
-
-    // MBTI 섹션 2 그룹 데이터 저장
+    // MBTI 그룹 저장
     @PostMapping
     public ResponseEntity<String> saveMbtiData(@RequestBody MbtiGroupRequest mbtiGroupRequest) {
         if (mbtiService.saveMbtiData(mbtiGroupRequest)) {

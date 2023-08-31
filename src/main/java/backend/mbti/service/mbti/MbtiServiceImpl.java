@@ -1,6 +1,6 @@
 package backend.mbti.service.mbti;
 
-import backend.mbti.domain.dto.MbtiGroupRequest;
+import backend.mbti.domain.dto.mbti.MbtiGroupRequest;
 import backend.mbti.domain.mbti.Mbti;
 import backend.mbti.repository.mbti.MbtiRepository;
 import lombok.RequiredArgsConstructor;

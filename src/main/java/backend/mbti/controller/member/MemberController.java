@@ -1,16 +1,14 @@
 package backend.mbti.controller.member;
 
-import backend.mbti.domain.dto.MbtiGroupRequest;
-import backend.mbti.domain.dto.MemberFindId;
-import backend.mbti.domain.dto.MemberJoinRequest;
-import backend.mbti.domain.dto.MemberLoginRequest;
+import backend.mbti.domain.dto.member.MemberFindId;
+import backend.mbti.domain.dto.member.MemberSignUpRequest;
+import backend.mbti.domain.dto.member.MemberLoginRequest;
 import backend.mbti.domain.member.Member;
 import backend.mbti.repository.member.MemberRepository;
-import backend.mbti.service.mbti.MbtiService;
 import backend.mbti.service.member.MemberService;
+import backend.mbti.utils.Jwt;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,26 +22,18 @@ import java.util.Map;
 public class MemberController {
 
     private final MemberService memberService;
-    private final MemberRepository memberRepository;
 
     // 회원가입
-    @PostMapping("/join")
-    public ResponseEntity<String> join(@RequestBody MemberJoinRequest memberJoinRequest) {
-        memberService.join(
-                memberJoinRequest.getUserId()
-                , memberJoinRequest.getPassword()
-                , memberJoinRequest.getNickName()
-                , memberJoinRequest.getBirthday()
-                , memberJoinRequest.getEmail()
-        );
-        return ResponseEntity.ok().body("회원가입 축하합니다");
+    @PostMapping
+    public Long signup(@RequestBody MemberSignUpRequest memberSignUpRequest) {
+        return memberService.signup(memberSignUpRequest);
     }
 
     // 로그인
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody MemberLoginRequest memberLoginRequest) {
-        String token = memberService.login(memberLoginRequest.getUserId(), memberLoginRequest.getPassword());
-        return ResponseEntity.ok().body(token);
+    public ResponseEntity<Jwt> login(@RequestBody MemberLoginRequest memberLoginRequest) {
+        Jwt token = memberService.login(memberLoginRequest.getUserId(), memberLoginRequest.getPassword());
+        return ResponseEntity.ok(token);
     }
 
     // 로그아웃
@@ -108,12 +98,6 @@ public class MemberController {
         } else {
             return ResponseEntity.badRequest().body("회원 정보 수정에 실패했습니다.");
         }
-    }
-
-    // 모두 조회 (관리자 페이지 예정)
-    @GetMapping("")
-    public List<Member> findAll() {
-        return memberRepository.findAll();
     }
 }
 

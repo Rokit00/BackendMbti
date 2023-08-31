@@ -1,6 +1,6 @@
 package backend.mbti.service.mbti;
 
-import backend.mbti.domain.dto.MbtiGroupRequest;
+import backend.mbti.domain.dto.mbti.MbtiGroupRequest;
 
 import java.util.Map;
 
