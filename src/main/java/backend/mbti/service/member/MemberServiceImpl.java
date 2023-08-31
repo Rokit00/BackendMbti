@@ -12,11 +12,8 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-<<<<<<< HEAD
-=======
 import org.springframework.web.server.ResponseStatusException;
 
->>>>>>> 6ef9c21f95cdd89e3b0633e0f2ceaa7d6599c0fb
 import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
@@ -31,15 +28,6 @@ public class MemberServiceImpl implements MemberService{
     private final JwtProvider jwtProvider;
 
 
-<<<<<<< HEAD
-    // Jwt 키, 만료 시간
-    @Value("${jwt.secret}")
-    private String key;
-    private Long expireTimeMs = 1000 * 60 * 60L; // 1시간
-
-
-=======
->>>>>>> 6ef9c21f95cdd89e3b0633e0f2ceaa7d6599c0fb
     // 회원가입
     @Override
     public Long signup(MemberSignUpRequest memberSignUpRequest) {

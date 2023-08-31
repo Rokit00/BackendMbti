@@ -1,18 +1,8 @@
 package backend.mbti.controller.member;
 
-<<<<<<< HEAD
-import backend.mbti.domain.dto.MbtiGroupRequest;
-<<<<<<< HEAD
-=======
-import backend.mbti.domain.dto.MemberFindId;
->>>>>>> fd206f63f270cde53a4899f04f8eefe6701d2d4c
-import backend.mbti.domain.dto.MemberJoinRequest;
-import backend.mbti.domain.dto.MemberLoginRequest;
-=======
 import backend.mbti.domain.dto.member.MemberFindId;
 import backend.mbti.domain.dto.member.MemberSignUpRequest;
 import backend.mbti.domain.dto.member.MemberLoginRequest;
->>>>>>> 6ef9c21f95cdd89e3b0633e0f2ceaa7d6599c0fb
 import backend.mbti.domain.member.Member;
 import backend.mbti.repository.member.MemberRepository;
 import backend.mbti.service.member.MemberService;
@@ -23,10 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-<<<<<<< HEAD
-=======
 import java.util.Map;
->>>>>>> fd206f63f270cde53a4899f04f8eefe6701d2d4c
 
 @Slf4j
 @RestController
@@ -37,26 +24,9 @@ public class MemberController {
     private final MemberService memberService;
 
     // 회원가입
-<<<<<<< HEAD
-    @PostMapping("/join")
-    public ResponseEntity<String> join(@RequestBody MemberJoinRequest memberJoinRequest) {
-        memberService.join(
-                memberJoinRequest.getUserId()
-                , memberJoinRequest.getPassword()
-                , memberJoinRequest.getNickName()
-                , memberJoinRequest.getBirthday()
-                , memberJoinRequest.getEmail()
-        );
-<<<<<<< HEAD
-        return ResponseEntity.ok().body("회원가입 축하합니다.");
-=======
-        return ResponseEntity.ok().body("회원가입 축하합니다");
->>>>>>> fd206f63f270cde53a4899f04f8eefe6701d2d4c
-=======
     @PostMapping
     public Long signup(@RequestBody MemberSignUpRequest memberSignUpRequest) {
         return memberService.signup(memberSignUpRequest);
->>>>>>> 6ef9c21f95cdd89e3b0633e0f2ceaa7d6599c0fb
     }
 
     // 로그인
@@ -66,13 +36,6 @@ public class MemberController {
         return ResponseEntity.ok(token);
     }
 
-<<<<<<< HEAD
-    // 회원 탈퇴
-
-    // 아이디 찾기
-
-    // 비밀번호 찾기
-=======
     // 로그아웃
     @GetMapping("/logout")
     public ResponseEntity<String> logout() {
@@ -136,16 +99,6 @@ public class MemberController {
             return ResponseEntity.badRequest().body("회원 정보 수정에 실패했습니다.");
         }
     }
-<<<<<<< HEAD
->>>>>>> fd206f63f270cde53a4899f04f8eefe6701d2d4c
-
-    // 모두 조회 (관리자 페이지 예정)
-    @GetMapping("")
-    public List<Member> findAll() {
-        return memberRepository.findAll();
-    }
-=======
->>>>>>> 6ef9c21f95cdd89e3b0633e0f2ceaa7d6599c0fb
 }
 
 

@@ -80,8 +80,6 @@ public class PostController {
         Post updatedPost = postService.toggleBookmark(id);
         return ResponseEntity.ok(updatedPost);
     }
-<<<<<<< HEAD
-=======
 
 
     // 조회 수
@@ -91,5 +89,4 @@ public class PostController {
         return ResponseEntity.ok(debate);
     }
 
->>>>>>> 6ef9c21f95cdd89e3b0633e0f2ceaa7d6599c0fb
 }

@@ -26,11 +26,7 @@ out/
 !**/src/main/**/out/
 !**/src/test/**/out/
 
-<<<<<<< HEAD
-### NetBeans ###
-=======
 ### NetBeans ###햣
->>>>>>> fd206f63f270cde53a4899f04f8eefe6701d2d4c
 /nbproject/private/
 /nbbuild/
 /dist/

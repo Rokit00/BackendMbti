@@ -18,22 +18,7 @@ public class MbtiController {
 
     private final MbtiService mbtiService;
 
-<<<<<<< HEAD
-    // 그룹네임 MBTI 퍼센트
-<<<<<<< HEAD
-    @GetMapping
-=======
-    @GetMapping("/{groupName}")
->>>>>>> fd206f63f270cde53a4899f04f8eefe6701d2d4c
-    public ResponseEntity<Map<String, Map<String, Double>>> getGroupMatchPercentages(@RequestParam String groupName) {
-        Map<String, Map<String, Double>> groupMatchPercentages = mbtiService.calculateGroupMatchPercentages(groupName);
-        return new ResponseEntity<>(groupMatchPercentages, HttpStatus.OK);
-    }
-
-    // MBTI 섹션 2 그룹 데이터 저장
-=======
     // MBTI 그룹 저장
->>>>>>> 6ef9c21f95cdd89e3b0633e0f2ceaa7d6599c0fb
     @PostMapping
     public ResponseEntity<String> saveMbtiData(@RequestBody MbtiGroupRequest mbtiGroupRequest) {
         if (mbtiService.saveMbtiData(mbtiGroupRequest)) {

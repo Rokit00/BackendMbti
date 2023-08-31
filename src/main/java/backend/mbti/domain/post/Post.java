@@ -14,7 +14,6 @@ import java.util.List;
 @Getter
 @Setter
 public class Post {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -49,25 +48,7 @@ public class Post {
 
     // 북마크
     @Column
-<<<<<<< HEAD
-    private Date createAt;
-
-    //조회수
-    @Column
-    private Integer hit;
-
-
-    //좋아요
-    @Column
-    private Integer good = 0;
-
-
-    //북마크
-    @Column
-    private boolean bookmark;
-=======
     private Boolean bookmark;
->>>>>>> 6ef9c21f95cdd89e3b0633e0f2ceaa7d6599c0fb
 
     // 맴버 테이블 다대일
     @ManyToOne

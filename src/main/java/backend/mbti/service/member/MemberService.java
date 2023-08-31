@@ -10,14 +10,10 @@ public interface MemberService {
     // 회원가입
     Long signup(MemberSignUpRequest memberSignUpRequest);
 
-<<<<<<< HEAD
-
-=======
     // 로그인
     Jwt login(String userId, String password);
 
     // 화원 탈퇴
->>>>>>> 6ef9c21f95cdd89e3b0633e0f2ceaa7d6599c0fb
     boolean deleteMember(Long memberId);
 
     // 중복

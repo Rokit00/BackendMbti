@@ -15,11 +15,8 @@ import java.util.Map;
 public class MbtiServiceImpl implements MbtiService{
 
     private final MbtiRepository mbtiRepository;
-<<<<<<< HEAD
-=======
 
 
->>>>>>> fd206f63f270cde53a4899f04f8eefe6701d2d4c
     @Override
     public boolean saveMbtiData(MbtiGroupRequest mbtiGroupRequest) {
         try {

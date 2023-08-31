@@ -29,15 +29,11 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	runtimeOnly 'com.mysql:mysql-connector-j'
-<<<<<<< HEAD
-	implementation 'io.jsonwebtoken:jjwt:0.9.1'
-=======
 
 
 	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
 
 	implementation 'io.jsonwebtoken:jjwt-jackson:0.11.5'
->>>>>>> 6ef9c21f95cdd89e3b0633e0f2ceaa7d6599c0fb
 }
 
 tasks.named('test') {
