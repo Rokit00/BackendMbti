@@ -17,10 +17,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/sec3")
 @RequiredArgsConstructor
 public class DebateController {
-<<<<<<< HEAD
 
-=======
->>>>>>> fd206f63f270cde53a4899f04f8eefe6701d2d4c
     private final DebateCommentService debateCommentService;
 
     // 댓글 생성 API
@@ -103,8 +100,4 @@ public class DebateController {
         int likeCount = debateCommentService.getLikeCount(commentId);
         return new ResponseEntity<>(likeCount, HttpStatus.OK);
     }
-<<<<<<< HEAD
-
-=======
->>>>>>> fd206f63f270cde53a4899f04f8eefe6701d2d4c
 }
