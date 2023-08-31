@@ -1,6 +1,7 @@
-package backend.mbti.domain.debate;
+package backend.mbti.domain.comment;
 
 import backend.mbti.domain.member.Member;
+import backend.mbti.domain.post.Post;
 import lombok.Getter;
 import lombok.Setter;
 import javax.persistence.*;
@@ -9,40 +10,27 @@ import java.util.Date;
 @Entity
 @Getter
 @Setter
-public class DebateComment {
+public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "write_num")
-    private DebateWrite debateWrite;
+    @Column
+    private String content;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private Member member;
+    @Column(name = "select_option")
+    private String selectOption;
 
-    private String comment;
-
-    @Column(columnDefinition = "CHAR") // 컬럼 이름과 타입이 일치하도록 지정
-    private String optionSelected; // A or B
-
-    @Column // 컬럼 이름과 일치하도록 지정
-    private Integer likeCount;
-
-    @Column // 컬럼 이름과 일치하도록 지정
+    @Column(name = "created_at")
     private Date createdAt;
 
+    @Column(name = "like_count")
+    private Integer likeCount;
 
-
-    // member's nickname 가져오기
-    @Transient      // @Transient: 데이터베이스에 저장되지 않는 임시 필드로 정의
-    public String getNickname() {
-        return member != null ? member.getNickName() : null;
-    }
+    @ManyToOne
+    @JoinColumn(name = "post_id") // 외래 키 필드 설정
+    private Post post;
 }
-
-
 
 /*
 외래키만 사용하는 방식:

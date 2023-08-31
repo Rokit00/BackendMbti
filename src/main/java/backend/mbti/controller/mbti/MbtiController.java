@@ -1,6 +1,6 @@
 package backend.mbti.controller.mbti;
 
-import backend.mbti.domain.dto.MbtiGroupRequest;
+import backend.mbti.domain.dto.mbti.MbtiGroupRequest;
 import backend.mbti.service.mbti.MbtiService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +18,7 @@ public class MbtiController {
 
     private final MbtiService mbtiService;
 
+<<<<<<< HEAD
     // 그룹네임 MBTI 퍼센트
 <<<<<<< HEAD
     @GetMapping
@@ -30,6 +31,9 @@ public class MbtiController {
     }
 
     // MBTI 섹션 2 그룹 데이터 저장
+=======
+    // MBTI 그룹 저장
+>>>>>>> 6ef9c21f95cdd89e3b0633e0f2ceaa7d6599c0fb
     @PostMapping
     public ResponseEntity<String> saveMbtiData(@RequestBody MbtiGroupRequest mbtiGroupRequest) {
         if (mbtiService.saveMbtiData(mbtiGroupRequest)) {
