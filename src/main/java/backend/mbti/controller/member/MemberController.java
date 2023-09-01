@@ -1,18 +1,14 @@
 package backend.mbti.controller.member;
 
 import backend.mbti.domain.dto.member.MemberFindId;
-import backend.mbti.domain.dto.member.MemberSignUpRequest;
 import backend.mbti.domain.dto.member.MemberLoginRequest;
-import backend.mbti.domain.member.Member;
-import backend.mbti.repository.member.MemberRepository;
+import backend.mbti.domain.dto.member.MemberSignUpRequest;
 import backend.mbti.service.member.MemberService;
-import backend.mbti.utils.Jwt;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -24,15 +20,17 @@ public class MemberController {
     private final MemberService memberService;
 
     // 회원가입
-    @PostMapping
-    public Long signup(@RequestBody MemberSignUpRequest memberSignUpRequest) {
-        return memberService.signup(memberSignUpRequest);
+    @PostMapping("/signup")
+    public ResponseEntity<String> signup(@RequestBody MemberSignUpRequest memberSignUpRequest) {
+        String signUp = memberService.signup(memberSignUpRequest);
+        log.info(memberSignUpRequest.getNickName());
+        return ResponseEntity.ok().body(signUp + ": SignUp Success");
     }
 
     // 로그인
     @PostMapping("/login")
-    public ResponseEntity<Jwt> login(@RequestBody MemberLoginRequest memberLoginRequest) {
-        Jwt token = memberService.login(memberLoginRequest.getUserId(), memberLoginRequest.getPassword());
+    public ResponseEntity<String> login(@RequestBody MemberLoginRequest memberLoginRequest) {
+        String token = memberService.login(memberLoginRequest);
         return ResponseEntity.ok(token);
     }
 

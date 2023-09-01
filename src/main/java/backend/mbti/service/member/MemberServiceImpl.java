@@ -1,65 +1,67 @@
 package backend.mbti.service.member;
 
+import backend.mbti.domain.dto.member.MemberLoginRequest;
 import backend.mbti.domain.dto.member.MemberSignUpRequest;
 import backend.mbti.domain.member.Member;
+import backend.mbti.exception.AppException;
+import backend.mbti.exception.ErrorCode;
 import backend.mbti.repository.member.MemberRepository;
-import backend.mbti.utils.Jwt;
-import backend.mbti.utils.JwtProvider;
+import backend.mbti.configuration.jwt.JwtProvider;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.transaction.Transactional;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
+@Transactional
 public class MemberServiceImpl implements MemberService{
 
     private final MemberRepository memberRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
-    private final AuthenticationManagerBuilder authenticationManagerBuilder;
-    private final JwtProvider jwtProvider;
+
+    @Value("${jwt.secret}")
+    private String key;
+    private Long expireTimeMs = 1000 * 60 * 60L; // 1시간
 
 
     // 회원가입
     @Override
-    public Long signup(MemberSignUpRequest memberSignUpRequest) {
-        boolean check = checkExists(memberSignUpRequest.getUserId());
-
-        if (check) {
-            throw new IllegalArgumentException("이미 존재하는 유저입니다.");
-        }
+    public String signup(MemberSignUpRequest memberSignUpRequest) {
 
         String encPwd = bCryptPasswordEncoder.encode(memberSignUpRequest.getPassword());
 
         Member member = memberRepository.save(memberSignUpRequest.toEntity(encPwd));
 
-        if (member != null) {
-            return member.getId();
-        }
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        return member.getUserId();
     }
 
-    public boolean checkExists(String userId) {
-        return memberRepository.existsUsersById(userId);
-    }
 
     // 로그인
     @Override
-    public Jwt login(String userId, String password) {
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userId, password);
-        Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
-
-        Jwt token = jwtProvider.generateToken(authentication);
+    public String login(MemberLoginRequest memberLoginRequest) {
+        // 아이디 틀림
+        Member selectedUser = memberRepository.findByUserId(memberLoginRequest.getUserId())
+                .orElseThrow(() ->new AppException(ErrorCode.USERNAME_NOT_FOUND, memberLoginRequest.getUserId() + "없습니다"));
+        // 패스워드 틀림
+        if (!bCryptPasswordEncoder.matches(memberLoginRequest.getPassword(), selectedUser.getPassword())) {
+            throw new AppException(ErrorCode.INVALID_PASSWORD, "패스워드 틀림");
+        }
+        String token = JwtProvider.createToken(selectedUser.getUserId(), key, expireTimeMs);
+        // 앞에서 Exception(예외) 안났으면 토큰 반환
         return token;
     }
+
 
     public boolean isUserIdDuplicate(String userId) {
         return memberRepository.findByUserId(userId).isPresent();

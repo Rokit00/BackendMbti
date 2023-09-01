@@ -24,7 +24,7 @@ public class PostController {
 
     private final PostService postService;
 
-    // 글 내림차순 조회
+    // 글 내림차순 조회 ( 무한 루프 )
     @GetMapping
     public ResponseEntity<List<Post>> getAllPosts() {
         List<Post> posts = postService.getPostListDesc();

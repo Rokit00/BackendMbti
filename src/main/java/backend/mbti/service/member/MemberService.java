@@ -1,17 +1,18 @@
 package backend.mbti.service.member;
 
+import backend.mbti.domain.dto.member.MemberLoginRequest;
 import backend.mbti.domain.dto.member.MemberSignUpRequest;
-import backend.mbti.utils.Jwt;
+import backend.mbti.domain.member.Member;
 
 import java.util.Map;
 
 
 public interface MemberService {
     // 회원가입
-    Long signup(MemberSignUpRequest memberSignUpRequest);
+    String signup(MemberSignUpRequest memberSignUpRequest);
 
     // 로그인
-    Jwt login(String userId, String password);
+    String login(MemberLoginRequest memberLoginRequest);
 
     // 화원 탈퇴
     boolean deleteMember(Long memberId);
