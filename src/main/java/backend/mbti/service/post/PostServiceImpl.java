@@ -5,6 +5,9 @@ import backend.mbti.domain.comment.Comment;
 import backend.mbti.domain.post.Post;
 import backend.mbti.exception.AppException;
 import backend.mbti.exception.ErrorCode;
+import backend.mbti.repository.comment.CommentRepository;
+import backend.mbti.repository.like.LikeRepository;
+import backend.mbti.repository.member.MemberRepository;
 import backend.mbti.repository.post.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
@@ -20,16 +23,22 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class PostServiceImpl implements PostService{
+
+    private final MemberRepository memberRepository;
     private final PostRepository postRepository;
+    private final CommentRepository commentRepository;
+    private final LikeRepository likeRepository;
 
 
-    // 글 내림차순 조회
+    // 글 전체 리스트 조회
     @Transactional
     @Override
     public List<Post> getPostListDesc() {
-        List<Post> posts = postRepository.findAllByOrderByCreatedAtDesc();
+        List<Post> posts = postRepository.findAllByOrderByIdDesc();
         return posts;
     }
+
+
 
     // 글 저장
     @Override
@@ -41,8 +50,16 @@ public class PostServiceImpl implements PostService{
     // 글 상세 조회 (댓글 포함)
     @Override
     public Post getPostWithComments(Long postId) {
-        return postRepository.findByIdWithComments(postId);
+        Optional<Post> optionalPost = postRepository.findById(postId);
+        if (optionalPost.isPresent()) {
+            Post post = optionalPost.get();
+            List<Comment> comments = commentRepository.findByPost(post);
+            post.setComments(comments);
+            return post;
+        }
+        return null;
     }
+
 
 
     // 글 수정
@@ -63,6 +80,8 @@ public class PostServiceImpl implements PostService{
     public void deleteById(Long writerNum) {
         postRepository.deleteById(writerNum);
     }
+
+
 
     // 댓글 수
     public Integer getCommentCount(Long postId) {

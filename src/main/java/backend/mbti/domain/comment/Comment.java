@@ -2,8 +2,12 @@ package backend.mbti.domain.comment;
 
 import backend.mbti.domain.member.Member;
 import backend.mbti.domain.post.Post;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -15,22 +19,38 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
+    @Column(nullable = false)
     private String content;
 
-    @Column(name = "select_option")
-    private String selectOption;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "post_id", nullable = false)
+    private Post post;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private Member member;
+
+    @Column
+    private Character selectOption;
+
+    // 생성 시간
     @Column(name = "created_at")
     private Date createdAt;
 
-    @Column(name = "like_count")
-    private Integer likeCount;
+    // 수정 시간
+    @Column(name = "updated_at")
+    private Date updatedAt;
 
-    @ManyToOne
-    @JoinColumn(name = "post_id") // 외래 키 필드 설정
-    private Post post;
+    public Comment(String content, Post post, Member member) {
+        this.content = content;
+        this.post = post;
+        this.member = member;
+        this.createdAt = new Date();
+        this.updatedAt = new Date();
+    }
 }
+
 
 /*
 외래키만 사용하는 방식:

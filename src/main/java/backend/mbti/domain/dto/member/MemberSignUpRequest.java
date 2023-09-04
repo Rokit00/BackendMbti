@@ -16,6 +16,8 @@ public class MemberSignUpRequest {
 
     private String nickName;
 
+    private String mbti;
+
     private String birthday;
 
     private String email;
@@ -25,6 +27,7 @@ public class MemberSignUpRequest {
                 .userId(userId)
                 .password(encPwd)
                 .nickName(nickName)
+                .mbti(mbti)
                 .birthday(birthday)
                 .email(email)
                 .build();

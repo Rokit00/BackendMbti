@@ -15,11 +15,3 @@ public class CommentUpdateRequest {
     private Date createdAt;
     private Integer likeCount;
 }
-/**
- * {
- *     "content": "테스트 댓글 수정 입니다.",
- *     "select_option": "A",
- *     "created_at": "2000-00-00",
- *     "like_count": "1"
- * }
- */

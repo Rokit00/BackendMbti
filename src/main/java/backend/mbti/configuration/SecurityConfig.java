@@ -37,7 +37,7 @@ public class SecurityConfig {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/members/signup", "/members/login").permitAll()
+                .antMatchers("/members/signup", "/members/login", "/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/post").authenticated() // 인증해아함
                 .and()
                 .addFilterBefore(new JwtFilter(memberService, secretKey), UsernamePasswordAuthenticationFilter.class);

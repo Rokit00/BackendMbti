@@ -14,13 +14,3 @@ public class CommentCreateRequest {
     private String created_at;
     private String select_option;
 }
-
-
-
-
-//{
-//        "content":"테스트 댓글 입니다.",
-//        "select_option":"A",
-//        "created_at":"2000-00-00",
-//        "like_count":"1"
-//}

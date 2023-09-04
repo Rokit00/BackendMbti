@@ -3,12 +3,18 @@ package backend.mbti.controller.comment;
 
 import backend.mbti.domain.comment.Comment;
 import backend.mbti.domain.dto.comment.CommentCreateRequest;
+import backend.mbti.domain.dto.comment.CommentRequest;
+import backend.mbti.domain.dto.comment.CommentTotalCountResponse;
 import backend.mbti.domain.dto.comment.CommentUpdateRequest;
 import backend.mbti.service.comment.CommentService;
+import backend.mbti.service.post.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/comment")
@@ -17,25 +23,34 @@ import org.springframework.web.bind.annotation.*;
 public class CommentController {
 
     private final CommentService commentService;
+    private final PostService postService;
 
-    // 특정 글 댓글 작성
+    // 댓글 보여주기
+    @GetMapping
+    public ResponseEntity<List<Comment>> getCommentsForPost(@PathVariable Long postId) {
+        List<Comment> comments = commentService.getCommentsForPost(postId);
+        return ResponseEntity.ok(comments);
+    }
+
+    // 댓글 작성
     @PostMapping("/{postId}")
-    public ResponseEntity<Comment> createComment(
-            @PathVariable Long postId,
-            @RequestBody CommentCreateRequest commentCreateRequest
-    ) {
-        Comment createdComment = commentService.createComment(postId, commentCreateRequest);
+    public ResponseEntity<Comment> createComment(@PathVariable Long postId, @RequestBody CommentRequest request, Authentication authentication) {
+        String username = authentication.getName();
+        Comment createdComment = commentService.createComment(postId, request, username);
+
         if (createdComment != null) {
-            return new ResponseEntity<>(createdComment, HttpStatus.CREATED);
+            return ResponseEntity.ok(createdComment);
         } else {
             return ResponseEntity.notFound().build();
         }
     }
 
-    // 댓글 수정 (수정해야함)
+    // 댓글 수정
     @PutMapping("/{commentId}")
-    public ResponseEntity<Comment> updateComment(@PathVariable Long commentId, @RequestBody CommentUpdateRequest request) {
-        Comment updatedComment = commentService.updateComment(commentId, request);
+    public ResponseEntity<Comment> updateComment(@PathVariable Long commentId, @RequestBody CommentUpdateRequest request, Authentication authentication) {
+        String username = authentication.getName(); // 현재 인증된 사용자의 username 가져오기
+        Comment updatedComment = commentService.updateComment(commentId, request, username);
+
         if (updatedComment != null) {
             return ResponseEntity.ok(updatedComment);
         } else {
@@ -45,17 +60,41 @@ public class CommentController {
 
     // 댓글 삭제 (수정해야함)
     @DeleteMapping("/{commentId}")
-    public ResponseEntity<Void> deleteComment(@PathVariable Long commentId) {
-        commentService.deleteComment(commentId);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    public ResponseEntity<Void> deleteComment(@PathVariable Long commentId, Authentication authentication) {
+        String username = authentication.getName(); // 현재 인증된 사용자의 username 가져오기
+        commentService.deleteComment(commentId, username);
+        return ResponseEntity.noContent().build();
     }
 
+    // 총 댓글 수
+    @GetMapping("/{postId}/comment-count")
+    public ResponseEntity<Integer> getCommentCount(@PathVariable Long postId) {
+        Integer commentCount = postService.getCommentCount(postId);
 
-    // 좋아요 수 (수정해야함)
-    @GetMapping("/{commentId}/likeCount")
-    public ResponseEntity<Integer> getLikeCount(@PathVariable Long commentId) {
-        int likeCount = commentService.getLikeCount(commentId);
-        return new ResponseEntity<>(likeCount, HttpStatus.OK);
+        if (commentCount != null) {
+            return ResponseEntity.ok(commentCount);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    // 총 댓글 수
+    @GetMapping("/count/{postId}")
+    public ResponseEntity<CommentTotalCountResponse> getCommentTotalCount(@PathVariable Long postId) {
+        Long commentCount = commentService.getCommentCount(postId);
+        CommentTotalCountResponse response = new CommentTotalCountResponse();
+        response.setCount(commentCount);
+
+        return ResponseEntity.ok(response);
+    }
+
+    // A댓글, B댓글 각각 계산
+
+    // 좋아요 증가 또는 감소
+    @PostMapping("/toggle")
+    public ResponseEntity<String> toggleLike(@RequestParam Long postId, @RequestParam Long memberId) {
+        commentService.toggleLike(postId, memberId);
+        return ResponseEntity.ok("Like toggled successfully");
     }
 
     // 리포트
