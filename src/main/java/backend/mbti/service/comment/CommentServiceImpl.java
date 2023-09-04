@@ -1,98 +1,105 @@
 package backend.mbti.service.comment;
 
 import backend.mbti.domain.comment.Comment;
-import backend.mbti.domain.dto.comment.CommentCreateRequest;
+import backend.mbti.domain.dto.comment.CommentRequest;
 import backend.mbti.domain.dto.comment.CommentUpdateRequest;
+import backend.mbti.domain.like.Likes;
+import backend.mbti.domain.member.Member;
 import backend.mbti.domain.post.Post;
 import backend.mbti.repository.comment.CommentRepository;
+import backend.mbti.repository.like.LikeRepository;
+import backend.mbti.repository.member.MemberRepository;
 import backend.mbti.repository.post.PostRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class CommentServiceImpl implements CommentService {
 
+    private final MemberRepository memberRepository;
     private final CommentRepository commentRepository;
     private final PostRepository postRepository;
+    private final LikeRepository likeRepository;
 
-    // 게시글에 대한 댓글 조회
-    public List<Comment> getCommentsByPostId(Long postId) {
-        return commentRepository.findByPostId(postId);
+    // 댓글 보여주기
+    @Override
+    public List<Comment> getCommentsForPost(Long postId) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new EntityNotFoundException("Post not found"));
+
+        return commentRepository.findByPost(post);
+    }
+
+    // 댓글 작성
+    @Override
+    public Comment createComment(Long postId, CommentRequest request, String username) {
+        Post post = postRepository.findById(postId).orElseThrow(() -> new EntityNotFoundException("게시글을 찾을 수 없습니다."));
+        Member member = memberRepository.findByUserId(username).orElseThrow(() -> new EntityNotFoundException("사용자 없음."));
+
+        Comment newComment = new Comment(request.getContent(), post, member);
+        return commentRepository.save(newComment);
     }
 
 
-    // 댓글 생성
-    @Override
-    public Comment createComment(Long postId, CommentCreateRequest commentCreateRequest) {
-        Optional<Post> postOptional = postRepository.findById(postId);
-        if (postOptional.isPresent()) {
-            Post post = postOptional.get();
-
-            Comment comment = new Comment();
-            comment.setContent(commentCreateRequest.getContent());
-            comment.setSelectOption(commentCreateRequest.getSelect_option());
-            comment.setCreatedAt(new Date()); // 현재 시간 설정
-            comment.setPost(post);
-
-            return commentRepository.save(comment);
-        }
-        return null;
-    }
-
-    @Override
     // 댓글 수정
-    public Comment updateComment(Long commentId, CommentUpdateRequest request) {
-        Optional<Comment> optionalComment = commentRepository.findById(commentId);
-        if (optionalComment.isPresent()) {
-            Comment comment = optionalComment.get();
+    @Override
+    public Comment updateComment(Long commentId, CommentUpdateRequest request, String username) {
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new EntityNotFoundException("Comment not found"));
 
-            if (request.getContent() != null) {
-                comment.setContent(request.getContent());
-            }
-
-            if (request.getSelectOption() != null) {
-                comment.setSelectOption(request.getSelectOption());
-            }
-
-            if (request.getCreatedAt() != null) {
-                comment.setCreatedAt(request.getCreatedAt());
-            }
-
-            if (request.getLikeCount() != null) {
-                comment.setLikeCount(request.getLikeCount());
-            }
-
-            return commentRepository.save(comment);
+        // 댓글 작성자의 username과 현재 인증된 사용자의 username 비교
+        if (!comment.getMember().getUserId().equals(username)) {
+            throw new AccessDeniedException("You are not allowed to update this comment");
         }
 
-        return null;
+        comment.setContent(request.getContent());
+        return commentRepository.save(comment);
     }
 
     // 댓글 삭제
     @Override
-    public void deleteComment(Long commentId) {
-        commentRepository.deleteById(commentId);
+    public void deleteComment(Long commentId, String username) {
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new EntityNotFoundException("Comment not found"));
+
+        // 댓글 작성자의 username과 현재 인증된 사용자의 username 비교
+        if (!comment.getMember().getUserId().equals(username)) {
+            throw new AccessDeniedException("You are not allowed to delete this comment");
+        }
+
+        commentRepository.delete(comment);
     }
 
-
-
-
-    // 댓글 수
-
-
-
-    // 좋아정
+    // 총 댓글 수
     @Override
-    public int getLikeCount(Long commentId) {
-        Comment comment = commentRepository.findById(commentId)
-                .orElseThrow(() -> new EntityNotFoundException("해당 댓글을 찾을 수 없습니다"));
+    public Long getCommentCount(Long postId) {
+        return commentRepository.countByPostId(postId);
+    }
 
-        return comment.getLikeCount();
+    // A댓글, B댓글 각각 계산
+
+    // 좋아요 증가 또는 감소
+    @Override
+    public void toggleLike(Long postId, Long memberId) {
+        Post post = postRepository.findById(postId).orElseThrow(() -> new EntityNotFoundException("Post not found"));
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new EntityNotFoundException("Member not found"));
+
+        Likes existingLike = likeRepository.findByPostAndMember(post, member);
+
+        if (existingLike != null) {
+            likeRepository.delete(existingLike);
+            post.setLikeCount(post.getLikeCount() - 1);
+        } else {
+            Likes newLike = new Likes(post, member, true);
+            likeRepository.save(newLike);
+            post.setLikeCount(post.getLikeCount() + 1);
+        }
+
+        postRepository.save(post);
     }
 }

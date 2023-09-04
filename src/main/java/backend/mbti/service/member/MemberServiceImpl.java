@@ -1,24 +1,23 @@
 package backend.mbti.service.member;
 
+import backend.mbti.domain.dto.mbti.MbtiGroupRequest;
 import backend.mbti.domain.dto.member.MemberLoginRequest;
 import backend.mbti.domain.dto.member.MemberSignUpRequest;
+import backend.mbti.domain.mbti.Mbti;
 import backend.mbti.domain.member.Member;
 import backend.mbti.exception.AppException;
 import backend.mbti.exception.ErrorCode;
+import backend.mbti.repository.mbti.MbtiRepository;
 import backend.mbti.repository.member.MemberRepository;
 import backend.mbti.configuration.jwt.JwtProvider;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import javax.transaction.Transactional;
-import java.util.Map;
-import java.util.Optional;
 import java.util.Random;
 
 @Service
@@ -28,6 +27,7 @@ import java.util.Random;
 public class MemberServiceImpl implements MemberService{
 
     private final MemberRepository memberRepository;
+
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Value("${jwt.secret}")
@@ -62,21 +62,9 @@ public class MemberServiceImpl implements MemberService{
         return token;
     }
 
-
+    // 아이디 중복
     public boolean isUserIdDuplicate(String userId) {
         return memberRepository.findByUserId(userId).isPresent();
-    }
-
-    // 회원 탈퇴
-    @Override
-    public boolean deleteMember(Long memberId) {
-        Optional<Member> memberOptional = memberRepository.findById(memberId);
-        if (memberOptional.isPresent()) {
-            Member member = memberOptional.get();
-            memberRepository.deleteById(memberId);
-            return true;
-        }
-        return false;
     }
 
     // 아이디 찾기
@@ -102,6 +90,7 @@ public class MemberServiceImpl implements MemberService{
         return null;
     }
 
+    // 비밀번호 생성
     public String generateTemporaryPassword() {
         int length = 8;
         String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -114,38 +103,5 @@ public class MemberServiceImpl implements MemberService{
         }
 
         return temporaryPassword.toString();
-    }
-
-    // 회원 정보 수정
-    public boolean updateMember(Long id, Map<String, String> updates) {
-        Optional<Member> optionalMember = memberRepository.findById(id);
-
-        if (optionalMember.isPresent()) {
-            Member member = optionalMember.get();
-
-            if (updates.containsKey("userId")) {
-                member.setUserId(updates.get("userId"));
-            }
-
-            if (updates.containsKey("password")) {
-                member.setPassword(bCryptPasswordEncoder.encode(updates.get("password")));
-            }
-
-            if (updates.containsKey("nickName")) {
-                member.setNickName(updates.get("nickName"));
-            }
-
-            if (updates.containsKey("email")) {
-                member.setEmail(updates.get("email"));
-            }
-
-            if (updates.containsKey("birthday")) {
-                member.setBirthday(updates.get("birthday"));
-            }
-
-            memberRepository.save(member);
-            return true;
-        }
-        return false;
     }
 }

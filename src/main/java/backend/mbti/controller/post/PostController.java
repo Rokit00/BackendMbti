@@ -1,6 +1,7 @@
 package backend.mbti.controller.post;
 
 
+import backend.mbti.domain.dto.post.LikeRequest;
 import backend.mbti.domain.post.Post;
 import backend.mbti.exception.AppException;
 import backend.mbti.exception.ErrorCode;
@@ -24,8 +25,8 @@ public class PostController {
 
     private final PostService postService;
 
-    // 글 내림차순 조회 ( 무한 루프 )
-    @GetMapping
+    // 글 리스트 조회
+    @GetMapping("/lists")
     public ResponseEntity<List<Post>> getAllPosts() {
         List<Post> posts = postService.getPostListDesc();
         return ResponseEntity.ok(posts);
@@ -42,36 +43,24 @@ public class PostController {
         }
     }
 
-    // 글 등록
+    // 글 등록 (수정해야함 - 로그인 시 사용자 식별 글)
     @PostMapping
     public ResponseEntity<Post> writer(@RequestBody Post post) {
         Post createPost = postService.savePost(post);
         return new ResponseEntity<>(createPost, HttpStatus.CREATED);
     }
 
-    // 글 수정
+    // 글 수정 (수정해야함 - 로그인 시 사용자 식별 글)
     @PutMapping("/{id}")
     public ResponseEntity<Post> modifyPost(@PathVariable Long id, @RequestBody Post post) {
         Post updatePost = postService.updatePost(id, post);
         return ResponseEntity.ok(updatePost);
     }
 
-    // 글 삭제
+    // 글 삭제 (수정해야함 - 로그인 시 사용자 식별 글)
     @DeleteMapping("/{id}") ///writerNum
     public void deletePost(@PathVariable Long id) {
         postService.deleteById(id);
-    }
-
-    // 댓글 수
-    @GetMapping("/{postId}/comment-count")
-    public ResponseEntity<Integer> getCommentCount(@PathVariable Long postId) {
-        Integer commentCount = postService.getCommentCount(postId);
-
-        if (commentCount != null) {
-            return ResponseEntity.ok(commentCount);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
     }
 
     // 북마크
@@ -81,12 +70,10 @@ public class PostController {
         return ResponseEntity.ok(updatedPost);
     }
 
-
     // 조회 수
     @GetMapping("/{id}/view")
     public ResponseEntity<Post> getDebateById(@PathVariable Long id) {
         Post debate = postService.getDebateById(id);
         return ResponseEntity.ok(debate);
     }
-
 }

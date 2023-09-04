@@ -2,6 +2,7 @@ package backend.mbti.service.comment;
 
 import backend.mbti.domain.comment.Comment;
 import backend.mbti.domain.dto.comment.CommentCreateRequest;
+import backend.mbti.domain.dto.comment.CommentRequest;
 import backend.mbti.domain.dto.comment.CommentUpdateRequest;
 
 import java.util.List;
@@ -9,21 +10,23 @@ import java.util.List;
 
 public interface CommentService {
 
-    // 게시글에 대한 댓글 조회
-    List<Comment> getCommentsByPostId(Long postId);
+    // 댓글 보여주기
+    List<Comment> getCommentsForPost(Long postId);
 
-    // 댓글 생성
-    Comment createComment(Long postId, CommentCreateRequest commentCreateRequest);
+    // 댓글 작성
+    Comment createComment(Long postId, CommentRequest request, String username);
 
     // 댓글 수정
-    Comment updateComment(Long commentId, CommentUpdateRequest request);
+    Comment updateComment(Long commentId, CommentUpdateRequest request, String username);
 
     // 댓글 삭제
-    void deleteComment(Long commentId);
+    void deleteComment(Long commentId, String username);
 
-    // 댓글 수
+    // 총 댓글 수
+    Long getCommentCount(Long postId);
 
+    // A댓글, B댓글 각각 계산
 
-    // 좋아요
-    int getLikeCount(Long commentId);
+    // 좋아요 증가 또는 감소
+    void toggleLike(Long postId, Long memberId);
 }

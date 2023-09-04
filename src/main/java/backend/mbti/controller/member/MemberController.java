@@ -1,8 +1,10 @@
 package backend.mbti.controller.member;
 
+import backend.mbti.domain.dto.mbti.MbtiGroupRequest;
 import backend.mbti.domain.dto.member.MemberFindId;
 import backend.mbti.domain.dto.member.MemberLoginRequest;
 import backend.mbti.domain.dto.member.MemberSignUpRequest;
+import backend.mbti.domain.mbti.Mbti;
 import backend.mbti.service.member.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -40,18 +42,6 @@ public class MemberController {
         return ResponseEntity.ok().body("로그아웃 완료");
     }
 
-    // 회원 탈퇴
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteMember(@PathVariable Long id) {
-        // 회원 삭제 로직을 호출
-        boolean deleted = memberService.deleteMember(id);
-        if (deleted) {
-            return ResponseEntity.ok().body("회원 탈퇴가 완료되었습니다.");
-        } else {
-            return ResponseEntity.badRequest().body("회원 탈퇴에 실패했습니다.");
-        }
-    }
-
     // 회원 가입 시 아이디 중복
     @GetMapping("/check-duplicate")
     public ResponseEntity<String> checkDuplicateUserId(@RequestParam("userId") String userId) {
@@ -87,16 +77,8 @@ public class MemberController {
         }
     }
 
-    // 회원 정보 수정
-    @PutMapping("/{id}")
-    public ResponseEntity<String> updateMember(@PathVariable Long id, @RequestBody Map<String, String> updates) {
-        boolean success = memberService.updateMember(id, updates);
-        if (success) {
-            return ResponseEntity.ok().body("회원 정보가 수정되었습니다.");
-        } else {
-            return ResponseEntity.badRequest().body("회원 정보 수정에 실패했습니다.");
-        }
-    }
+    // MBTI GROUP 저장
+
 }
 
 
