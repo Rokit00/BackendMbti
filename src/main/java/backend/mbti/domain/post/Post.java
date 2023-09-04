@@ -42,11 +42,7 @@ public class Post {
     @Column(name = "view_count", nullable = false)
     private Integer viewCount = 0;
 
-    // 북마크
-    @Column
-    private Boolean bookmark = false;
-
-    // 맴버 테이블 다대일 (패스워드 넘어감)
+    // 맴버 테이블 다대일
     @JsonIgnore
     @ManyToOne
     private Member member;

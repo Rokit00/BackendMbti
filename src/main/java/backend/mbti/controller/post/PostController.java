@@ -1,14 +1,12 @@
 package backend.mbti.controller.post;
 
 
-import backend.mbti.domain.bookmark.Bookmark;
-import backend.mbti.domain.dto.post.LikeRequest;
+
 import backend.mbti.domain.dto.post.PostCreateRequest;
 import backend.mbti.domain.dto.post.PostResponse;
 import backend.mbti.domain.dto.post.PostUpdateRequest;
 import backend.mbti.domain.post.Post;
-import backend.mbti.exception.AppException;
-import backend.mbti.exception.ErrorCode;
+
 import backend.mbti.service.post.PostService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -76,13 +74,5 @@ public class PostController {
         String username = authentication.getName();
         postService.deletePost(postId, username);
         return ResponseEntity.noContent().build();
-    }
-
-    // 북마크 (테스트 완료)
-    @PostMapping("/{postId}/bookmark")
-    public ResponseEntity<Bookmark> toggleBookmark(@PathVariable Long postId, Authentication authentication) {
-        String username = authentication.getName();
-        Bookmark bookmark = postService.toggleBookmark(postId, username);
-        return ResponseEntity.ok(bookmark);
     }
 }

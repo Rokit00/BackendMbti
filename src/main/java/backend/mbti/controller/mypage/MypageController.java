@@ -46,7 +46,7 @@ public class MypageController {
     }
 
 
-    // 내가 만든 케미 (수정해야함)
+    // 내가 만든 케미 (테스트 X)
     @PostMapping
     public ResponseEntity<Mbti> createMbtiGroup(@RequestBody MbtiGroupRequest request, Authentication authentication) {
         String userId = authentication.getName(); // 현재 인증된 사용자의 username 가져오기

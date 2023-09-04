@@ -1,20 +1,16 @@
 package backend.mbti.service.post;
 
 
-import backend.mbti.domain.bookmark.Bookmark;
+
 import backend.mbti.domain.comment.Comment;
 import backend.mbti.domain.dto.post.PostCreateRequest;
 import backend.mbti.domain.dto.post.PostResponse;
 import backend.mbti.domain.dto.post.PostUpdateRequest;
 import backend.mbti.domain.member.Member;
 import backend.mbti.domain.post.Post;
-import backend.mbti.exception.AppException;
-import backend.mbti.exception.ErrorCode;
-import backend.mbti.repository.bookmark.BookmarkRepository;
 import backend.mbti.repository.member.MemberRepository;
 import backend.mbti.repository.post.PostRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.BeanUtils;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,7 +24,6 @@ public class PostServiceImpl implements PostService{
 
     private final MemberRepository memberRepository;
     private final PostRepository postRepository;
-    private final BookmarkRepository bookmarkRepository;
 
     // 글 전체 리스트 조회
     @Transactional
@@ -114,29 +109,6 @@ public class PostServiceImpl implements PostService{
             return comments.size();
         } else {
             return null;
-        }
-    }
-
-    // 북마크
-    @Override
-    public Bookmark toggleBookmark(Long postId, String username) {
-        Member member = memberRepository.findByUserId(username)
-                .orElseThrow(() -> new AppException(ErrorCode.POST_NOT_FOUND, ""));
-
-        Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new AppException(ErrorCode.POST_NOT_FOUND, ""));
-
-        if(bookmarkRepository.findByPostAndMember(post, member) == null) {
-            // 좋아요를 누른적 없다면 Favorite 생성 후, 즐겨찾기 처리
-            Bookmark bookmark = new Bookmark(post, member); // true 처리
-            bookmarkRepository.save(bookmark);
-            return bookmark;
-        } else {
-            // 즐겨찾기 누른적 있다면 즐겨찾기 처리 후 테이블 삭제
-            Bookmark bookmark = bookmarkRepository.findByPostAndMember(post, member);
-            bookmark.toggleBookmark();
-            bookmarkRepository.delete(bookmark);
-            return bookmark;
         }
     }
 }

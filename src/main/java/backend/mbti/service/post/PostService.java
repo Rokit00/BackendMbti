@@ -1,6 +1,6 @@
 package backend.mbti.service.post;
 
-import backend.mbti.domain.bookmark.Bookmark;
+
 import backend.mbti.domain.dto.post.PostCreateRequest;
 import backend.mbti.domain.dto.post.PostResponse;
 import backend.mbti.domain.dto.post.PostUpdateRequest;
@@ -8,8 +8,6 @@ import backend.mbti.domain.post.Post;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
-
 
 @Service
 public interface PostService {
@@ -31,7 +29,4 @@ public interface PostService {
 
     // 댓글 수
     Integer getCommentCount(Long postId);
-
-    //북마크
-    Bookmark toggleBookmark(Long postId, String username);
 }
