@@ -23,10 +23,9 @@ import java.util.List;
 @RequestMapping("/mypage")
 public class MypageController {
 
-    private final MemberService memberService;
     private final MypageService mypageService;
 
-    // 내 정보(정보 수정)
+    // 내 정보 수정 (테스트 완료)
     @PutMapping("/{userId}/update-all")
     public ResponseEntity<Member> updateAllMemberInfo(@PathVariable String userId, @RequestBody MemberUpdateRequest request, Authentication authentication) {
         String username = authentication.getName();
@@ -39,7 +38,7 @@ public class MypageController {
         }
     }
 
-    // 프로필 이미지 (수정도 여기 api로 보내야함)
+    // 프로필 이미지 (수정도 여기 api로 보내야함) - 테스트 X
     @PostMapping("/{memberId}/upload-profile-picture")
     public ResponseEntity<String> uploadProfilePicture(@PathVariable Long memberId, @RequestParam("file") MultipartFile file) {
         mypageService.uploadProfilePicture(memberId, file);
@@ -47,7 +46,7 @@ public class MypageController {
     }
 
 
-    // 내가 만든 케미
+    // 내가 만든 케미 (수정해야함)
     @PostMapping
     public ResponseEntity<Mbti> createMbtiGroup(@RequestBody MbtiGroupRequest request, Authentication authentication) {
         String userId = authentication.getName(); // 현재 인증된 사용자의 username 가져오기
@@ -55,7 +54,7 @@ public class MypageController {
         return ResponseEntity.ok(createdGroup);
     }
 
-    // 내가 만든 토론
+    // 내가 만든 토론 (테스트 완료)
     @GetMapping("/{userId}/posts")
     public ResponseEntity<List<Post>> getPostsByMember(@PathVariable String userId, Authentication authentication) {
         String loggedInUserId = authentication.getName(); // 현재 인증된 사용자의 username 가져오기
@@ -70,11 +69,13 @@ public class MypageController {
 
     // 문의하기 (ADMIN 계정으로 일단 보류)
 
-    // 회원 탈퇴
+    // 회원 탈퇴 (테스트 완료)
     @DeleteMapping("/{userId}")
     public ResponseEntity<Void> deleteMember(@PathVariable String userId, Authentication authentication) {
         String username = authentication.getName();
+        log.info(username);
         mypageService.deleteMember(userId, username);
+        log.info("delete");
         return ResponseEntity.noContent().build();
     }
 }

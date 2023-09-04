@@ -18,10 +18,6 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // 닉네임
-    @Column
-    private String nickname;
-
     // 제목
     @Column
     private String title;
@@ -40,17 +36,18 @@ public class Post {
 
     // 좋아요 수
     @Column(name = "like_count")
-    private Integer likeCount;
+    private Integer likeCount = 0;
 
     // 조회 수
-    @Column(columnDefinition = "integer default 0", nullable = false)
-    private Integer view;
+    @Column(name = "view_count", nullable = false)
+    private Integer viewCount = 0;
 
     // 북마크
     @Column
-    private Boolean bookmark;
+    private Boolean bookmark = false;
 
-    // 맴버 테이블 다대일
+    // 맴버 테이블 다대일 (패스워드 넘어감)
+    @JsonIgnore
     @ManyToOne
     private Member member;
 
@@ -58,4 +55,8 @@ public class Post {
     @JsonIgnore
     @OneToMany(mappedBy = "post")
     private List<Comment> comments = new ArrayList<Comment>();
+
+    public void increaseViewCount() {
+        this.viewCount++;
+    }
 }

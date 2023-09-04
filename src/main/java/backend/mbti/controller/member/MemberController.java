@@ -21,7 +21,7 @@ public class MemberController {
 
     private final MemberService memberService;
 
-    // 회원가입
+    // 회원가입 (테스트 완료)
     @PostMapping("/signup")
     public ResponseEntity<String> signup(@RequestBody MemberSignUpRequest memberSignUpRequest) {
         String signUp = memberService.signup(memberSignUpRequest);
@@ -29,20 +29,20 @@ public class MemberController {
         return ResponseEntity.ok().body(signUp + ": SignUp Success");
     }
 
-    // 로그인
+    // 로그인 (테스트 완료)
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody MemberLoginRequest memberLoginRequest) {
         String token = memberService.login(memberLoginRequest);
         return ResponseEntity.ok(token);
     }
 
-    // 로그아웃
+    // 로그아웃 (테스트 완료)
     @GetMapping("/logout")
     public ResponseEntity<String> logout() {
         return ResponseEntity.ok().body("로그아웃 완료");
     }
 
-    // 회원 가입 시 아이디 중복
+    // 회원 가입 시 아이디 중복 (테스트 X)
     @GetMapping("/check-duplicate")
     public ResponseEntity<String> checkDuplicateUserId(@RequestParam("userId") String userId) {
         boolean isDuplicate = memberService.isUserIdDuplicate(userId);
@@ -53,7 +53,7 @@ public class MemberController {
         }
     }
 
-    // 아이디 찾기
+    // 아이디 찾기 (테스트 X)
     @PutMapping("/find-username")
     public ResponseEntity<String> findUsername(@RequestBody MemberFindId memberFindId) {
         String username = memberService.findUsernameByEmailAndPhoneNumber(memberFindId.getBirthday(), memberFindId.getEmail());
@@ -65,7 +65,7 @@ public class MemberController {
     }
 
 
-    // 비밀번호 찾기
+    // 비밀번호 찾기 (테스트 X)
     @PostMapping("/password-reset/request")
     public ResponseEntity<String> requestPasswordReset(@RequestParam String userId, @RequestParam String email) {
         String newPassword = memberService.requestPasswordReset(userId, email);
@@ -77,7 +77,7 @@ public class MemberController {
         }
     }
 
-    // MBTI GROUP 저장
+    // MBTI GROUP 저장 (구현해야함)
 
 }
 

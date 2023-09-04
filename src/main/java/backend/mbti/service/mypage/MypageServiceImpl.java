@@ -39,10 +39,10 @@ public class MypageServiceImpl implements MypageService {
     @Override
     public Member updateAllMemberInfo(String userId, MemberUpdateRequest request, String username) {
         Member member = memberRepository.findByUserId(userId)
-                .orElseThrow(() -> new EntityNotFoundException("Member not found"));
+                .orElseThrow(() -> new EntityNotFoundException("회원을 찾을 수 없습니다."));
 
         if (!member.getUserId().equals(username)) {
-            throw new AccessDeniedException("You are not allowed to update information for this member");
+            throw new AccessDeniedException("올바르지 못한 접근");
         }
 
         // 업데이트 로직
@@ -53,7 +53,7 @@ public class MypageServiceImpl implements MypageService {
 
         if (request.getCurrentPassword() != null && request.getNewPassword() != null) {
             if (!bCryptPasswordEncoder.matches(request.getCurrentPassword(), member.getPassword())) {
-                throw new IllegalArgumentException("Current password is incorrect");
+                throw new IllegalArgumentException("비밀번호 틀림!");
             }
             member.setPassword(bCryptPasswordEncoder.encode(request.getNewPassword()));
         }
@@ -71,8 +71,8 @@ public class MypageServiceImpl implements MypageService {
                 // 파일을 저장할 경로 설정
                 String uploadDir = "/path/to/profile/pictures/";
 
-                // 파일 이름 생성 (예: memberId_profile.jpg)
-                String fileName = memberId + "_profile.jpg";
+                // 파일 이름 생성
+                String fileName = memberId + ".jpg";
 
                 // 파일 저장
                 Path filePath = Paths.get(uploadDir, fileName);
@@ -85,7 +85,7 @@ public class MypageServiceImpl implements MypageService {
                 memberRepository.save(member);
             }
         } catch (IOException e) {
-            throw new RuntimeException("Failed to upload profile picture", e);
+            throw new RuntimeException("파일 업로드 실페!", e);
         }
     }
 
@@ -93,7 +93,7 @@ public class MypageServiceImpl implements MypageService {
     @Override
     public Mbti createMbtiGroup(MbtiGroupRequest request, String userId) {
         Member member = memberRepository.findByUserId(userId)
-                .orElseThrow(() -> new EntityNotFoundException("Member not found"));
+                .orElseThrow(() -> new EntityNotFoundException("회원을 찾을 수 없습니다."));
 
         Mbti mbtiGroup = new Mbti();
         mbtiGroup.setMbtiType(request.getMbtiType());
@@ -107,7 +107,7 @@ public class MypageServiceImpl implements MypageService {
     @Override
     public List<Post> getPostsByMember(String userId) {
         Member member = memberRepository.findByUserId(userId)
-                .orElseThrow(() -> new EntityNotFoundException("Member not found"));
+                .orElseThrow(() -> new EntityNotFoundException("회원을 찾을 수 없습니다."));
 
         return postRepository.findByMemberOrderByCreatedAtDesc(member);
     }
@@ -118,10 +118,10 @@ public class MypageServiceImpl implements MypageService {
     @Override
     public void deleteMember(String userId, String username) {
         Member member = memberRepository.findByUserId(userId)
-                .orElseThrow(() -> new EntityNotFoundException("Member not found"));
+                .orElseThrow(() -> new EntityNotFoundException("회원을 찾을 수 없습니다."));
 
         if (!member.getUserId().equals(username)) {
-            throw new AccessDeniedException("You are not allowed to delete this member");
+            throw new AccessDeniedException("잘못된 접근! 회원 탈퇴 불가!");
         }
 
         memberRepository.delete(member);

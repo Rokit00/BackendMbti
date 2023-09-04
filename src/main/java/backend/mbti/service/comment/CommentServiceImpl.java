@@ -67,7 +67,6 @@ public class CommentServiceImpl implements CommentService {
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new EntityNotFoundException("Comment not found"));
 
-        // 댓글 작성자의 username과 현재 인증된 사용자의 username 비교
         if (!comment.getMember().getUserId().equals(username)) {
             throw new AccessDeniedException("You are not allowed to delete this comment");
         }

@@ -1,79 +1,88 @@
 package backend.mbti.controller.post;
 
 
+import backend.mbti.domain.bookmark.Bookmark;
 import backend.mbti.domain.dto.post.LikeRequest;
+import backend.mbti.domain.dto.post.PostCreateRequest;
+import backend.mbti.domain.dto.post.PostResponse;
+import backend.mbti.domain.dto.post.PostUpdateRequest;
 import backend.mbti.domain.post.Post;
 import backend.mbti.exception.AppException;
 import backend.mbti.exception.ErrorCode;
 import backend.mbti.service.post.PostService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.awt.print.Book;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/post")
-// 글 작성 관런
 public class PostController {
 
     private final PostService postService;
 
-    // 글 리스트 조회
+    // 글 리스트 조회 (테스트 완료)
     @GetMapping("/lists")
     public ResponseEntity<List<Post>> getAllPosts() {
         List<Post> posts = postService.getPostListDesc();
         return ResponseEntity.ok(posts);
     }
 
-    // 글 상세 조회 (댓글 포함)
+    // 글 조회 시 조회 수 증가 (테스트 완료)
     @GetMapping("/{postId}")
-    public ResponseEntity<Post> getPostWithComments(@PathVariable Long postId) {
-        Post postWithComments = postService.getPostWithComments(postId);
-        if (postWithComments != null) {
-            return ResponseEntity.ok(postWithComments);
+    public ResponseEntity<PostResponse> getPost(@PathVariable Long postId) {
+        PostResponse postResponse = postService.getPostAndIncreaseViewCount(postId);
+        if (postResponse != null) {
+            return ResponseEntity.ok(postResponse);
         } else {
             return ResponseEntity.notFound().build();
         }
     }
 
-    // 글 등록 (수정해야함 - 로그인 시 사용자 식별 글)
-    @PostMapping
-    public ResponseEntity<Post> writer(@RequestBody Post post) {
-        Post createPost = postService.savePost(post);
-        return new ResponseEntity<>(createPost, HttpStatus.CREATED);
+    // 글 등록 (테스트 완료)
+    @PostMapping("/writer")
+    public ResponseEntity<Post> createPost(@RequestBody PostCreateRequest request, Authentication authentication) {
+        String username = authentication.getName(); // 현재 인증된 사용자의 username 가져오기
+        Post createdPost = postService.createPost(request, username);
+        return ResponseEntity.ok(createdPost);
     }
 
-    // 글 수정 (수정해야함 - 로그인 시 사용자 식별 글)
-    @PutMapping("/{id}")
-    public ResponseEntity<Post> modifyPost(@PathVariable Long id, @RequestBody Post post) {
-        Post updatePost = postService.updatePost(id, post);
-        return ResponseEntity.ok(updatePost);
+    // 글 수정 (테스트 완료)
+    @PutMapping("/{postId}")
+    public ResponseEntity<Post> updatePost(@PathVariable Long postId, @RequestBody PostUpdateRequest request, Authentication authentication) {
+        String username = authentication.getName();
+        Post updatedPost = postService.updatePost(postId, request, username);
+        if (updatedPost != null) {
+            return ResponseEntity.ok(updatedPost);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
-    // 글 삭제 (수정해야함 - 로그인 시 사용자 식별 글)
-    @DeleteMapping("/{id}") ///writerNum
-    public void deletePost(@PathVariable Long id) {
-        postService.deleteById(id);
+    // 글 삭제 (테스트 완료)
+    @DeleteMapping("/{postId}")
+    public ResponseEntity<Void> deletePost(@PathVariable Long postId, Authentication authentication) {
+        String username = authentication.getName();
+        postService.deletePost(postId, username);
+        return ResponseEntity.noContent().build();
     }
 
-    // 북마크
-    @PostMapping("/{id}/bookmark")
-    public ResponseEntity<Post> toggleBookmark(@PathVariable Long id) {
-        Post updatedPost = postService.toggleBookmark(id);
-        return ResponseEntity.ok(updatedPost);
-    }
-
-    // 조회 수
-    @GetMapping("/{id}/view")
-    public ResponseEntity<Post> getDebateById(@PathVariable Long id) {
-        Post debate = postService.getDebateById(id);
-        return ResponseEntity.ok(debate);
+    // 북마크 (테스트 완료)
+    @PostMapping("/{postId}/bookmark")
+    public ResponseEntity<Bookmark> toggleBookmark(@PathVariable Long postId, Authentication authentication) {
+        String username = authentication.getName();
+        Bookmark bookmark = postService.toggleBookmark(postId, username);
+        return ResponseEntity.ok(bookmark);
     }
 }

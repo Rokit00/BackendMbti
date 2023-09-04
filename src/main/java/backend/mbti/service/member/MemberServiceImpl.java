@@ -43,6 +43,8 @@ public class MemberServiceImpl implements MemberService{
 
         Member member = memberRepository.save(memberSignUpRequest.toEntity(encPwd));
 
+        // 에러 처리 해야함
+
         return member.getUserId();
     }
 
