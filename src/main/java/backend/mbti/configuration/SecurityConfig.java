@@ -1,8 +1,12 @@
 package backend.mbti.configuration;
 
-import backend.mbti.utils.JwtAuthenticationFilter;
-import backend.mbti.utils.JwtProvider;
+import backend.mbti.configuration.jwt.JwtFilter;
+import backend.mbti.configuration.jwt.JwtProvider;
+import backend.mbti.domain.member.Member;
+import backend.mbti.service.member.MemberService;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -14,23 +18,29 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final JwtProvider jwtProvider;
+    private final MemberService memberService;
+
+    @Value("${jwt.secret}")
+    private String secretKey;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
-                .csrf().disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
                 .formLogin().disable()
                 .httpBasic().disable()
-                .authorizeRequests()
-                .antMatchers("/members/**").permitAll()
+                .csrf().disable()
+                .cors()
                 .and()
-                .addFilterBefore(new JwtAuthenticationFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class);
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .authorizeRequests()
+                .antMatchers("/members/signup", "/members/login").permitAll()
+                .antMatchers(HttpMethod.POST, "/post").authenticated() // 인증해아함
+                .and()
+                .addFilterBefore(new JwtFilter(memberService, secretKey), UsernamePasswordAuthenticationFilter.class);
         return httpSecurity.build();
 
     }

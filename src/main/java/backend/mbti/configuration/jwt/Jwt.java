@@ -1,4 +1,4 @@
-package backend.mbti.utils;
+package backend.mbti.configuration.jwt;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
