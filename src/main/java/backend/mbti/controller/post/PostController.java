@@ -75,4 +75,6 @@ public class PostController {
         postService.deletePost(postId, username);
         return ResponseEntity.noContent().build();
     }
+
+    // 글 좋아요
 }

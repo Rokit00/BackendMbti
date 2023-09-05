@@ -27,6 +27,5 @@ public interface CommentService {
 
     // A댓글, B댓글 각각 계산
 
-    // 좋아요 증가 또는 감소
-    void toggleLike(Long postId, Long memberId);
+    // 좋아요
 }

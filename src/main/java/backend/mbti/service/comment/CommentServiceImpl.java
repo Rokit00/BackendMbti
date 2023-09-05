@@ -3,11 +3,9 @@ package backend.mbti.service.comment;
 import backend.mbti.domain.comment.Comment;
 import backend.mbti.domain.dto.comment.CommentRequest;
 import backend.mbti.domain.dto.comment.CommentUpdateRequest;
-import backend.mbti.domain.like.Likes;
 import backend.mbti.domain.member.Member;
 import backend.mbti.domain.post.Post;
 import backend.mbti.repository.comment.CommentRepository;
-import backend.mbti.repository.like.LikeRepository;
 import backend.mbti.repository.member.MemberRepository;
 import backend.mbti.repository.post.PostRepository;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +22,7 @@ public class CommentServiceImpl implements CommentService {
     private final MemberRepository memberRepository;
     private final CommentRepository commentRepository;
     private final PostRepository postRepository;
-    private final LikeRepository likeRepository;
+
 
     // 댓글 보여주기
     @Override
@@ -82,23 +80,5 @@ public class CommentServiceImpl implements CommentService {
 
     // A댓글, B댓글 각각 계산
 
-    // 좋아요 증가 또는 감소
-    @Override
-    public void toggleLike(Long postId, Long memberId) {
-        Post post = postRepository.findById(postId).orElseThrow(() -> new EntityNotFoundException("Post not found"));
-        Member member = memberRepository.findById(memberId).orElseThrow(() -> new EntityNotFoundException("Member not found"));
-
-        Likes existingLike = likeRepository.findByPostAndMember(post, member);
-
-        if (existingLike != null) {
-            likeRepository.delete(existingLike);
-            post.setLikeCount(post.getLikeCount() - 1);
-        } else {
-            Likes newLike = new Likes(post, member, true);
-            likeRepository.save(newLike);
-            post.setLikeCount(post.getLikeCount() + 1);
-        }
-
-        postRepository.save(post);
-    }
+    // 좋아요
 }

@@ -89,12 +89,7 @@ public class CommentController {
 
     // A댓글, B댓글 각각 계산 (구현해야함)
 
-    // 좋아요 증가 또는 감소 (테스트 X)
-    @PostMapping("/toggle")
-    public ResponseEntity<String> toggleLike(@RequestParam Long postId, @RequestParam Long memberId) {
-        commentService.toggleLike(postId, memberId);
-        return ResponseEntity.ok("Like toggled successfully");
-    }
-
     // 리포트
+
+    // 댓글 좋아요
 }
