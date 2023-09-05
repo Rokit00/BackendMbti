@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import styles from "./NewDebate.module.css";
+import styles from "../components/NewDebate.module.css"
 import NavBar from "./nav_bar/NavBar";
 import { useNavigate } from "react-router-dom";
-import debateData from "../utils/debateData";
+import axios from "axios";
 
-function NewDebate({ onCreate }) {
+function NewDebate() {
   const [newDebateData, setNewDebateData] = useState({
     title: "",
     A: "",
@@ -12,6 +12,7 @@ function NewDebate({ onCreate }) {
     hashtags: "",
     messages: 0,
     likes: 0,
+    createdDate: new Date().getTime(),
   });
 
   const navigate = useNavigate();
@@ -24,18 +25,30 @@ function NewDebate({ onCreate }) {
     });
   };
 
-  const handleCreate = () => {
+  const handleCreate = async () => {
+    const { title, A, B, hashtags, createdDate, likes } = newDebateData;
+
+    if (!title || !A || !B || !hashtags) {
+      return;
+    }
+
     const newDebate = {
-      ...newDebateData,
-      id: debateData.length + 1,
-      createdDate: new Date().getTime(),
-      fileImageA, 
-      fileImageB
+      title,
+      optionA: A,
+      optionB: B,
+      hashtags,
+      createAt: createdDate,
+      messages: 0,
+      hit: likes,
     };
-    debateData.push(newDebate);
-    onCreate(newDebate);
-    handleCancel();
-    navigate("/lists");
+
+    try {
+      await axios.post("/sec3/writer", newDebate);
+      handleCancel();
+      navigate("/lists");
+    } catch (error) {
+      console.error("Error", error);
+    }
   };
 
   const handleCancel = () => {
@@ -45,31 +58,6 @@ function NewDebate({ onCreate }) {
       B: "",
       hashtags: "",
     });
-  };
-
-  const [fileImageA, setFileImageA] = useState(null); 
-  const [fileImageB, setFileImageB] = useState(null); 
-
-  const saveFileImageA = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        setFileImageA(e.target.result); 
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const saveFileImageB = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        setFileImageB(e.target.result); 
-      };
-      reader.readAsDataURL(file);
-    }
   };
 
   return (
@@ -118,42 +106,8 @@ function NewDebate({ onCreate }) {
               className={styles.input}
             ></input>
           </div>
-          <div className={styles.formContext}>
-            <p className={styles.label}>A 선택자 썸네일:</p>
-            <div>
-            {fileImageA && (
-                  <img
-                    alt=""
-                    src={fileImageA}
-                    className={styles.fileImage}
-                  />
-                )}
-            </div>
-            <input 
-              type="file" 
-              accept="image/jpg, image/jpeg, image/png" 
-              name="fileImageA"
-              onChange={saveFileImageA}/>
-        </div>
-          <div className={styles.formContext}>
-            <p className={styles.label}>B 선택자 썸네일:</p>
-            <div>
-            {fileImageB && (
-                  <img
-                    alt=""
-                    src={fileImageB}
-                    className={styles.fileImage}
-                  />
-                )}
-            </div>
-            <input 
-              type="file" 
-              accept="image/jpg, image/jpeg, image/png"
-              name="fileImageB"
-              onChange={saveFileImageB}/>
-          </div>
           <div className={styles.buttonWrapper}>
-            <button onClick={handleCancel}>취소</button>
+            <button onClick={() => navigate("/lists")}>취소</button>
             <button onClick={handleCreate}>작성하기</button>
           </div>
         </div>

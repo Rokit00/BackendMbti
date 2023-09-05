@@ -1,23 +1,29 @@
 // CommentForm.js
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import styles from "./CommentForm.module.css";
+import { useAuth } from "./AuthContext";
+import axios from "axios";
 
-const CommentForm = ({ onSubmit }) => {
+const CommentForm = ({ onSubmit, writeNum }) => {
   const [newComment, setNewComment] = useState("");
   const [selectedOpinion, setSelectedOpinion] = useState(null);
-
+  const { isLoggedIn } = useAuth();
+  const authContext = useContext(useAuth);
   const handleSubmit = () => {
     if (newComment && selectedOpinion) {
       const newCommentData = {
-        userId: "tempUser",
-        userImage: "https://yourDefaultUserImageUrl.com",
+        userId: authContext.userId,
+        userImage:
+          authContext.userImage || "https://yourDefaultUserImageUrl.com",
         opinion: selectedOpinion,
         comment: newComment,
         likes: 0,
         date: new Date().toISOString(),
+        write_num: writeNum,
       };
       onSubmit(newCommentData);
       setNewComment("");
+      setSelectedOpinion(null);
     }
   };
 
@@ -28,6 +34,7 @@ const CommentForm = ({ onSubmit }) => {
           selectedOpinion === "A" ? styles.selectedA : ""
         }`}
         onClick={() => setSelectedOpinion("A")}
+        disabled={!isLoggedIn}
       >
         A
       </button>
@@ -36,6 +43,7 @@ const CommentForm = ({ onSubmit }) => {
           selectedOpinion === "B" ? styles.selectedB : ""
         }`}
         onClick={() => setSelectedOpinion("B")}
+        disabled={!isLoggedIn}
       >
         B
       </button>
@@ -43,9 +51,18 @@ const CommentForm = ({ onSubmit }) => {
         className={styles.commentInput}
         value={newComment}
         onChange={(e) => setNewComment(e.target.value)}
-        placeholder="Write your comment..."
+        placeholder={
+          isLoggedIn
+            ? "Write your comment..."
+            : "로그인 후에 이용 가능한 기능입니다."
+        }
+        disabled={!isLoggedIn}
       />
-      <button className={styles.submitButton} onClick={handleSubmit}>
+      <button
+        className={styles.submitButton}
+        onClick={handleSubmit}
+        disabled={!isLoggedIn}
+      >
         Submit
       </button>
     </div>

@@ -1,6 +1,6 @@
 // sortUtils.js
 export const sortByLikes = (a, b) => {
-  return b.likes - a.likes;
+  return b.views - a.views;
 };
 
 export const sortByDate = (a, b) => {

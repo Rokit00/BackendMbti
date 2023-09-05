@@ -2,15 +2,14 @@
   color: inherit;
   text-decoration: none;
   display: block;
-  flex: 0 0 calc(25.33%);
-  max-width: calc(25.33% - 20px);
   height: 310px;
   border: 1px solid #fff;
-  padding: 20px;
+  padding: 10px;
   margin: 10px 10px 60px;
   border-radius: 8px;
   cursor: pointer;
 }
+
 .card {
   flex: 0 0 calc(25.33%);
   max-width: calc(25.33% - 20px);
@@ -21,12 +20,11 @@
   border-radius: 8px;
   cursor: pointer;
 }
-small {
+.underwayText {
   font-size: 10px;
 }
 .cardInfo {
   margin-top: 20px;
-  z-index: 1;
 }
 .title,
 .percent,
@@ -84,41 +82,15 @@ small {
   justify-content: space-between;
   width: 940px;
 }
-
+.hiddenSpace {
+  display: inline-block;
+  visibility: hidden;
+  height: 14px;
+}
 .sortSelectContainer {
   display: flex;
   justify-content: flex-end;
   align-items: right;
   margin-right: 15px;
   margin-bottom: 10px;
-}
-
-.thumbnails{
-  display: flex;
-  position: absolute;  
-}
-
-.thumbnail {
- position: relative;
- justify-content: space-between;
-}
-
-.thumbnailImage{
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  opacity: 0.6;
-  top: 100px;
-  position: relative;
-  justify-items: center;
-
-}
-
-.thumbnailA {
-
-}
-
-.thumbnailB{
- 
-  margin-left: 40px;
 }

@@ -6,13 +6,34 @@ const HorizonLine = ({ text }) => {
       style={{
         width: "100%",
         textAlign: "center",
-        borderBottom: "1px solid #aaa",
-        lineHeight: "0.1em",
-        margin: "10px 0 20px",
+        display: "flex",
+        alignItems: "center",
+        margin: "20px 0 20px",
+        background: "#000",
+        color: "#fff",
       }}
     >
-      <span style={{ color: "#ffffff", padding: "0 20px" }}>{text}</span>
+      <div
+        style={{
+          flex: "1",
+          borderTop: "1px solid #fff",
+        }}
+      />
+      <span
+        style={{
+          padding: "0 10px",
+        }}
+      >
+        {text}
+      </span>
+      <div
+        style={{
+          flex: "1",
+          borderTop: "1px solid #fff",
+        }}
+      />
     </div>
   );
 };
+
 export default HorizonLine;

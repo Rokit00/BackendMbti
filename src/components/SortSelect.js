@@ -11,9 +11,9 @@ function SortSelect({ onSortChange }) {
         className={styles.sortBox}
         onChange={(e) => onSortChange(e.target.value)}
       >
-        <option value="likes">좋아요 순</option>
+        <option value="likes">조회수 순</option>
         <option value="date">날짜 순</option>
-        <option value="messages">메시지 순</option>
+        <option value="messages">댓글 순</option>
       </select>
     </div>
   );

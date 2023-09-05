@@ -66,6 +66,7 @@ function Signup() {
   const [nick, setNick] = useState("");
   const [term, setTerm] = useState(false);
   const [notAllow, setNotAllow] = useState(true);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const passwordConfirm = useInput("", (value) =>
     validators.pwConfirm(password.value, value)
@@ -83,10 +84,16 @@ function Signup() {
       })
       .then((response) => {
         console.log("Signup successful:", response.data);
-        navigate("/success");
+        navigate("/login");
       })
       .catch((error) => {
-        console.error("Signup error:", error);
+        if (error.response && error.response.status === 409) {
+          setErrorMessage(
+            "이미 존재하는 아이디입니다. 다른 아이디를 선택해주세요."
+          );
+        } else {
+          setErrorMessage("회원가입에 실패했습니다. 다시 시도해주세요.");
+        }
       });
   };
   const [mbti, setMbti] = useState("");
@@ -266,6 +273,11 @@ function Signup() {
               <span className={styles.red}>(필수)</span>
             </label>
           </div>
+          {errorMessage && (
+            <div className={styles.errorContainer}>
+              <span className={styles.errorMessage}>{errorMessage}</span>
+            </div>
+          )}
           <button disabled={notAllow} className={styles.signup_button}>
             가입하기
           </button>

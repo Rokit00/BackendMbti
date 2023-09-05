@@ -1,14 +1,26 @@
 import React, { useState } from "react";
 import { checkCompatibility, mbtiToAlphabet } from "../utils/compatibility";
+import LZString from "lz-string";
 import styles from "./Result.module.css";
 import LinkModal from "./LinkModal";
 
-const Result = ({ savedData, mbtiTexts }) => {
+const Result = ({
+  savedData,
+  mbtiTexts,
+  setShowContent,
+  setShowResult,
+  setSavedData,
+}) => {
   // 모달 상태를 관리하는 상태 변수들
+
   const [showModal, setShowModal] = useState(false);
   const [isLinkModalOpen, setIsLinkModalOpen] = useState(false);
   const [sharedLink, setSharedLink] = useState("");
-
+  const handleGoBack = () => {
+    setShowContent(false);
+    setShowResult(false);
+    setSavedData([]);
+  };
   // 선택된 사용자 인덱스를 관리하는 상태 변수
   const [selectedUserIndex, setSelectedUserIndex] = useState(0);
 
@@ -98,25 +110,22 @@ const Result = ({ savedData, mbtiTexts }) => {
       return null;
     });
   };
-
-  // 링크 공유 버튼 클릭 시 실행되는 함수
-  const handleShareLink = () => {
-    // 예시로 'https://example.com/share?data=...' 와 같은 형태로 링크를 생성
-    // setSharedLink 함수를 사용하여 링크를 상태로 저장
-    const sharedData = savedData[selectedUserIndex];
-    const link = `https://example.com/share?data=${encodeURIComponent(
-      JSON.stringify(sharedData)
-    )}`;
-    setSharedLink(link);
-
-    // 모달 창을 띄우도록 상태를 변경
-    setShowModal(true);
-  };
-
-  // 링크를 클립보드에 복사하는 함수
   const handleCopyLink = () => {
     navigator.clipboard.writeText(sharedLink);
     setIsLinkModalOpen(false);
+  };
+  const handleShareLink = () => {
+    const host = window.location.host;
+
+    const compressedData = LZString.compressToEncodedURIComponent(
+      JSON.stringify(savedData)
+    );
+
+    const link = `http://${host}/section2/${compressedData}`;
+
+    setSharedLink(link);
+
+    setShowModal(true);
   };
 
   return (
@@ -134,16 +143,16 @@ const Result = ({ savedData, mbtiTexts }) => {
         </div>
       </div>
 
-      {/*미완성 기능 구현 부분*/}
       <div className={styles.buttonContainer}>
         <button className={styles.shareButton} onClick={handleShareLink}>
           링크 공유
         </button>
+        {/*미완성 기능 구현 부분*/}
         <button className={styles.saveButton} onClick={() => {}}>
           저장하기
         </button>
-        <button className={styles.goBackButton} onClick={() => {}}>
-          이전화면으로 돌아가기
+        <button className={styles.goBackButton} onClick={handleGoBack}>
+          처음화면으로 돌아가기
         </button>
       </div>
 

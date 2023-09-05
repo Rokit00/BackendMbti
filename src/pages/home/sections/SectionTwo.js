@@ -1,5 +1,6 @@
-// SectionTwo.js
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import LZString from "lz-string";
 import useSharedLogic from "../../../hook/useSharedLogic";
 import Start from "../../../components/Start";
 import Input from "../../../components/Input";
@@ -8,7 +9,8 @@ import styles from "./SectionTwo.module.css";
 import Loading from "../../../components/loading/Loading";
 
 const SectionTwo = ({ handleScrollToSectionTwo }) => {
-  // useSharedLogic 커스텀 훅스를 사용하여 상태와 함수들을 가져옴
+  const { data } = useParams();
+  console.log("URL Data:", data);
   const {
     name,
     selectedImageIndexes,
@@ -28,14 +30,39 @@ const SectionTwo = ({ handleScrollToSectionTwo }) => {
     handleShowResult,
     renderSelectedImages,
     renderSavedData,
-    mbtiTexts, // 추가된 부분
-  } = useSharedLogic();
+    mbtiTexts,
+  } = useSharedLogic(data);
+
+  useEffect(() => {
+    if (data) {
+      const decompressedData = LZString.decompressFromEncodedURIComponent(data);
+      const parsedData = JSON.parse(decompressedData);
+
+      if (Array.isArray(parsedData)) {
+        setSavedData(parsedData);
+        setShowResult(true);
+        setShowContent(false);
+      } else if (typeof parsedData === "object") {
+        setSavedData([parsedData]);
+        setShowResult(true);
+        setShowContent(false);
+      } else {
+        console.error(
+          "복호화된 데이터의 형태가 올바르지 않습니다:",
+          parsedData
+        );
+      }
+    } else {
+      setShowContent(false);
+    }
+  }, [data]);
+
   return (
     <div className={styles.sectionTwo}>
       {showLoading ? (
         <Loading />
       ) : !showContent && !showResult ? (
-        <Start handleStart={handleStart} />
+        <Start handleStart={() => setShowContent(true)} />
       ) : showContent && !showResult ? (
         <Input
           name={name}
@@ -47,8 +74,14 @@ const SectionTwo = ({ handleScrollToSectionTwo }) => {
           handleShowResult={handleShowResult}
           mbtiTexts={mbtiTexts}
         />
-      ) : showContent && showResult ? (
-        <Result savedData={savedData} mbtiTexts={mbtiTexts} />
+      ) : showResult ? (
+        <Result
+          savedData={savedData}
+          mbtiTexts={mbtiTexts}
+          setShowContent={setShowContent}
+          setShowResult={setShowResult}
+          setSavedData={setSavedData}
+        />
       ) : null}
     </div>
   );

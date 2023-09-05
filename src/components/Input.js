@@ -4,6 +4,7 @@ import styles from "./Input.module.css";
 const Input = ({
   name,
   handleNameChange,
+  handleDelete,
   selectedImageIndexes,
   images,
   handleImageClick,
@@ -48,7 +49,7 @@ const Input = ({
               ))}
             </div>
           </div>
-          <button onClick={handleSave}>저장하기</button>
+          <button className={styles.button}onClick={handleSave}>저장하기</button>
         </div>
         <div className={styles["right-container"]}>
           <div className={styles["right-content"]}>

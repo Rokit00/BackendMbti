@@ -4,48 +4,56 @@ import CommentForm from "./CommentForm";
 import UserInfo from "./UserInfo";
 import CommentText from "./CommentText";
 import styles from "./CommentSection.module.css";
+import { useAuth } from "./AuthContext";
+import axios from "axios";
 
-const CommentSection = ({ comments: initialComments }) => {
-  const [comments, setComments] = useState(initialComments);
+const CommentSection = ({ comments }) => {
+  const [allComments, setAllComments] = useState(comments || []);
+  const handleCommentSubmit = async (newCommentData) => {
+    try {
+      const response = await axios.post("/sec3", newCommentData);
 
+      setAllComments([...comments, response.data]);
+    } catch (error) {
+      console.error("Error posting the comment", error);
+      alert("댓글 작성에 실패했습니다.");
+    }
+  };
   const endOfCommentsRef = useRef(null);
-
+  const { isLoggedIn, userInfo } = useAuth();
   useEffect(() => {
     if (endOfCommentsRef.current) {
       endOfCommentsRef.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [comments]);
 
-  const handleNewComment = (newCommentData) => {
-    setComments((prevComments) => [...prevComments, newCommentData]);
-  };
-
+  console.log(comments);
   return (
     <div>
       <div className={styles.commentsContainer}>
         <h3>All Comments</h3>
         {comments.map((comment) => (
           <div
-            key={comment.userId}
+            key={comment.id}
             className={`${styles.comment} ${
-              comment.opinion === "A" ? styles.opinionA : styles.opinionB
+              comment.optionSelected === "A" ? styles.opinionA : styles.opinionB
             }`}
           >
             <UserInfo
               userImage={comment.userImage}
-              userId={comment.userId}
-              opinion={comment.opinion}
+              userId={comment.nickname}
+              opinion={comment.optionSelected}
             />
             <CommentText
               comment={comment.comment}
-              likes={comment.likes}
-              date={comment.date}
-              opinion={comment.opinion}
+              likes={comment.likeCount}
+              date={comment.createdAt}
+              opinion={comment.optionSelected}
             />
           </div>
         ))}
       </div>
-      <CommentForm onSubmit={handleNewComment} />
+      <CommentForm onSubmit={handleCommentSubmit} />
       <div ref={endOfCommentsRef}></div>
     </div>
   );

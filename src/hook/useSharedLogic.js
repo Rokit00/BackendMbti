@@ -1,11 +1,10 @@
 // useSharedLogic.js
-import { useState } from "react";
-import axios from "axios";
+import { useState, useEffect } from "react";
 import { mbtiToAlphabet } from "../utils/compatibility";
 import "./useSharedLogic.css";
 import styles from "../components/Input.module.css";
 
-const useSharedLogic = (satellites) => {
+const useSharedLogic = (satellites, initialData) => {
   const [name, setName] = useState("");
   const [selectedImageIndexes, setSelectedImageIndexes] = useState([
     -1, -1, -1, -1,
@@ -16,7 +15,17 @@ const useSharedLogic = (satellites) => {
   const [savedData, setSavedData] = useState([]);
 
   const mbtiTexts = ["I", "E", "S", "N", "F", "T", "P", "J"];
+  useEffect(() => {
+    if (initialData) {
+      const decodedData = decodeURIComponent(initialData);
+      const parsedData = JSON.parse(decodedData);
 
+      // 링크 데이터로 초기 데이터 초기화
+      setName(parsedData.name || "");
+      setSelectedImageIndexes(parsedData.mbti || [-1, -1, -1, -1]);
+      setShowResult(true); // Result.js로 바로 이동하도록 설정
+    }
+  }, [initialData]);
   const handleNameChange = (e) => {
     setName(e.target.value);
   };
@@ -70,7 +79,10 @@ const useSharedLogic = (satellites) => {
     setName("");
     setSelectedImageIndexes([-1, -1, -1, -1]);
   };
-
+  const handleDelete = (indexToDelete) => {
+    const updatedData = savedData.filter((_, index) => index !== indexToDelete);
+    setSavedData(updatedData);
+  };
   const handleShowResult = () => {
     if (savedData.length === 0) {
       alert("MBTI 타입을 입력해주세요.");
@@ -161,6 +173,7 @@ const useSharedLogic = (satellites) => {
     handleImageClick,
     handleStart,
     handleSave,
+    handleDelete,
     handleShowResult,
     mbtiTexts,
     renderSelectedTexts,
