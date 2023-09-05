@@ -43,7 +43,7 @@ public class CommentController {
         return ResponseEntity.status(HttpStatus.CREATED).body(comment);
     }
 
-    // 댓글 수정 (테스트 X)
+    // 댓글 수정 (테스트 완료)
     @PutMapping("/{commentId}")
     public ResponseEntity<Comment> updateComment(@PathVariable Long commentId, @RequestBody CommentUpdateRequest request, Authentication authentication) {
         String username = authentication.getName();
@@ -56,28 +56,17 @@ public class CommentController {
         }
     }
 
-    // 댓글 삭제 (테스트 X)
+    // 댓글 삭제 (테스트 완료)
     @DeleteMapping("/{commentId}")
     public ResponseEntity<Void> deleteComment(@PathVariable Long commentId, Authentication authentication) {
-        String username = authentication.getName(); // 현재 인증된 사용자의 username 가져오기
+        String username = authentication.getName();
         commentService.deleteComment(commentId, username);
         return ResponseEntity.noContent().build();
     }
 
-    // 총 댓글 수 (테스트 X)
-    @GetMapping("/{postId}/comment-count")
-    public ResponseEntity<Integer> getCommentCount(@PathVariable Long postId) {
-        Integer commentCount = postService.getCommentCount(postId);
 
-        if (commentCount != null) {
-            return ResponseEntity.ok(commentCount);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
-    // 총 댓글 수 (테스트 X)
-    @GetMapping("/count/{postId}")
+    // 총 댓글 수 (테스트 완료)
+    @GetMapping("/{postId}/count")
     public ResponseEntity<CommentTotalCountResponse> getCommentTotalCount(@PathVariable Long postId) {
         Long commentCount = commentService.getCommentCount(postId);
         CommentTotalCountResponse response = new CommentTotalCountResponse();
