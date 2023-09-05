@@ -35,12 +35,15 @@ public class CommentServiceImpl implements CommentService {
 
     // 댓글 작성
     @Override
-    public Comment createComment(Long postId, CommentRequest request, String username) {
-        Post post = postRepository.findById(postId).orElseThrow(() -> new EntityNotFoundException("게시글을 찾을 수 없습니다."));
-        Member member = memberRepository.findByUserId(username).orElseThrow(() -> new EntityNotFoundException("사용자 없음."));
+    public Comment createComment(Long postId, CommentRequest commentRequest, String username) {
+        Member member = memberRepository.findByUserId(username)
+                .orElseThrow(() -> new EntityNotFoundException("회원을 찾을 수 없습니다."));
 
-        Comment newComment = new Comment(request.getContent(), post, member);
-        return commentRepository.save(newComment);
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new EntityNotFoundException("게시물을 찾을 수 없습니다."));
+
+        Comment comment = new Comment(commentRequest.getContent(), commentRequest.getSelectOption(), post, member);
+        return commentRepository.save(comment);
     }
 
 

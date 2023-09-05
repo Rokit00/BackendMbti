@@ -2,6 +2,7 @@ package backend.mbti.repository.post;
 
 
 import backend.mbti.domain.comment.Comment;
+import backend.mbti.domain.like.PostLike;
 import backend.mbti.domain.member.Member;
 import backend.mbti.domain.post.Post;
 import org.springframework.data.jpa.repository.EntityGraph;
@@ -17,8 +18,6 @@ import java.util.Optional;
 @Repository
 public interface PostRepository extends JpaRepository<Post, Long> {
     List<Post> findAllByOrderByIdDesc();
-    @Query("SELECT p FROM Post p LEFT JOIN FETCH p.comments c WHERE p.id = :postId")
-    Post findByIdWithComments(@Param("postId") Long postId);
 
     // 맴버가 쓴 게시글 찾기
     List<Post> findByMemberOrderByCreatedAtDesc(Member member);

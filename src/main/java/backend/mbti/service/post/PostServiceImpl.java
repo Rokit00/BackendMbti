@@ -6,8 +6,11 @@ import backend.mbti.domain.comment.Comment;
 import backend.mbti.domain.dto.post.PostCreateRequest;
 import backend.mbti.domain.dto.post.PostResponse;
 import backend.mbti.domain.dto.post.PostUpdateRequest;
+
+import backend.mbti.domain.like.PostLike;
 import backend.mbti.domain.member.Member;
 import backend.mbti.domain.post.Post;
+import backend.mbti.repository.like.PostLikeRepository;
 import backend.mbti.repository.member.MemberRepository;
 import backend.mbti.repository.post.PostRepository;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +27,7 @@ public class PostServiceImpl implements PostService{
 
     private final MemberRepository memberRepository;
     private final PostRepository postRepository;
+    private final PostLikeRepository postLikeRepository;
 
     // 글 전체 리스트 조회
     @Transactional
@@ -111,4 +115,31 @@ public class PostServiceImpl implements PostService{
             return null;
         }
     }
+
+    // 글 좋아요
+    @Override
+    @Transactional
+    public void likePost(Long postId, String username) {
+        Member member = memberRepository.findByUserId(username)
+                .orElseThrow(() -> new EntityNotFoundException("회원을 찾을 수 없습니다."));
+
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new EntityNotFoundException("게시물을 찾을 수 없습니다."));
+
+        PostLike existingLike = postLikeRepository.findByPostAndMember(post, member);
+
+        if (existingLike == null) {
+            PostLike like = new PostLike(post, member);
+            postLikeRepository.save(like);
+
+            post.setLikeCount(post.getLikeCount() + 1);
+            postRepository.save(post);
+        } else {
+            postLikeRepository.delete(existingLike);
+
+            post.setLikeCount(post.getLikeCount() - 1);
+            postRepository.save(post);
+        }
+    }
+
 }

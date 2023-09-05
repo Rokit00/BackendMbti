@@ -4,6 +4,7 @@ import backend.mbti.domain.member.Member;
 import backend.mbti.domain.post.Post;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -14,6 +15,7 @@ import java.util.Date;
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,10 +24,12 @@ public class Comment {
     @Column(nullable = false)
     private String content;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id", nullable = false)
     private Post post;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
@@ -42,10 +46,11 @@ public class Comment {
     @Column(name = "updated_at")
     private Date updatedAt;
 
-    public Comment(String content, Post post, Member member) {
+    public Comment(String content, Character selectOption, Post post, Member member) {
         this.content = content;
         this.post = post;
         this.member = member;
+        this.selectOption = selectOption;
         this.createdAt = new Date();
         this.updatedAt = new Date();
     }

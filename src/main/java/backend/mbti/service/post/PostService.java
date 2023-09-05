@@ -29,4 +29,7 @@ public interface PostService {
 
     // 댓글 수
     Integer getCommentCount(Long postId);
+
+    // 글 좋아요
+    void likePost(Long postId, String username);
 }

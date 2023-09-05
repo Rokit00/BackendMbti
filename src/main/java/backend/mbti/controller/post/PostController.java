@@ -77,4 +77,10 @@ public class PostController {
     }
 
     // 글 좋아요
+    @PostMapping("/{postId}/like")
+    public ResponseEntity<Void> toggleLike(@PathVariable Long postId, Authentication authentication) {
+        String username = authentication.getName();
+        postService.likePost(postId, username);
+        return ResponseEntity.ok().build();
+    }
 }
