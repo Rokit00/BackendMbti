@@ -42,7 +42,7 @@ public class CommentServiceImpl implements CommentService {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new EntityNotFoundException("게시물을 찾을 수 없습니다."));
 
-        Comment comment = new Comment(commentRequest.getContent(), commentRequest.getSelectOption(), post, member);
+        Comment comment = new Comment(username, commentRequest.getContent(), commentRequest.getSelectOption(), post, member);
         return commentRepository.save(comment);
     }
 

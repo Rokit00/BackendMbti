@@ -10,8 +10,10 @@ import java.util.Date;
 @NoArgsConstructor
 @Getter
 public class CommentUpdateRequest {
+
     private String content;
+
     private String selectOption;
-    private Date createdAt;
-    private Integer likeCount;
 }
+//    private Date createdAt;
+//    private Integer likeCount;

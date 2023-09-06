@@ -24,6 +24,9 @@ public class Comment {
     @Column(nullable = false)
     private String content;
 
+    @Column(nullable = false)
+    private String userId;
+
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id", nullable = false)
@@ -46,7 +49,8 @@ public class Comment {
     @Column(name = "updated_at")
     private Date updatedAt;
 
-    public Comment(String content, Character selectOption, Post post, Member member) {
+    public Comment(String userId, String content, Character selectOption, Post post, Member member) {
+        this.userId = userId;
         this.content = content;
         this.post = post;
         this.member = member;
