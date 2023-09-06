@@ -25,6 +25,16 @@ public class MypageController {
 
     private final MypageService mypageService;
 
+    // 유저 정보 뷰
+    @GetMapping
+    public ResponseEntity<Member> viewUserInfo(Authentication authentication) {
+        String username = authentication.getName();
+
+        Member member = mypageService.getUserInfo(username);
+
+        return ResponseEntity.ok(member);
+    }
+
     // 내 정보 수정 (테스트 완료)
     @PutMapping("/{userId}/update-all")
     public ResponseEntity<Member> updateAllMemberInfo(@PathVariable String userId, @RequestBody MemberUpdateRequest request, Authentication authentication) {
@@ -49,15 +59,15 @@ public class MypageController {
     // 내가 만든 케미 (테스트 X)
     @PostMapping
     public ResponseEntity<Mbti> createMbtiGroup(@RequestBody MbtiGroupRequest request, Authentication authentication) {
-        String userId = authentication.getName(); // 현재 인증된 사용자의 username 가져오기
+        String userId = authentication.getName();
         Mbti createdGroup = mypageService.createMbtiGroup(request, userId);
         return ResponseEntity.ok(createdGroup);
     }
 
-    // 내가 만든 토론 (테스트 완료)
+    // 내가 만든 토론 (테스트 완료, 유저 null)
     @GetMapping("/{userId}/posts")
     public ResponseEntity<List<Post>> getPostsByMember(@PathVariable String userId, Authentication authentication) {
-        String loggedInUserId = authentication.getName(); // 현재 인증된 사용자의 username 가져오기
+        String loggedInUserId = authentication.getName();
 
         if (!userId.equals(loggedInUserId)) {
             throw new AccessDeniedException("You are not allowed to view posts for this member");

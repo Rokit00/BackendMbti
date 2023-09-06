@@ -12,6 +12,9 @@ import java.util.List;
 
 public interface MypageService {
 
+    // 유저 정보 뷰
+    Member getUserInfo(String username);
+
     // 회원 정보 수정
     Member updateAllMemberInfo(String userId, MemberUpdateRequest request, String username);
 

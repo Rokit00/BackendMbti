@@ -37,8 +37,6 @@ public class PostServiceImpl implements PostService{
         return posts;
     }
 
-
-
     // 글 등록
     @Override
     public Post createPost(PostCreateRequest request, String username) {
@@ -46,6 +44,7 @@ public class PostServiceImpl implements PostService{
                 .orElseThrow(() -> new EntityNotFoundException("유효하지 않는 사용자"));
 
         Post post = new Post();
+        post.setUserId(username);
         post.setTitle(request.getTitle());
         post.setOptionA(request.getOptionA());
         post.setOptionB(request.getOptionB());

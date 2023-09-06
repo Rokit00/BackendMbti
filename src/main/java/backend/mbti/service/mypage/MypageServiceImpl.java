@@ -35,6 +35,15 @@ public class MypageServiceImpl implements MypageService {
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    // 유저 정보 뷰
+
+
+    @Override
+    public Member getUserInfo(String username) {
+        Member member = memberRepository.findAllByUserId(username);
+        return member;
+    }
+
     // 회원 정보 수정
     @Override
     public Member updateAllMemberInfo(String userId, MemberUpdateRequest request, String username) {

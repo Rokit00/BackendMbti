@@ -30,6 +30,10 @@ public class Post {
     @Column(name = "option_b")
     private String optionB;
 
+    // 작성자 이름
+    @Column(nullable = false)
+    private String userId;
+
     // 작성 일자
     @Column(name = "created_at")
     private Date createdAt;
