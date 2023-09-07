@@ -125,6 +125,8 @@ public class MemberServiceImpl implements MemberService{
                 member.setUserId(updates.get("userId"));
             }
 
+            //(카카오 로그인한사람은 비밀번호 변경 안되게)
+            if (member.getOAuth() == null || member.getOAuth().equals(""))
             if (updates.containsKey("password")) {
                 member.setPassword(bCryptPasswordEncoder.encode(updates.get("password")));
             }
