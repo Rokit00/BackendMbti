@@ -75,9 +75,5 @@ public class CommentController {
         return ResponseEntity.ok(response);
     }
 
-    // A댓글, B댓글 각각 계산 (구현해야함)
-
-    // 리포트
-
     // 댓글 좋아요
 }

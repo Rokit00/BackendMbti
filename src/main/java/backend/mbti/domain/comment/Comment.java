@@ -16,6 +16,7 @@ import java.util.Date;
 @Getter
 @Setter
 @NoArgsConstructor
+// mbti 컴럼
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,6 +27,9 @@ public class Comment {
 
     @Column(nullable = false)
     private String userId;
+
+    @Column(nullable = false)
+    private String mbti;
 
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
@@ -45,18 +49,23 @@ public class Comment {
     @Column(name = "created_at")
     private Date createdAt;
 
-    // 수정 시간
-    @Column(name = "updated_at")
-    private Date updatedAt;
+    // Member에 mbti 가져오기
+    public String getMbti() {
+        if (member != null) {
+            return member.getMbti();
+        }
+        return null;
+    }
 
-    public Comment(String userId, String content, Character selectOption, Post post, Member member) {
+
+    public Comment(String userId, String mbti,String content,Character selectOption, Post post, Member member) {
         this.userId = userId;
+        this.mbti = mbti;
         this.content = content;
         this.post = post;
         this.member = member;
         this.selectOption = selectOption;
         this.createdAt = new Date();
-        this.updatedAt = new Date();
     }
 }
 

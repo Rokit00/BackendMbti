@@ -1,11 +1,12 @@
 package backend.mbti.service.member;
 
-import backend.mbti.domain.dto.mbti.MbtiGroupRequest;
 import backend.mbti.domain.dto.member.MemberLoginRequest;
 import backend.mbti.domain.dto.member.MemberSignUpRequest;
-import backend.mbti.domain.member.Member;
+import org.springframework.http.MediaType;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Map;
+import org.springframework.core.io.Resource;
+
 
 
 public interface MemberService {
@@ -24,4 +25,10 @@ public interface MemberService {
 
     // 비밀번호 찾기
     String requestPasswordReset(String userId, String email);
+
+    // 프로필 업로드
+    void updateProfilePicture(String username, MultipartFile file);
+
+    // 프로필 보내기
+    String getProfile(Long memberId);
 }

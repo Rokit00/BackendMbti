@@ -24,7 +24,7 @@ public class Member {
 
     // 프로필 이미지
     @Column
-    private String profilePicturePath;
+    private String profileImage;
 
     // 패스워드
     @JsonIgnore

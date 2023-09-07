@@ -1,17 +1,16 @@
 package backend.mbti.controller.member;
 
-import backend.mbti.domain.dto.mbti.MbtiGroupRequest;
 import backend.mbti.domain.dto.member.MemberFindId;
 import backend.mbti.domain.dto.member.MemberLoginRequest;
 import backend.mbti.domain.dto.member.MemberSignUpRequest;
-import backend.mbti.domain.mbti.Mbti;
+import backend.mbti.domain.member.Member;
 import backend.mbti.service.member.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Map;
+import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @RestController
@@ -77,8 +76,20 @@ public class MemberController {
         }
     }
 
-    // MBTI GROUP 저장 (구현해야함)
+    // 프로필 업로드
+    @PostMapping("/profile")
+    public ResponseEntity<?> updateProfile(@RequestParam("file") MultipartFile file, Authentication authentication) {
+        String username = authentication.getName();
+        memberService.updateProfilePicture(username, file);
+        return ResponseEntity.ok("프로필 업데이트 완료");
+    }
 
+    // 프로필 보내기
+    @GetMapping("/{memberId}/profile-image-url")
+    public ResponseEntity<String> getProfileImageUrl(@PathVariable Long memberId) {
+        String imageUrl = memberService.getProfile(memberId);
+        return ResponseEntity.ok(imageUrl);
+    }
 }
 
 

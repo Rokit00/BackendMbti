@@ -51,7 +51,7 @@ public class Post {
     @ManyToOne
     private Member member;
 
-    // 게시물 내림차순에 댓글 수 보여주는 속성, 게시물에 관한 댓글
+    // 댓글 수
     @JsonIgnore
     @OneToMany(mappedBy = "post")
     private List<Comment> comments = new ArrayList<Comment>();

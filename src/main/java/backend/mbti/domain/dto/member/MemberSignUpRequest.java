@@ -2,12 +2,14 @@ package backend.mbti.domain.dto.member;
 
 import backend.mbti.domain.member.Member;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
+@Builder
 public class MemberSignUpRequest {
 
     private String userId;

@@ -89,7 +89,7 @@ public class MypageServiceImpl implements MypageService {
 
                 // 프로필 사진 경로 업데이트
                 String profilePicturePath = "/profile/pictures/" + fileName;
-                member.setProfilePicturePath(profilePicturePath);
+                member.setProfileImage(profilePicturePath);
 
                 memberRepository.save(member);
             }

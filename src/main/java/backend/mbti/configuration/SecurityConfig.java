@@ -32,14 +32,18 @@ public class SecurityConfig {
                 .formLogin().disable()
                 .httpBasic().disable()
                 .csrf().disable()
-                .cors()
-                .and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
+                .cors().disable();
+        // 세션 관리
+        httpSecurity
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        // 권한 설정
+        httpSecurity
                 .authorizeRequests()
-                .antMatchers("/members/signup", "/members/login", "/**").permitAll()
-                .antMatchers(HttpMethod.POST, "/post").authenticated() // 인증해아함
-                .and()
+                .antMatchers("/members/signup", "/members/**", "/**","/images/**").permitAll()
+                .antMatchers(HttpMethod.POST, "/post").authenticated();
+        // 필터
+        httpSecurity
                 .addFilterBefore(new JwtFilter(memberService, secretKey), UsernamePasswordAuthenticationFilter.class);
         return httpSecurity.build();
 
