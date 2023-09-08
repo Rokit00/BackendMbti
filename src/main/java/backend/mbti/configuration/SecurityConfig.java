@@ -40,7 +40,7 @@ public class SecurityConfig {
         // 권한 설정
         httpSecurity
                 .authorizeRequests()
-                .antMatchers("/auth/kakao/callback", "members/signup","/members/login","/post/lists", "/comment/*/count","/post/*","/actuator/**", "/instances/**").permitAll()
+                .antMatchers("/auth/kakao/callback", "/members/signup","/members/login","/post/lists", "/comment/*/count","/post/*","/actuator/**", "/instances/**").permitAll()
                 .anyRequest().authenticated();
         // 필터
         httpSecurity
