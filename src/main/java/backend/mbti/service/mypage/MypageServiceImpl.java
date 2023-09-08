@@ -46,8 +46,8 @@ public class MypageServiceImpl implements MypageService {
 
     // 회원 정보 수정
     @Override
-    public Member updateAllMemberInfo(String userId, MemberUpdateRequest request, String username) {
-        Member member = memberRepository.findByUserId(userId)
+    public Member updateAllMemberInfo(MemberUpdateRequest request, String username) {
+        Member member = memberRepository.findByUserId(username)
                 .orElseThrow(() -> new EntityNotFoundException("회원을 찾을 수 없습니다."));
 
         if (!member.getUserId().equals(username)) {

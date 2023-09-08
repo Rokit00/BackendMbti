@@ -40,11 +40,12 @@ public class SecurityConfig {
         // 권한 설정
         httpSecurity
                 .authorizeRequests()
-                .antMatchers("/members/signup", "/members/**", "/**","/images/**").permitAll()
-                .antMatchers(HttpMethod.POST, "/post").authenticated();
+                .antMatchers("members/signup","/members/login","/post/lists", "/actuator/**", "/instances/**").permitAll()
+                .anyRequest().authenticated();
         // 필터
         httpSecurity
-                .addFilterBefore(new JwtFilter(memberService, secretKey), UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(new JwtFilter(memberService, secretKey), UsernamePasswordAuthenticationFilter.class)
+                .requestMatchers().antMatchers("/members/**", "/mypage/**", "/post/**", "comment/**");
         return httpSecurity.build();
 
     }

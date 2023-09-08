@@ -38,7 +38,6 @@ dependencies {
 	implementation 'io.jsonwebtoken:jjwt:0.9.1'
 
 //	admin lib
-	implementation 'de.codecentric:spring-boot-admin-starter-client'
 	implementation 'de.codecentric:spring-boot-admin-starter-server:2.7.10'
 	implementation 'de.codecentric:spring-boot-admin-starter-client:2.7.10'
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'

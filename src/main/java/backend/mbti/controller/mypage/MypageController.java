@@ -36,10 +36,10 @@ public class MypageController {
     }
 
     // 내 정보 수정 (테스트 완료)
-    @PutMapping("/{userId}/update-all")
-    public ResponseEntity<Member> updateAllMemberInfo(@PathVariable String userId, @RequestBody MemberUpdateRequest request, Authentication authentication) {
+    @PutMapping("/update-all")
+    public ResponseEntity<Member> updateAllMemberInfo(@RequestBody MemberUpdateRequest request, Authentication authentication) {
         String username = authentication.getName();
-        Member updatedMember = mypageService.updateAllMemberInfo(userId, request, username);
+        Member updatedMember = mypageService.updateAllMemberInfo(request, username);
 
         if (updatedMember != null) {
             return ResponseEntity.ok(updatedMember);

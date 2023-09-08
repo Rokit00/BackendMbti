@@ -16,7 +16,7 @@ public interface MypageService {
     Member getUserInfo(String username);
 
     // 회원 정보 수정
-    Member updateAllMemberInfo(String userId, MemberUpdateRequest request, String username);
+    Member updateAllMemberInfo(MemberUpdateRequest request, String username);
 
     // 프로필 이미지
     void uploadProfilePicture(Long memberId, MultipartFile file);
