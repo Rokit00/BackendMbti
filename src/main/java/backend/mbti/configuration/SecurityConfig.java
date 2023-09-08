@@ -40,12 +40,15 @@ public class SecurityConfig {
         // 권한 설정
         httpSecurity
                 .authorizeRequests()
-                .antMatchers("members/signup","/members/login","/post/lists", "/actuator/**", "/instances/**").permitAll()
+                .antMatchers("/auth/kakao/callback", "members/signup","/members/login","/post/lists", "/comment/*/count","/post/*","/actuator/**", "/instances/**").permitAll()
                 .anyRequest().authenticated();
         // 필터
         httpSecurity
                 .addFilterBefore(new JwtFilter(memberService, secretKey), UsernamePasswordAuthenticationFilter.class)
-                .requestMatchers().antMatchers("/members/**", "/mypage/**", "/post/**", "comment/**");
+                .requestMatchers().antMatchers(HttpMethod.POST, "/members/**","/member/*/**", "/mypage/**", "/mypage/","/post/**", "/comment/*")
+                .requestMatchers().antMatchers(HttpMethod.GET, "/mypage/", "/mypage/*/posts")
+                .requestMatchers().antMatchers(HttpMethod.PUT, "/post/*", "/mypage/update-all", "/comment/*")
+                .requestMatchers().antMatchers(HttpMethod.DELETE, "/post/*", "/mypage/*", "/comment/*");
         return httpSecurity.build();
 
     }
