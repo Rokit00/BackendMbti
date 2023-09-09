@@ -3,14 +3,18 @@ package backend.mbti.service.comment;
 import backend.mbti.domain.comment.Comment;
 import backend.mbti.domain.dto.comment.CommentRequest;
 import backend.mbti.domain.dto.comment.CommentUpdateRequest;
+import backend.mbti.domain.like.CommentLike;
+import backend.mbti.domain.like.PostLike;
 import backend.mbti.domain.member.Member;
 import backend.mbti.domain.post.Post;
 import backend.mbti.repository.comment.CommentRepository;
+import backend.mbti.repository.like.CommentLikeRepository;
 import backend.mbti.repository.member.MemberRepository;
 import backend.mbti.repository.post.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
@@ -22,6 +26,7 @@ public class CommentServiceImpl implements CommentService {
     private final MemberRepository memberRepository;
     private final CommentRepository commentRepository;
     private final PostRepository postRepository;
+    private final CommentLikeRepository commentLikeRepository;
 
 
     // 댓글 보여주기
@@ -81,7 +86,29 @@ public class CommentServiceImpl implements CommentService {
         return commentRepository.countByPostId(postId);
     }
 
-    // A댓글, B댓글 각각 계산
+    // 댓글 좋아요
+    @Override
+    @Transactional
+    public void likePost(Long commentId, String username) {
+        Member member = memberRepository.findByUserId(username)
+                .orElseThrow(() -> new EntityNotFoundException("회원을 찾을 수 없습니다."));
 
-    // 좋아요
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new EntityNotFoundException("댓글을 찾을 수 없습니다."));
+
+        CommentLike existingLike = commentLikeRepository.findByCommentAndMember(comment, member);
+
+        if (existingLike == null) {
+            CommentLike like = new CommentLike(comment, member);
+            commentLikeRepository.save(like);
+
+            comment.setLikeCount(comment.getLikeCount() + 1);
+            commentRepository.save(comment);
+        } else {
+            commentLikeRepository.delete(existingLike);
+
+            comment.setLikeCount(comment.getLikeCount() - 1);
+            commentRepository.save(comment);
+        }
+    }
 }

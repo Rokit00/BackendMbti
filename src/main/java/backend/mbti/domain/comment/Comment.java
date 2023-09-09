@@ -22,26 +22,36 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    // 댓글 내용
     @Column(nullable = false)
     private String content;
 
+    // 유저 이름
     @Column(nullable = false)
     private String userId;
 
+    // MBTI
     @Column(nullable = false)
     private String mbti;
 
+    // 좋아요 수
+    @Column(name = "like_count")
+    private Integer likeCount = 0;
+
+    // Post Join
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id", nullable = false)
     private Post post;
 
+    // Member Join
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Member member;
 
+    // 선택지
     @Column
     private Character selectOption;
 

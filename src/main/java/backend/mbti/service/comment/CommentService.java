@@ -25,7 +25,6 @@ public interface CommentService {
     // 총 댓글 수
     Long getCommentCount(Long postId);
 
-    // A댓글, B댓글 각각 계산
-
     // 좋아요
+    void likePost(Long commentId, String username);
 }

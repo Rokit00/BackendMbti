@@ -76,4 +76,10 @@ public class CommentController {
     }
 
     // 댓글 좋아요
+    @PostMapping("/{commentId}/like")
+    public ResponseEntity<String> toggleLike(@PathVariable Long commentId, Authentication authentication) {
+        String username = authentication.getName();
+        commentService.likePost(commentId, username);
+        return ResponseEntity.ok("요청 완료");
+    }
 }
