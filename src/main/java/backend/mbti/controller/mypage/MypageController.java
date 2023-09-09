@@ -80,11 +80,11 @@ public class MypageController {
     // 문의하기 (ADMIN 계정으로 일단 보류)
 
     // 회원 탈퇴 (테스트 완료)
-    @DeleteMapping("/{userId}")
-    public ResponseEntity<Void> deleteMember(@PathVariable String userId, Authentication authentication) {
+    @DeleteMapping("/delete")
+    public ResponseEntity<Void> deleteMember(Authentication authentication) {
         String username = authentication.getName();
         log.info(username);
-        mypageService.deleteMember(userId, username);
+        mypageService.deleteMember(username);
         log.info("delete");
         return ResponseEntity.noContent().build();
     }

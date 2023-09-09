@@ -125,8 +125,8 @@ public class MypageServiceImpl implements MypageService {
 
     // 회원 탈퇴
     @Override
-    public void deleteMember(String userId, String username) {
-        Member member = memberRepository.findByUserId(userId)
+    public void deleteMember(String username) {
+        Member member = memberRepository.findByUserId(username)
                 .orElseThrow(() -> new EntityNotFoundException("회원을 찾을 수 없습니다."));
 
         if (!member.getUserId().equals(username)) {

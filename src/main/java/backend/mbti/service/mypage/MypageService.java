@@ -30,5 +30,5 @@ public interface MypageService {
     // 문의하기 (ADMIN 계정으로 일단 보류)
 
     // 회원 탈퇴
-    void deleteMember(String userId, String username);
+    void deleteMember(String username);
 }
