@@ -51,7 +51,9 @@ const Home = () => {
 
   return (
     <div>
+     
       <SectionOne handleScrollToSectionTwo={handleScrollToSectionTwo} />
+  
       <div ref={sectionTwoRef}>
         <SectionTwo setSharedData={setSharedData} />
       </div>

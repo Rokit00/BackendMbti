@@ -1,14 +1,27 @@
 /* SectionTwo.module.css */
+
+@font-face {
+  font-family: "Ydestreet";
+  src: url("../../../assets/Ydestreet_FONT/YdestreetL.ttf");
+}
+
+@font-face {
+  font-family: "Ydestreet_B";
+  src: url("../../../assets/Ydestreet_FONT/YdestreetB.ttf");
+}
+
+
 p,
 h2,
 h3 {
+  font-family: "Ydestreet";
   color: #fff;
 }
 .sectionTwo {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100vh;
+  height: 120vh;
   width: auto;
   background-color: #000;
 }
