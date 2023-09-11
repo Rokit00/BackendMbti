@@ -10,7 +10,6 @@ import Loading from "../../../components/loading/Loading";
 
 const SectionTwo = ({ handleScrollToSectionTwo }) => {
   const { data } = useParams();
-  console.log("URL Data:", data);
   const {
     name,
     selectedImageIndexes,

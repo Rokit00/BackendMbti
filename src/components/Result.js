@@ -10,6 +10,7 @@ const Result = ({
   setShowContent,
   setShowResult,
   setSavedData,
+  isLoggedIn,
 }) => {
   // 모달 상태를 관리하는 상태 변수들
 
@@ -147,10 +148,12 @@ const Result = ({
         <button className={styles.shareButton} onClick={handleShareLink}>
           링크 공유
         </button>
-        {/*미완성 기능 구현 부분*/}
-        <button className={styles.saveButton} onClick={() => {}}>
-          저장하기
-        </button>
+        {/* isLoggedIn 상태에 따라 버튼을 렌더링합니다 */}
+        {isLoggedIn && (
+          <button className={styles.saveButton} onClick={() => {}}>
+            저장하기
+          </button>
+        )}
         <button className={styles.goBackButton} onClick={handleGoBack}>
           처음화면으로 돌아가기
         </button>

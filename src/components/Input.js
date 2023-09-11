@@ -15,7 +15,10 @@ const Input = ({
 }) => {
   return (
     <div className={styles.content}>
-      <div className={styles["mbti-check-heading"]}>MBTI Check</div>
+      <div className={styles["mbti-check-heading"]}>
+        {" "}
+        <span> MBTI &nbsp; Check </span>
+      </div>
 
       <div className={styles["content-container"]}>
         <div className={styles["mbti-check-left-container"]}>
@@ -49,11 +52,10 @@ const Input = ({
               ))}
             </div>
           </div>
-          <button className={styles.button}onClick={handleSave}>저장하기</button>
+          <button onClick={handleSave}>저장하기</button>
         </div>
         <div className={styles["right-container"]}>
           <div className={styles["right-content"]}>
-            <div className={styles["success-message"]}>Success</div>
             <div className={styles["result-data"]}>{renderSavedData()}</div>
           </div>
           <button className={styles["result-btn"]} onClick={handleShowResult}>

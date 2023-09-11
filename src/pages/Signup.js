@@ -75,7 +75,7 @@ function Signup() {
     e.preventDefault();
 
     axios
-      .post("/members/join", {
+      .post("/members/signup", {
         userId: userId.value,
         password: password.value,
         email: email.value,

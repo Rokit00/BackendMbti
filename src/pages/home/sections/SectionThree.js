@@ -10,7 +10,6 @@ const SectionThree = ({ debate }) => {
   if (!debate) {
     return <div>Loading...</div>;
   }
-  console.log(debate);
   const handleWriteDebate = () => {
     navigate("/lists");
   };
@@ -25,7 +24,9 @@ const SectionThree = ({ debate }) => {
       />
       <p>토론 종료까지 남은 시간</p>
       <CountdownTimer createdDate={debate.createAt} />
-      <button onClick={handleWriteDebate}>참여하기</button>
+      <button className={styles.button} onClick={handleWriteDebate}>
+        참여하기
+      </button>
     </div>
   );
 };

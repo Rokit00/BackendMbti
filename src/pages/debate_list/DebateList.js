@@ -18,41 +18,33 @@ const DebateList = () => {
   useEffect(() => {
     async function fetchAllDebates() {
       try {
-        const response = await axios.get("/sec3/posts");
-
+        const response = await axios.get("/post/lists");
+        console.log("data: ", response.data);
         const promises = response.data.map(async (post) => {
-          const postDate = new Date(post.createAt);
+          const postDate = new Date(post.createdAt);
           const currentDate = new Date();
           const timeDiff = currentDate - postDate;
           const daysDiff = timeDiff / (1000 * 60 * 60 * 24);
 
-          // 각 게시물에 대한 의견 A와 B의 댓글 수 가져오기
-          const opinionResponse = await axios.get(
-            `/sec3/3/commentAorB/${post.writerNum}`
-          );
-          const opinionData = opinionResponse.data;
-
-          // 각 게시물의 댓글 수 가져오기
+          // // 각 게시물의 댓글 수 가져오기
           const commentCountResponse = await axios.get(
-            `/sec3/3/comment/${post.writerNum}`
+            `/comment/${post.id}/count`
           );
-          const commentCount = commentCountResponse.data;
+          const commentCount = commentCountResponse.data.count;
 
+          console.log(post);
           return {
-            id: post.writerNum,
+            id: post.id,
             title: post.title,
             nickname: post.nickname,
             A: post.optionA,
             B: post.optionB,
             messages: commentCount,
-            views: post.hit,
-            likes: post.good,
+            views: Math.round(post.viewCount / 2),
+            likes: post.likeCount,
             bookMark: post.bookmark,
             isUnderway: daysDiff <= 7,
-            hashtags: [],
-            opinionACount: opinionData.a,
-            opinionBCount: opinionData.b,
-            dates: post.createAt,
+            dates: post.createdAt,
           };
         });
 
@@ -102,14 +94,15 @@ const DebateList = () => {
         type="text"
         onChange={(e) => setSearchKeyword(e.target.value)}
         placeholder="토론 주제 검색..."
+        className={styles.inputText}
       />
-      <button>search</button>
+      <button className={styles.button}>search</button>
       <div className={styles.cardContainer}>
         {searchResults.length > 0 && (
           <SearchResults results={searchResults} onSortChange={setSortOption} />
         )}
       </div>
-      {isLoggedIn && <button onClick={handleWriteDebate}>토론 글 쓰기</button>}
+      {isLoggedIn && <button className={styles.button} onClick={handleWriteDebate}>토론 글 쓰기</button>}
     </div>
   );
 };

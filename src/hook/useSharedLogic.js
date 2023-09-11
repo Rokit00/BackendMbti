@@ -96,7 +96,7 @@ const useSharedLogic = (satellites, initialData) => {
     setTimeout(() => {
       setShowResult(true);
       setShowLoading(false);
-    }, 3000);
+    }, 5000);
   };
 
   const areAllImagesLoaded = () => {
@@ -127,33 +127,32 @@ const useSharedLogic = (satellites, initialData) => {
   };
 
   const renderSavedData = () => {
-    const rows = [];
-    for (let i = 0; i < savedData.length; i += 2) {
-      const rowData = savedData.slice(i, i + 2);
-      rows.push(
-        <div key={i} className={styles["data-row"]}>
-          {rowData.map((data, index) => (
-            <div key={index} className={styles["saved-data"]}>
-              <p>이름: {data.name}</p>
-              <div className={styles["result-texts"]}>
-                {data.mbti.map((textIndex, rowIndex) => {
-                  const mbtiType = mbtiTexts[textIndex];
-                  return (
-                    <span
-                      key={rowIndex}
-                      className={`${styles["result-text"]} ${styles[mbtiType]} ${styles["selected"]}`}
-                    >
-                      {mbtiType}
-                    </span>
-                  );
-                })}
-              </div>
-            </div>
-          ))}
+    return savedData.map((data, dataIndex) => (
+      <div key={dataIndex} className={styles["data-row"]}>
+        <div className={styles["saved-data"]}>
+          <p>이름: {data.name}</p>
+          <div className={styles["result-texts"]}>
+            {data.mbti.map((textIndex, rowIndex) => {
+              const mbtiType = mbtiTexts[textIndex];
+              return (
+                <span
+                  key={rowIndex}
+                  className={`${styles["result-text"]} ${styles[mbtiType]} ${styles["selected"]}`}
+                >
+                  {mbtiType}
+                </span>
+              );
+            })}
+          </div>
         </div>
-      );
-    }
-    return rows;
+        <button
+          className={styles["delete-button"]}
+          onClick={() => handleDelete(dataIndex)}
+        >
+          x
+        </button>
+      </div>
+    ));
   };
 
   return {

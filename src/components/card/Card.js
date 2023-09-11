@@ -1,43 +1,49 @@
-//Card.js
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { FaBookmark, FaShare, FaComment, FaEye } from "react-icons/fa";
 import styles from "./DebateCard.module.css";
-import { calculatePercentage } from "../../utils/calculatePercent";
 
 const DebateCard = ({ debate }) => {
   const { id, title, A, B, messages, views, likes, isUnderway, hashtags } =
     debate;
 
-  const [commentCount, setCommentCount] = useState(0);
-  const [opinionACount, setOpinionACount] = useState(0);
-  const [opinionBCount, setOpinionBCount] = useState(0);
+  const [comments, setComments] = useState([]);
 
   useEffect(() => {
-    async function fetchCommentCountAndOpinions() {
+    async function fetchComments() {
       try {
-        const commentResponse = await axios.get(`/sec3/3/comment/${id}`);
-        setCommentCount(commentResponse.data);
-
-        const opinionResponse = await axios.get(`/sec3/3/commentAorB/${id}`);
-        const opinionData = opinionResponse.data;
-        setOpinionACount(opinionData.a);
-        setOpinionBCount(opinionData.b);
+        const response = await axios.get(`/comment/${id}`);
+        setComments(response.data);
       } catch (error) {
-        console.error("Error fetching data for debate", error);
+        console.error("Error fetching the comments", error);
       }
     }
-    fetchCommentCountAndOpinions();
+
+    fetchComments();
   }, [id]);
 
-  const { percentageA, percentageB } = calculatePercentage(
-    opinionACount,
-    opinionBCount
+  const opinionCounts = comments.reduce(
+    (acc, comment) => {
+      if (comment.selectOption === "A") acc.A++;
+      if (comment.selectOption === "B") acc.B++;
+      return acc;
+    },
+    { A: 0, B: 0 }
   );
 
+  const totalOpinions = opinionCounts.A + opinionCounts.B;
+  const percentageA =
+    totalOpinions === 0
+      ? 0
+      : Math.round((opinionCounts.A / totalOpinions) * 100);
+  const percentageB =
+    totalOpinions === 0
+      ? 0
+      : Math.round((opinionCounts.B / totalOpinions) * 100);
+
   return (
-    <Link to={`/debate/${id}`} className={styles.container}>
+    <Link to={`/post/${id}`} className={styles.container}>
       <div>
         {isUnderway && (
           <small className={styles.underwayText}>현재 진행 중인 토론</small>
@@ -59,7 +65,7 @@ const DebateCard = ({ debate }) => {
       <div className={styles.icons}>
         <div className={styles.iconWrapper}>
           <FaComment />
-          <span>{commentCount}</span>
+          <span>{messages}</span>
         </div>
         <div className={styles.iconWrapper}>
           <FaEye />

@@ -1,31 +1,30 @@
 // CommentSection.js
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, useCallback } from "react";
 import CommentForm from "./CommentForm";
-import UserInfo from "./UserInfo";
+import UserInfo from "../UserInfo";
 import CommentText from "./CommentText";
 import styles from "./CommentSection.module.css";
-import { useAuth } from "./AuthContext";
 import axios from "axios";
 
-const CommentSection = ({ comments }) => {
+const CommentSection = ({ comments, postId }) => {
+  console.log("CommentSection 렌더링됨");
   const [allComments, setAllComments] = useState(comments || []);
+
   const handleCommentSubmit = async (newCommentData) => {
     try {
-      const response = await axios.post("/sec3", newCommentData);
-
-      setAllComments([...comments, response.data]);
+      const response = await axios.post(`/comment/${postId}`, newCommentData);
+      setAllComments((prevComments) => [...prevComments, response.data]);
     } catch (error) {
       console.error("Error posting the comment", error);
       alert("댓글 작성에 실패했습니다.");
     }
   };
   const endOfCommentsRef = useRef(null);
-  const { isLoggedIn, userInfo } = useAuth();
   useEffect(() => {
     if (endOfCommentsRef.current) {
       endOfCommentsRef.current.scrollIntoView({ behavior: "smooth" });
     }
-  }, [comments]);
+  }, [allComments]);
 
   console.log(comments);
   return (
@@ -36,19 +35,19 @@ const CommentSection = ({ comments }) => {
           <div
             key={comment.id}
             className={`${styles.comment} ${
-              comment.optionSelected === "A" ? styles.opinionA : styles.opinionB
+              comment.selectOption === "A" ? styles.opinionA : styles.opinionB
             }`}
           >
             <UserInfo
               userImage={comment.userImage}
-              userId={comment.nickname}
+              userId={comment.userId}
               opinion={comment.optionSelected}
             />
             <CommentText
-              comment={comment.comment}
+              comment={comment.content}
               likes={comment.likeCount}
               date={comment.createdAt}
-              opinion={comment.optionSelected}
+              opinion={comment.selectOption}
             />
           </div>
         ))}

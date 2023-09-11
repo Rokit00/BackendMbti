@@ -6,10 +6,17 @@ import Home from "./pages/home/Home";
 import DebateList from "./pages/debate_list/DebateList";
 import SectionTwo from "./pages/home/sections/SectionTwo"; // SectionTwo 컴포넌트 임포트
 import DebateDetail from "./components/DebateDetail";
-import LoginModal from "./components/LoginModal";
+import Login from "./components/login/Login";
 import { AuthProvider } from "./components/AuthContext";
 import Signup from "./pages/Signup";
 import NewDebate from "./components/NewDebate";
+import Mychemilist from "./pages/mypages/Mychemilist";
+import Mydiscussion from "./pages/mypages/Mydiscussion";
+import Myinfor from "./pages/mypages/Myinfor";
+import Qa from "./pages/mypages/Qa";
+import DeleteAccount from "./pages/mypages/DeleteAccount";
+import LoginModal from "./components/login/LoginModal";
+
 const App = () => {
   return (
     <AuthProvider>
@@ -17,11 +24,17 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/lists" element={<DebateList />} />
-          <Route path="/debate/:id" element={<DebateDetail />} />
+          <Route path="/post/:id" element={<DebateDetail />} />
           <Route path="/section2/:data" element={<SectionTwo />} />
           <Route path="/signup" element={<Signup />} />
-          <Route path="/login" element={<LoginModal />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/loginModal" element={<LoginModal />} /> 
           <Route path="/newDebate" element={<NewDebate />} />
+          <Route path="/Mychemilist" element={<Mychemilist />} />
+          <Route path="/Mydiscussion" element={<Mydiscussion />} />
+          <Route path="/profile" element={<Myinfor />} />
+          <Route path="/Q&A" element={<Qa />} />
+          <Route path="/delete-account" element={<DeleteAccount />} />
         </Routes>
       </Router>
     </AuthProvider>

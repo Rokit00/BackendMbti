@@ -1,8 +1,5 @@
 // compatibility.js
 
-// 후에 백엔드에서 데이터를 가져와서 결과 값을 수정해야 함
-// MBTI 각 유형의 케미를 정의해야하는 객체
-// 현재는 알파벳으로 해놨고 후에 데이터를 불러서 작업할 예정
 const mbtiCompatibility = {
   I: "I",
   E: "E",
@@ -14,18 +11,95 @@ const mbtiCompatibility = {
   J: "J",
 };
 
-// 두 MBTI 유형의 케미를 확인하는 함수
+const exceptionalRelations = {
+  INFP: ["ENFJ", "ENTJ"],
+  ENFP: ["INFJ", "INTJ"],
+  INFJ: ["ENFP", "ENTP"],
+  ENFJ: ["INFP", "ISFP"],
+  INTJ: ["ENFP", "ENTP"],
+  ENTJ: ["INFP", "INTP"],
+  INTP: ["ENTJ", "ESTJ"],
+  ENTP: ["INFJ", "INTJ"],
+  ISFP: ["ENFJ", "ESFJ", "ESTJ"],
+  ESFP: ["ISFJ", "ISTJ"],
+  ESTP: ["ISFJ"],
+  ISFJ: ["ESFP", "ESTP"],
+  ESFJ: ["ESFP"],
+  ESTJ: ["INTP", "ISFP", "ISTP"],
+};
+
 export const checkCompatibility = (mbti1, mbti2) => {
-  // 4개의 MBTI 유형을 순회하며 궁합 확인
-  for (let i = 0; i < 4; i++) {
-    if (mbtiCompatibility[mbti1[i]] !== mbti2[i]) {
-      // 백엔드 기능 구현이 이루어 지지 않은 상황이라 임시로
-      // 궁합이 일치하지 않으면 아래의 값을 반환
-      return "서로의 궁합이 좋지 않습니다.";
-    }
+  // 두 MBTI 유형이 같은 경우 '좋음' 반환
+  if (mbti1 === mbti2) {
+    if (any((t) => ["S", "P"].includes(t), mbti1)) return "조금 안맞는";
+    return "좋음";
   }
-  // 여기도 똑같은 이유로 궁합이 모두 일치하면 해당값을 반환
-  return "서로의 궁합이 좋습니다!";
+
+  // 예외 관계 체크
+  if (
+    exceptionalRelations[mbti1] &&
+    exceptionalRelations[mbti1].includes(mbti2)
+  )
+    return "매우 좋음";
+  if (
+    exceptionalRelations[mbti2] &&
+    exceptionalRelations[mbti2].includes(mbti1)
+  )
+    return "매우 좋음";
+
+  // ENTJ의 특별한 관계
+  if (mbti1 === "ENTJ" && any((t) => ["S", "F", "T"].includes(t), mbti2))
+    return "그럭저럭";
+  if (mbti2 === "ENTJ" && any((t) => ["S", "F", "T"].includes(t), mbti1))
+    return "그럭저럭";
+
+  // XNFX와 XSFX, XSTX의 관계
+  if (
+    any((t) => ["NF"].includes(t), mbti1) &&
+    (any((t) => ["SF"].includes(t), mbti2) ||
+      any((t) => ["ST"].includes(t), mbti2))
+  )
+    return "매우 나쁨";
+
+  // NF와 NT의 관계
+  if (mbti1.includes("NF") && mbti2.includes("NT")) return "좋음";
+
+  // XSXP와 XNTX의 관계
+  if (
+    any((t) => ["S", "P"].includes(t), mbti1) &&
+    any((t) => ["N", "T"].includes(t), mbti2)
+  )
+    return "그럭저럭";
+
+  // XSXP와 XSXP의 관계
+  if (
+    any((t) => ["S", "P"].includes(t), mbti1) &&
+    any((t) => ["S", "P"].includes(t), mbti2)
+  )
+    return "조금 안맞는";
+
+  // XSXP와 XSXJ의 관계
+  if (
+    any((t) => ["S", "P"].includes(t), mbti1) &&
+    any((t) => ["S", "J"].includes(t), mbti2)
+  )
+    return "그럭저럭";
+
+  // XSXJ와 XSXJ의 관계
+  if (
+    any((t) => ["S", "J"].includes(t), mbti1) &&
+    any((t) => ["S", "J"].includes(t), mbti2)
+  )
+    return "좋음";
+
+  return "정보 없음";
+};
+
+const any = (condition, str) => {
+  for (let char of str) {
+    if (condition(char)) return true;
+  }
+  return false;
 };
 
 // MBTI 유형 배열을 알파벳 형태로 변환하는 함수

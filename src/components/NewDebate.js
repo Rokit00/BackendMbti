@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import styles from "../components/NewDebate.module.css"
+import React, { useEffect, useState } from "react";
+import styles from "./NewDebate.module.css";
 import NavBar from "./nav_bar/NavBar";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -26,9 +26,9 @@ function NewDebate() {
   };
 
   const handleCreate = async () => {
-    const { title, A, B, hashtags, createdDate, likes } = newDebateData;
+    const { title, A, B, createdDate } = newDebateData;
 
-    if (!title || !A || !B || !hashtags) {
+    if (!title || !A || !B) {
       return;
     }
 
@@ -36,18 +36,28 @@ function NewDebate() {
       title,
       optionA: A,
       optionB: B,
-      hashtags,
-      createAt: createdDate,
-      messages: 0,
-      hit: likes,
+      createdAt: createdDate,
+      likeCount: 0,
+      bookmark: false,
+      view: 0,
     };
+    const token = localStorage.getItem("token");
+    console.log(token);
 
-    try {
-      await axios.post("/sec3/writer", newDebate);
-      handleCancel();
-      navigate("/lists");
-    } catch (error) {
-      console.error("Error", error);
+    if (token) {
+      try {
+        await axios.post("/post/writer", newDebate, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        handleCancel();
+        navigate("/lists");
+      } catch (error) {
+        console.error("Error", error);
+      }
+    } else {
+      console.error("No token found");
     }
   };
 
@@ -56,7 +66,6 @@ function NewDebate() {
       title: "",
       A: "",
       B: "",
-      hashtags: "",
     });
   };
 
@@ -72,16 +81,6 @@ function NewDebate() {
               type="text"
               name="title"
               value={newDebateData.title}
-              onChange={handleInputChange}
-              className={styles.input}
-            ></input>
-          </div>
-          <div className={styles.formContext}>
-            <p className={styles.label}>해쉬 태그:</p>
-            <input
-              type="text"
-              name="hashtags"
-              value={newDebateData.hashtags}
               onChange={handleInputChange}
               className={styles.input}
             ></input>

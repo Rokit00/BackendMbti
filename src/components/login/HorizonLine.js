@@ -8,9 +8,11 @@ const HorizonLine = ({ text }) => {
         textAlign: "center",
         display: "flex",
         alignItems: "center",
-        margin: "20px 0 20px",
+        margin: "10px 0 20px",
         background: "#000",
         color: "#fff",
+        position: "relative",
+        top:"45px"
       }}
     >
       <div

@@ -1,18 +1,18 @@
 // CommentForm.js
 import React, { useState, useContext } from "react";
 import styles from "./CommentForm.module.css";
-import { useAuth } from "./AuthContext";
+import { useAuth } from "../AuthContext";
 import axios from "axios";
 
 const CommentForm = ({ onSubmit, writeNum }) => {
   const [newComment, setNewComment] = useState("");
   const [selectedOpinion, setSelectedOpinion] = useState(null);
-  const { isLoggedIn } = useAuth();
+  const { isLoggedIn, userInfo } = useAuth();
   const authContext = useContext(useAuth);
   const handleSubmit = () => {
     if (newComment && selectedOpinion) {
       const newCommentData = {
-        userId: authContext.userId,
+        userId: userInfo,
         userImage:
           authContext.userImage || "https://yourDefaultUserImageUrl.com",
         opinion: selectedOpinion,

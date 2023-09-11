@@ -6,10 +6,31 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("token"));
   const [userInfo, setUserInfo] = useState(null);
-
-  //후에 백엔드에서 api를 받아오기 위해서 만든 임시 useEffect
+  const isTokenExpired = (token) => {
+    try {
+      const payload = JSON.parse(atob(token.split(".")[1]));
+      const userId = payload.userId;
+      setUserInfo(userId);
+      const currentTime = Date.now() / 1000;
+      return currentTime > payload.exp;
+    } catch (e) {
+      return true;
+    }
+  };
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const checkTokenValidity = () => {
+      const token = localStorage.getItem("token");
+      if (token && isTokenExpired(token)) {
+        console.log("Token is expired");
+        setIsLoggedIn(false);
+        localStorage.removeItem("token");
+      }
+    };
+
+    checkTokenValidity();
+
+    const intervalId = setInterval(checkTokenValidity, 60000);
+    return () => clearInterval(intervalId);
   }, []);
 
   return (

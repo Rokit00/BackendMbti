@@ -1,15 +1,15 @@
 // LoginModal.js
 import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import styles from "./LoginModal.module.css";
-import logo from "../assets/logo.png";
-import kakao from "../assets/kakao_login.png";
+import styles from "./Login.module.css";
+import logo from "../../assets/logo.png";
+import kakao from "../../assets/kakao_login.png";
 import HorizonLine from "./HorizonLine";
-import useInput from "../hook/useInput";
-import { useAuth } from "./AuthContext";
+import useInput from "../../hook/useInput";
+import { useAuth } from "../AuthContext";
 import axios from "axios";
 
-function LoginModal() {
+function Login({customStyle, onLoginSuccess }) {
   const navigate = useNavigate();
   const location = useLocation();
   const userId = useInput("");
@@ -37,6 +37,9 @@ function LoginModal() {
         } else {
           navigate("/lists");
         }
+
+        onLoginSuccess();
+
       })
       .catch((error) => {
         console.error("Login error:", error);
@@ -52,13 +55,17 @@ function LoginModal() {
 
   return (
     <div className={styles.body}>
-      <div className={styles.card}>
+      <div className={styles.card} style={customStyle}>
         <form id="form" className={styles.form} onSubmit={handleLogin}>
-          <div className={styles.testtext}><span>WE-ING<hr></hr></span></div>
-          <img src={kakao} className={styles.kakao_image} alt="kakao" />
+          <div className={styles.testtext}>
+            <span id={styles.logotext}>
+              WE-ING<hr></hr>
+            </span>
+          </div>
+          <img src={kakao} className={styles.kakaoImage} alt="kakao" />
           <HorizonLine text="   or  " />
-          <div className={styles.form_down}>
-            <div className={styles.form_control}>
+          <div className={styles.formDown}>
+            <div className={styles.formControl}>
               <input
                 type="text"
                 id="username"
@@ -68,7 +75,7 @@ function LoginModal() {
                 required
               />
             </div>
-            <div className={styles.form_control}>
+            <div className={styles.formControl}>
               <input
                 type="password"
                 id="password"
@@ -78,11 +85,11 @@ function LoginModal() {
                 required
               />
             </div>
-            <button className={styles.login_button}>로그인</button>
-            <div className={styles.login_signup}>
-              <div className={styles.login_signup_desc}>계정이 없으신가요?</div>
+            <button className={styles.loginButton}>로그인</button>
+            <div className={styles.loginSignup}>
+              <div className={styles.loginSignupDesc}>계정이 없으신가요?</div>
               <button
-                className={styles.login_signup_link}
+                className={styles.loginSignupLink}
                 onClick={handleSignUp}
               >
                 가입하기
@@ -95,4 +102,4 @@ function LoginModal() {
   );
 }
 
-export default LoginModal;
+export default Login;

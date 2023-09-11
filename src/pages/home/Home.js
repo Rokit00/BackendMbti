@@ -17,7 +17,7 @@ const Home = () => {
   useEffect(() => {
     async function fetchRandomDebate() {
       try {
-        const response = await axios.get("/sec3/posts");
+        const response = await axios.get("/post/lists");
         const debates = response.data;
         const randomIndex = Math.floor(Math.random() * debates.length);
         setRandomDebate(debates[randomIndex]);
