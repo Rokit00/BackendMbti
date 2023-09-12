@@ -17,8 +17,11 @@ public interface MypageService {
     // 회원 정보 수정
     Member updateAllMemberInfo(MemberUpdateRequest request, String username);
 
-    // 프로필 이미지
-    void uploadProfilePicture(Long memberId, MultipartFile file);
+    // 프로필 저장
+    void updateProfilePicture(String username, MultipartFile file);
+
+    // 프로필 불러오기
+    String getProfile(Long memberId);
 
     // 내가 만든 케미 저장
     Mbti createMbtiGroup(MbtiGroupRequest request, String userId);

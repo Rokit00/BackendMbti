@@ -25,10 +25,4 @@ public interface MemberService {
 
     // 비밀번호 찾기
     String requestPasswordReset(String userId, String email);
-
-    // 프로필 업로드
-    void updateProfilePicture(String username, MultipartFile file);
-
-    // 프로필 보내기
-    String getProfile(Long memberId);
 }

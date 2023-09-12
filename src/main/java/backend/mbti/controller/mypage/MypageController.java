@@ -47,12 +47,21 @@ public class MypageController {
         }
     }
 
-    // 프로필 이미지 (수정도 여기 api로 보내야함)
-    @PostMapping("/{memberId}/upload-profile-picture")
-    public ResponseEntity<String> uploadProfilePicture(@PathVariable Long memberId, @RequestParam("file") MultipartFile file) {
-        mypageService.uploadProfilePicture(memberId, file);
-        return ResponseEntity.ok("Profile picture uploaded successfully");
+    // 프로필 저장
+    @PostMapping("/profile")
+    public ResponseEntity<?> updateProfile(@RequestParam("file") MultipartFile file, Authentication authentication) {
+        String username = authentication.getName();
+        mypageService.updateProfilePicture(username, file);
+        return ResponseEntity.ok("프로필 업데이트 완료");
     }
+
+    // 프로필 불러오기
+    @GetMapping("/{memberId}/profile-image-url")
+    public ResponseEntity<String> getProfileImageUrl(@PathVariable Long memberId) {
+        String imageUrl = mypageService.getProfile(memberId);
+        return ResponseEntity.ok(imageUrl);
+    }
+
 
 
     // 내가 만든 케미 저장

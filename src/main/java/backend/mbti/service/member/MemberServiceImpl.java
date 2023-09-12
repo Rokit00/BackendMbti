@@ -38,11 +38,6 @@ public class MemberServiceImpl implements MemberService{
     private String key;
     private Long expireTimeMs = 1000 * 60 * 60L; // 1시간
 
-    // 파일 경로
-    @Value("${file.upload-dir}")
-    private String uploadDir;
-
-
     // 회원가입
     @Override
     public String signup(MemberSignUpRequest memberSignUpRequest) {
@@ -113,44 +108,5 @@ public class MemberServiceImpl implements MemberService{
         }
 
         return temporaryPassword.toString();
-    }
-
-    // 프로필
-    @Override
-    public void updateProfilePicture(String username, MultipartFile file) {
-        Member member = memberRepository.findByUserId(username)
-                .orElseThrow(() -> new EntityNotFoundException("Member not found"));
-
-        String fileName = storeFile(file);
-        member.setProfileImage(fileName);
-        memberRepository.save(member);
-    }
-
-    // 파일 중복 검증 등...
-    public String storeFile(MultipartFile file) {
-
-        String originalFilename = file.getOriginalFilename();
-        String fileExtension = originalFilename.substring(originalFilename.lastIndexOf("."));
-        String newFileName = UUID.randomUUID() + fileExtension;
-
-        try {
-            Path targetLocation = Paths.get(uploadDir).resolve(newFileName);
-
-            Files.copy(file.getInputStream(), targetLocation);
-
-            return newFileName;
-
-        } catch (IOException ex) {
-            throw new RuntimeException("프로필 저장 실패", ex);
-        }
-    }
-
-    // 프로필 보내기
-    @Override
-    public String getProfile(Long memberId) {
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new EntityNotFoundException("Member not found"));
-        String imageUrl = uploadDir + member.getProfileImage();
-        return imageUrl;
     }
 }

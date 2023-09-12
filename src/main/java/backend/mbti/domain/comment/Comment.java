@@ -71,6 +71,7 @@ public class Comment {
     }
 
     // 회원 삭제 매핑
+    @JsonIgnore
     @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CommentLike> likes = new ArrayList<>();
 

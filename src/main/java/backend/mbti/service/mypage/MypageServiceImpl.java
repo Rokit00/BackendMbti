@@ -10,6 +10,7 @@ import backend.mbti.repository.member.MemberRepository;
 import backend.mbti.repository.post.PostRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @Slf4j
@@ -34,9 +36,11 @@ public class MypageServiceImpl implements MypageService {
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    // 파일 경로
+    @Value("${file.upload-dir}")
+    private String uploadDir;
+
     // 유저 정보 뷰
-
-
     @Override
     public Member getUserInfo(String username) {
         Member member = memberRepository.findAllByUserId(username);
@@ -69,32 +73,43 @@ public class MypageServiceImpl implements MypageService {
         return memberRepository.save(member);
     }
 
-    // 프로필 이미지
+    // 프로필 저장
     @Override
-    public void uploadProfilePicture(Long memberId, MultipartFile file) {
-        Member member = memberRepository.findById(memberId).orElseThrow(() -> new EntityNotFoundException("Member not found"));
+    public void updateProfilePicture(String username, MultipartFile file) {
+        Member member = memberRepository.findByUserId(username)
+                .orElseThrow(() -> new EntityNotFoundException("Member not found"));
+
+        String fileName = storeFile(file);
+        member.setProfileImage(fileName);
+        memberRepository.save(member);
+    }
+
+    // 파일 중복 검증 등...
+    public String storeFile(MultipartFile file) {
+
+        String originalFilename = file.getOriginalFilename();
+        String fileExtension = originalFilename.substring(originalFilename.lastIndexOf("."));
+        String newFileName = UUID.randomUUID() + fileExtension;
 
         try {
-            if (!file.isEmpty()) {
-                // 파일을 저장할 경로 설정
-                String uploadDir = "/path/to/profile/pictures/";
+            Path targetLocation = Paths.get(uploadDir).resolve(newFileName);
 
-                // 파일 이름 생성
-                String fileName = memberId + ".jpg";
+            Files.copy(file.getInputStream(), targetLocation);
 
-                // 파일 저장
-                Path filePath = Paths.get(uploadDir, fileName);
-                Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+            return newFileName;
 
-                // 프로필 사진 경로 업데이트
-                String profilePicturePath = "/profile/pictures/" + fileName;
-                member.setProfileImage(profilePicturePath);
-
-                memberRepository.save(member);
-            }
-        } catch (IOException e) {
-            throw new RuntimeException("파일 업로드 실페!", e);
+        } catch (IOException ex) {
+            throw new RuntimeException("프로필 저장 실패", ex);
         }
+    }
+
+    // 프로필 불러오기
+    @Override
+    public String getProfile(Long memberId) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new EntityNotFoundException("Member not found"));
+        String imageUrl = uploadDir + member.getProfileImage();
+        return imageUrl;
     }
 
     // 내가 만든 케미 저장

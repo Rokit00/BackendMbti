@@ -75,21 +75,6 @@ public class MemberController {
             return ResponseEntity.badRequest().body("오류.");
         }
     }
-
-    // 프로필 업로드
-    @PostMapping("/profile")
-    public ResponseEntity<?> updateProfile(@RequestParam("file") MultipartFile file, Authentication authentication) {
-        String username = authentication.getName();
-        memberService.updateProfilePicture(username, file);
-        return ResponseEntity.ok("프로필 업데이트 완료");
-    }
-
-    // 프로필 보내기
-    @GetMapping("/{memberId}/profile-image-url")
-    public ResponseEntity<String> getProfileImageUrl(@PathVariable Long memberId) {
-        String imageUrl = memberService.getProfile(memberId);
-        return ResponseEntity.ok(imageUrl);
-    }
 }
 
 
