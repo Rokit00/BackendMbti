@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Logo from "../../assets/logo.png";
+import logo_login from "../../assets/logo_login.png";
 import { Link } from "react-router-dom";
 import styles from "./NavBar.module.css";
 import { useAuth } from "../AuthContext";
@@ -19,7 +19,7 @@ const NavBar = () => {
 
   const handleLogout = () => {
     // localStorage에서 token 삭제
-    localStorage.removeItem("token");
+    sessionStorage.removeItem("token");
     setIsLoggedIn(false);
   };
 
@@ -29,7 +29,7 @@ const NavBar = () => {
         <div className={styles.navList}>
           <div>
             <Link to="/">
-              <img className={styles.logo} src={Logo} alt="logo" />
+              <img className={styles.logo_login} src={logo_login} alt="logo" />
             </Link>
           </div>
           <div className={styles.navItem}>

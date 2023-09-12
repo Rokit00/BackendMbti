@@ -126,33 +126,60 @@ const useSharedLogic = (satellites, initialData) => {
     }
   };
 
-  const renderSavedData = () => {
-    return savedData.map((data, dataIndex) => (
-      <div key={dataIndex} className={styles["data-row"]}>
-        <div className={styles["saved-data"]}>
-          <p>이름: {data.name}</p>
-          <div className={styles["result-texts"]}>
-            {data.mbti.map((textIndex, rowIndex) => {
-              const mbtiType = mbtiTexts[textIndex];
-              return (
-                <span
-                  key={rowIndex}
-                  className={`${styles["result-text"]} ${styles[mbtiType]} ${styles["selected"]}`}
-                >
-                  {mbtiType}
-                </span>
-              );
-            })}
-          </div>
+  const DataItem = ({ data, mbtiTexts, onDelete }) => {
+    if (!data) return null; // 데이터가 없으면 null 반환
+    return (
+      <>
+        <div>
+          이름: {data.name}
+          <button className={styles["delete-button"]} onClick={onDelete}>
+            x
+          </button>
         </div>
-        <button
-          className={styles["delete-button"]}
-          onClick={() => handleDelete(dataIndex)}
-        >
-          x
-        </button>
-      </div>
-    ));
+        <div className={styles["saved-data-item"]}>
+          {data.mbti.map((textIndex, rowIndex) => {
+            const mbtiType = mbtiTexts[textIndex];
+            return (
+              <span
+                key={rowIndex}
+                className={`${styles["result-text"]} ${styles[mbtiType]} ${styles["selected"]}`}
+              >
+                {mbtiType}
+              </span>
+            );
+          })}
+        </div>
+      </>
+    );
+  };
+  const renderSavedData = () => {
+    return (
+      <table className={styles["saved-data-table"]}>
+        <tbody>
+          {savedData.map((_, index) => {
+            if (index % 2 !== 0) return null;
+            return (
+              <tr key={index}>
+                <td>
+                  <DataItem
+                    data={savedData[index]}
+                    mbtiTexts={mbtiTexts}
+                    onDelete={() => handleDelete(index)}
+                  />
+                </td>
+                <td>
+                  <DataItem
+                    data={savedData[index + 1]}
+                    mbtiTexts={mbtiTexts}
+                    onDelete={() => handleDelete(index + 1)}
+                  />
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    );
   };
 
   return {

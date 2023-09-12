@@ -138,15 +138,15 @@ const Result = ({
         </div>
       </div>
       <div className={styles.buttonContainer}>
-        <button className={styles.shareButton} onClick={handleShareLink}>
+        <button className={styles.contentsbutton} onClick={handleShareLink}>
           링크 공유
         </button>
         {isLoggedIn && (
-          <button className={styles.saveButton} onClick={() => {}}>
+          <button className={styles.contentsbutton} onClick={() => {}}>
             저장하기
           </button>
         )}
-        <button className={styles.goBackButton} onClick={handleGoBack}>
+        <button className={styles.contentsbutton} onClick={handleGoBack}>
           처음화면으로 돌아가기
         </button>
       </div>

@@ -54,7 +54,7 @@ export const AuthProvider = ({ children }) => {
       }, (tokenExpiration - Date.now() / 1000) * 1000);
       return () => clearTimeout(timeoutId);
     }
-  }, []);
+  }, [isLoggedIn]);
 
   return (
     <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn, user, setUser }}>

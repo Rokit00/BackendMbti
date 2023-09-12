@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import styles from "./Login.module.css";
-import logo from "../../assets/logo.png";
+import logo_login from "../../assets/logo_login.png";
 import kakao from "../../assets/kakao_login.png";
 import HorizonLine from "./HorizonLine";
 import useInput from "../../hook/useInput";
@@ -56,10 +56,8 @@ function Login({ customStyle, onLoginSuccess }) {
     <div className={styles.body}>
       <div className={styles.card} style={customStyle}>
         <form id="form" className={styles.form} onSubmit={handleLogin}>
-          <div className={styles.testtext}>
-            <span id={styles.logotext}>
-              WE-ING<hr></hr>
-            </span>
+          <div className={styles.logobox}>
+           <img className={styles.logo_login} src={logo_login} ></img>
           </div>
           <img src={kakao} className={styles.kakaoImage} alt="kakao" />
           <HorizonLine text="   or  " />

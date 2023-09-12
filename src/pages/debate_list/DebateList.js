@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import NavBar from "../../components/nav_bar/NavBar";
 import styles from "./DebateList.module.css";
+import style from "../../components/Input.module.css"
 import { sortByLikes, sortByDate, sortByMessages } from "../../utils/sortUtils";
 import axios from "axios";
 import SearchResults from "../../components/SearchResults";
@@ -110,13 +111,13 @@ const DebateList = () => {
         onChange={(e) => setSearchKeyword(e.target.value)}
         placeholder="토론 주제 검색..."
       />
-      <button onClick={handleSearch}>search</button>
+      <button className={style.contentsbutton} onClick={handleSearch}>search</button>
       <div className={styles.cardContainer}>
         {searchResults.length > 0 && (
           <SearchResults results={searchResults} onSortChange={setSortOption} />
         )}
       </div>
-      {isLoggedIn && <button onClick={handleWriteDebate}>토론 글 쓰기</button>}
+      {isLoggedIn && <button className={style.contentsbutton} onClick={handleWriteDebate}>토론 글 쓰기</button>}
     </div>
   );
 };

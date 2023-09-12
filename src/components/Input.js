@@ -52,7 +52,7 @@ const Input = ({
               ))}
             </div>
           </div>
-          <button onClick={handleSave}>저장하기</button>
+          <button className={styles["result-btn"]} onClick={handleSave}>저장하기</button>
         </div>
         <div className={styles["right-container"]}>
           <div className={styles["right-content"]}>

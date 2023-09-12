@@ -17,6 +17,12 @@
   width: 33%;
 }
 
+/*
+@font-face {
+  font-family: "YdestreetB";
+  src: url("../assets/Ydestreet_FONT/YdestreetB.ttf");
+}*/
+
 .middle-content {
   display: flex;
   flex-direction: column;

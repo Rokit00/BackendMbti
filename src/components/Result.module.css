@@ -65,6 +65,35 @@ input {
   transition: filter 0.3s ease;
 }
 
+
+.leftContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 0.5em solid transparent;
+  box-shadow: 0px 0px 15px #ffffff, inset 0px 0px 5px #ffffff;
+  max-height: 538.182px;
+  border-radius: 10px;
+  margin: 20px;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.8);
+  z-index: 1;
+  overflow-y: auto;
+  transition: border 0.5s ease, box-shadow 0.5s ease, transform 0.5s ease ;
+  transform: perspective(100px) rotatey(2deg);
+}
+
+.leftContent:hover {
+  border: 0.5em solid #ffffffcd;
+  box-shadow: 0px 0px 15px #ffffff, inset 0px 0px 5px #ffffff;
+  transform: perspective(100px) rotatey(0deg);
+}
+
+.leftContent::-webkit-scrollbar {
+  width: 0.5em;
+}
+
+/*
 .leftContent {
   border: 5px solid #fff;
   border-radius: 10px;
@@ -75,7 +104,36 @@ input {
   align-items: center;
   overflow-y: auto;
 }
+*/
 
+.rightContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 544px;
+  width: 270px;
+  border: 0.5em solid transparent;
+  box-shadow: 0px 0px 15px #ffffff, inset 0px 0px 5px #ffffff;
+  border-radius: 10px;
+  margin: 20px;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.8);
+  z-index: 1;
+  overflow-y: auto;
+  transition: border 0.5s ease, box-shadow 0.5s ease, transform 0.5s ease ;
+  transform: perspective(100px) rotatey(-2deg);
+}
+
+.rightContent:hover {
+  border: 0.5em solid #ffffffcd;
+  box-shadow: 0px 0px 15px #ffffff, inset 0px 0px 5px #ffffff;
+  transform: perspective(100px) rotatey(0deg);
+}
+
+
+
+
+/*
 .rightContent {
   border: 5px solid #fff;
   border-radius: 10px;
@@ -88,6 +146,9 @@ input {
   height: 544px;
   overflow-y: auto;
 }
+*/
+
+
 
 .rightContent::-webkit-scrollbar {
   width: 0.5em;
@@ -175,29 +236,81 @@ input {
   margin-bottom: 10px;
 }
 
-.buttons {
-  display: flex;
-  justify-content: center;
-}
-.buttonContainer {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 20px;
-}
-.buttons button {
+
+/*버튼 시작*/
+
+
+.contentsbutton {
+  position: relative;
+  font-size: 15px;
+  font-weight: bold;
   padding: 10px 20px;
-  border-radius: 5px;
-  background-color: #000;
-  color: #fff;
+  border: none;
   cursor: pointer;
-  margin: 10px;
-  transition: background-color 0.3s ease;
+  margin: 10px 10px;
+  color: #ffffffcd;
+  background-color: transparent;
+  cursor: pointer;
+  margin: 10px 10px;
 }
 
-.buttons button:hover {
-  background-color: #9f9f9f;
-  color: #000;
+
+.contentsbutton::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  border: none;
+  box-shadow: -4px -4px 5px #6937a1;
+  transform: translate(0px, 0px);
+  transition: transform 0.2s;
+  border-radius: 10px;
 }
+
+
+.contentsbutton::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  border: none;
+  box-shadow: 4px 4px 5px #83dcb7;
+  transform: translate(0px, 0px);
+  transition: transform 0.2s;
+  border-radius: 10px;
+}
+
+
+.contentsbutton:hover::before {
+  transform: translate(5px, 5px);
+  background: linear-gradient(
+    to right,
+    rgba(105, 55, 161, 0.2),
+    rgba(131, 220, 183, 0.2)
+  );
+}
+
+
+.contentsbutton:hover::after {
+  transform: translate(-5px, -5px);
+  background: linear-gradient(
+    to right,
+    rgba(105, 55, 161, 0.2),
+    rgba(131, 220, 183, 0.2)
+  );
+}
+
+
+.contentsbutton:hover {
+  color: #ffffff;
+}
+
+/*버튼 끝*/
+
 .result-texts {
   text-align: center;
 }

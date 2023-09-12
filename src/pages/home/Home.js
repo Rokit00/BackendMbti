@@ -3,6 +3,7 @@ import React, { useRef, useState, useEffect } from "react";
 import SectionOne from "./sections/SectionOne";
 import SectionTwo from "./sections/SectionTwo";
 import SectionThree from "./sections/SectionThree";
+import Login from "../../components/login/Login";
 import axios from "axios";
 import { calculatePercentage } from "../../utils/calculatePercent";
 
@@ -69,6 +70,9 @@ const Home = () => {
           percentageB={percentageB}
         />
       )}
+
+<Login />
+
     </div>
   );
 };

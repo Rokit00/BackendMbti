@@ -101,7 +101,7 @@ const DebateCard = ({ debate }) => {
       <Link to={`/post/${id}`} className={styles.container}>
         {isUnderway && <small className={styles.underwayText}>New</small>}
         <div className={styles.cardInfo}>
-          <h3 className={styles.title}>{title}</h3>
+          <h3 className={styles.title}>Q.{title}</h3>
           <p className={styles.percent}>
             A. {percentageA}% vs B. {percentageB}%
           </p>

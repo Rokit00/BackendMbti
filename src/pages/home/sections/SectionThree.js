@@ -3,6 +3,9 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import OpinionBarChart from "../../../components/OpinionBarChart";
 import styles from "./SectionThree.module.css";
+import style from "../../../components/Input.module.css";
+
+
 import "./SectionOne.css";
 
 const SectionThree = ({ debate, percentageA, percentageB }) => {
@@ -17,7 +20,8 @@ const SectionThree = ({ debate, percentageA, percentageB }) => {
   };
 
   return (
-    <div className="section-one">
+    <div className={styles.section_Three}>
+      <div className={styles.section_Three_box}>
       <h2>{debate.title}</h2>
       <OpinionBarChart
         opinionA={percentageA}
@@ -25,9 +29,10 @@ const SectionThree = ({ debate, percentageA, percentageB }) => {
         choiceA={debate.optionA}
         choiceB={debate.optionB}
       />
-      <button className={styles.button} onClick={handleWriteDebate}>
+      <button className={style.contentsbutton} onClick={handleWriteDebate}>
         참여하기
       </button>
+      </div>
     </div>
   );
 };

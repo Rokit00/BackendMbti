@@ -41,9 +41,9 @@
 }
 
 .closeButton {
-  position: absolute;
-  top: 120px;
-  right: 680px;
+  position: relative;
+  top: 368px;
+  right: -197px;
   cursor: pointer;
   background-color: transparent;
   border: none;
