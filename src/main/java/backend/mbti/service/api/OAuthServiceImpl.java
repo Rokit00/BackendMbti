@@ -44,8 +44,8 @@ public class OAuthServiceImpl implements OAuthService{
         //httpbody 오브젝트 생성
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("grant_type", "authorization_code");
-        params.add("client_id", "9394c1ee0de2fd55a8ccc154f6cc5114");
-        params.add("redirect_uri", "http://localhost:8000/auth/kakao/callback");
+        params.add("client_id", "9394c1ee0de2fd55a8ccc154f6cc5114"); //카카오 디벨로퍼의 REST API 키
+        params.add("redirect_uri", "http://localhost:8080/auth/kakao/callback");
         params.add("code", code);
 
         //httpheader와 httpbody를 하나의 오브젝트에 담기
@@ -68,7 +68,6 @@ public class OAuthServiceImpl implements OAuthService{
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
-        System.out.println(oAuthToken.getAccess_token());
 
 
         RestTemplate rt2 = new RestTemplate();
@@ -90,7 +89,6 @@ public class OAuthServiceImpl implements OAuthService{
                 String.class
         );
 
-        System.out.println(response2.getBody());
 
         ObjectMapper objectMapper2 = new ObjectMapper();
         KakaoProfile kakaoProfile = null;
@@ -99,20 +97,24 @@ public class OAuthServiceImpl implements OAuthService{
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
-        System.out.println("이메일 = " + kakaoProfile.getKakao_account().getEmail());
-
 
 
         //Member 오브젝트
         MemberSignUpRequest kakaoUser = MemberSignUpRequest.builder()
                 .userId(kakaoProfile.getKakao_account().getEmail() + kakaoProfile.getId())
-                .password("cosKey")
-                .nickName(kakaoProfile.getProperties().getNickname()) //getKakao_account().getProfile().getNickname()
+                .password("secretKey")
+                .nickName(kakaoProfile.getProperties().getNickname())
                 .birthday(kakaoProfile.getKakao_account().getBirthday())
                 .email(kakaoProfile.getKakao_account().getEmail())
+                .oAuth("kakao")
                 .build();
 
-        kakaoSignup(kakaoUser);
+        //가입자 혹은 비가입자 체크해서 처리
+        Member originUser = findMember(kakaoUser.getUserId());
+
+        if(originUser.getUserId() == null) {
+            kakaoSignup(kakaoUser);
+        }
 
         //로그인 처리
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(kakaoUser.getUserId(), kakaoUser.getPassword()));
@@ -133,4 +135,11 @@ public class OAuthServiceImpl implements OAuthService{
         throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
 
+    //회원 찾기
+    public Member findMember (String userId) {
+        Member member = memberRepository.findByUserId(userId).orElseGet(()->{
+            return new Member();
+        });
+        return member;
+    }
 }

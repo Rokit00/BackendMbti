@@ -37,6 +37,10 @@ public class Comment {
     @Column(nullable = false)
     private String mbti;
 
+    // 프로필
+    @Column
+    private String profile;
+
     // 좋아요 수
     @Column(name = "like_count")
     private Integer likeCount = 0;
@@ -76,10 +80,11 @@ public class Comment {
     private List<CommentLike> likes = new ArrayList<>();
 
 
-    public Comment(String userId, String mbti,String content,Character selectOption, Post post, Member member) {
+    public Comment(String userId, String mbti,String content,Character selectOption, String profile, Post post, Member member) {
         this.userId = userId;
         this.mbti = mbti;
         this.content = content;
+        this.profile = profile;
         this.post = post;
         this.member = member;
         this.selectOption = selectOption;

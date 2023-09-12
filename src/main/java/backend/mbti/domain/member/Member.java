@@ -49,6 +49,10 @@ public class Member {
     @Column(nullable = false)
     private String birthday;
 
+    //카카오 로그인시 회원 비밀번호 수정금지
+    @Column
+    private String oAuth;
+
     // 회원 삭제 매핑
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Mbti> mbtiList = new ArrayList<>();

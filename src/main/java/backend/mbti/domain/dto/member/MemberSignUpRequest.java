@@ -24,6 +24,8 @@ public class MemberSignUpRequest {
 
     private String email;
 
+    private String oAuth;
+
     public Member toEntity(String encPwd) {
         return Member.builder()
                 .userId(userId)
