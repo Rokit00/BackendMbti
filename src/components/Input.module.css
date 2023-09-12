@@ -49,16 +49,13 @@
   font-family: "Titan One", cursive;
   vertical-align: sub;
   background: linear-gradient(
-    127deg,
-    rgba(105, 55, 161, 1) 10%,
-    rgb(156, 203, 164) 33%,
-    rgba(105, 55, 161, 1) 43%,
-    rgb(156, 203, 164) 83%,
-    rgba(105, 55, 161, 1) 93%
+    347deg,
+    rgba(192, 250, 202, 1) 15%, rgba(255, 212, 0, 1) 35%, rgba(233, 115, 141, 1) 55%, rgba(105, 55, 161, 1) 70%
   );
   -webkit-background-clip: text;
   font-weight: 100;
   color: transparent;
+  -webkit-text-stroke: 1px #fff;
 }
 
 #nameLabel {
