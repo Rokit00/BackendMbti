@@ -1,5 +1,6 @@
 package backend.mbti.domain.comment;
 
+import backend.mbti.domain.like.CommentLike;
 import backend.mbti.domain.member.Member;
 import backend.mbti.domain.post.Post;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -10,7 +11,9 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Getter
@@ -40,13 +43,13 @@ public class Comment {
 
     // Post Join
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "post_id", nullable = false)
     private Post post;
 
     // Member Join
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "member_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Member member;
@@ -66,6 +69,10 @@ public class Comment {
         }
         return null;
     }
+
+    // 회원 삭제 매핑
+    @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CommentLike> likes = new ArrayList<>();
 
 
     public Comment(String userId, String mbti,String content,Character selectOption, Post post, Member member) {

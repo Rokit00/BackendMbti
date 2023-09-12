@@ -48,12 +48,12 @@ public class Post {
 
     // 맴버 테이블 다대일
     @JsonIgnore
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Member member;
 
     // 댓글 수
     @JsonIgnore
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<Comment>();
 
     public void increaseViewCount() {

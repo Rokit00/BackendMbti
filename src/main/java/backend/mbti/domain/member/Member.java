@@ -1,10 +1,12 @@
 package backend.mbti.domain.member;
 
+import backend.mbti.domain.mbti.Mbti;
 import backend.mbti.domain.post.Post;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -46,6 +48,10 @@ public class Member {
     // 생년월일
     @Column(nullable = false)
     private String birthday;
+
+    // 회원 삭제 매핑
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Mbti> mbtiList = new ArrayList<>();
 
     @JsonIgnore
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
