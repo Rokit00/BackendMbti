@@ -1,11 +1,10 @@
 package backend.mbti.controller.mypage;
 
-import backend.mbti.domain.dto.mbti.MbtiGroupRequest;
+import backend.mbti.domain.dto.mypage.MbtiGroupRequest;
 import backend.mbti.domain.dto.mypage.MemberUpdateRequest;
 import backend.mbti.domain.mbti.Mbti;
 import backend.mbti.domain.member.Member;
 import backend.mbti.domain.post.Post;
-import backend.mbti.service.member.MemberService;
 import backend.mbti.service.mypage.MypageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,7 +34,7 @@ public class MypageController {
         return ResponseEntity.ok(member);
     }
 
-    // 내 정보 수정 (테스트 완료)
+    // 내 정보 수정
     @PutMapping("/update-all")
     public ResponseEntity<Member> updateAllMemberInfo(@RequestBody MemberUpdateRequest request, Authentication authentication) {
         String username = authentication.getName();
@@ -48,7 +47,7 @@ public class MypageController {
         }
     }
 
-    // 프로필 이미지 (수정도 여기 api로 보내야함) - 테스트 X
+    // 프로필 이미지 (수정도 여기 api로 보내야함)
     @PostMapping("/{memberId}/upload-profile-picture")
     public ResponseEntity<String> uploadProfilePicture(@PathVariable Long memberId, @RequestParam("file") MultipartFile file) {
         mypageService.uploadProfilePicture(memberId, file);
@@ -56,21 +55,29 @@ public class MypageController {
     }
 
 
-    // 내가 만든 케미 (테스트 X)
-    @PostMapping
+    // 내가 만든 케미 저장
+    @PostMapping("/mbti")
     public ResponseEntity<Mbti> createMbtiGroup(@RequestBody MbtiGroupRequest request, Authentication authentication) {
         String userId = authentication.getName();
         Mbti createdGroup = mypageService.createMbtiGroup(request, userId);
         return ResponseEntity.ok(createdGroup);
     }
 
-    // 내가 만든 토론 (테스트 완료, 유저 null)
+    // 내가 만든 케미 불러오기
+    @GetMapping("/mbti")
+    public ResponseEntity<List<Mbti>> viewMbtiGroup(Authentication authentication) {
+        String userId = authentication.getName();
+        List<Mbti> viewMbtiGroup = mypageService.viewMbtiGroup(userId);
+        return ResponseEntity.ok(viewMbtiGroup);
+    }
+
+    // 내가 만든 토론
     @GetMapping("/{userId}/posts")
     public ResponseEntity<List<Post>> getPostsByMember(@PathVariable String userId, Authentication authentication) {
-        String loggedInUserId = authentication.getName();
+        String authUserId = authentication.getName();
 
-        if (!userId.equals(loggedInUserId)) {
-            throw new AccessDeniedException("You are not allowed to view posts for this member");
+        if (!userId.equals(authUserId)) {
+            throw new AccessDeniedException("접속 불가!");
         }
 
         List<Post> posts = mypageService.getPostsByMember(userId);
@@ -79,7 +86,7 @@ public class MypageController {
 
     // 문의하기 (ADMIN 계정으로 일단 보류)
 
-    // 회원 탈퇴 (테스트 완료)
+    // 회원 탈퇴
     @DeleteMapping("/delete")
     public ResponseEntity<Void> deleteMember(Authentication authentication) {
         String username = authentication.getName();

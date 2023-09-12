@@ -1,8 +1,7 @@
 package backend.mbti.service.mypage;
 
-import backend.mbti.domain.dto.mbti.MbtiGroupRequest;
+import backend.mbti.domain.dto.mypage.MbtiGroupRequest;
 import backend.mbti.domain.dto.mypage.MemberUpdateRequest;
-import backend.mbti.domain.dto.post.PostByIdRequest;
 import backend.mbti.domain.mbti.Mbti;
 import backend.mbti.domain.member.Member;
 import backend.mbti.domain.post.Post;
@@ -21,8 +20,11 @@ public interface MypageService {
     // 프로필 이미지
     void uploadProfilePicture(Long memberId, MultipartFile file);
 
-    // 내가 만든 케미
+    // 내가 만든 케미 저장
     Mbti createMbtiGroup(MbtiGroupRequest request, String userId);
+
+    // 내가 만든 케미 불러오기
+    List<Mbti> viewMbtiGroup(String userId);
 
     // 내가 만든 토론
     List<Post> getPostsByMember(String userId);

@@ -89,7 +89,7 @@ public class CommentServiceImpl implements CommentService {
     // 댓글 좋아요
     @Override
     @Transactional
-    public void likePost(Long commentId, String username) {
+    public int likePost(Long commentId, String username) { // void -> int 타입으로 메소드 변경
         Member member = memberRepository.findByUserId(username)
                 .orElseThrow(() -> new EntityNotFoundException("회원을 찾을 수 없습니다."));
 
@@ -110,5 +110,6 @@ public class CommentServiceImpl implements CommentService {
             comment.setLikeCount(comment.getLikeCount() - 1);
             commentRepository.save(comment);
         }
+        return comment.getLikeCount(); // int 타입을 변경함으로 리턴값 추가
     }
 }

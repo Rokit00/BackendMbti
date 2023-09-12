@@ -15,7 +15,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @Slf4j
@@ -77,9 +79,10 @@ public class CommentController {
 
     // 댓글 좋아요
     @PostMapping("/{commentId}/like")
-    public ResponseEntity<String> toggleLike(@PathVariable Long commentId, Authentication authentication) {
+    public ResponseEntity<Integer> toggleLike(@PathVariable Long commentId, Authentication authentication) {
         String username = authentication.getName();
-        commentService.likePost(commentId, username);
-        return ResponseEntity.ok("요청 완료");
+        int updatedLikes = commentService.likePost(commentId, username);
+
+        return ResponseEntity.ok().body(updatedLikes);
     }
 }

@@ -1,8 +1,7 @@
 package backend.mbti.service.mypage;
 
-import backend.mbti.domain.dto.mbti.MbtiGroupRequest;
+import backend.mbti.domain.dto.mypage.MbtiGroupRequest;
 import backend.mbti.domain.dto.mypage.MemberUpdateRequest;
-import backend.mbti.domain.dto.post.PostByIdRequest;
 import backend.mbti.domain.mbti.Mbti;
 import backend.mbti.domain.member.Member;
 import backend.mbti.domain.post.Post;
@@ -98,18 +97,28 @@ public class MypageServiceImpl implements MypageService {
         }
     }
 
-    // 내가 만든 케미
+    // 내가 만든 케미 저장
     @Override
     public Mbti createMbtiGroup(MbtiGroupRequest request, String userId) {
         Member member = memberRepository.findByUserId(userId)
                 .orElseThrow(() -> new EntityNotFoundException("회원을 찾을 수 없습니다."));
 
         Mbti mbtiGroup = new Mbti();
-        mbtiGroup.setMbtiType(request.getMbtiType());
+        mbtiGroup.setMbtiTypes(request.getMbtiTypes());
         mbtiGroup.setGroupName(request.getGroupName());
         mbtiGroup.setMember(member);
 
         return mbtiRepository.save(mbtiGroup);
+    }
+
+    // 내가 만든 케미 불러오기
+    @Override
+    public List<Mbti> viewMbtiGroup(String userId) {
+        Member member = memberRepository.findByUserId(userId)
+                .orElseThrow(() -> new EntityNotFoundException("회원을 찾을 수 없습니다"));
+
+        List<Mbti> mbti = mbtiRepository.findByMember(member);
+        return mbti;
     }
 
     // 내가 만든 토론
