@@ -71,7 +71,7 @@ const Home = () => {
         />
       )}
 
-<Login />
+    <Login />
 
     </div>
   );

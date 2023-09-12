@@ -1,4 +1,3 @@
-// SectionThree.js
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import OpinionBarChart from "../../../components/OpinionBarChart";
@@ -21,6 +20,7 @@ const SectionThree = ({ debate, percentageA, percentageB }) => {
 
   return (
     <div className={styles.section_Three}>
+
       <div className={styles.section_Three_box}>
       <h2>{debate.title}</h2>
       <OpinionBarChart
@@ -33,6 +33,12 @@ const SectionThree = ({ debate, percentageA, percentageB }) => {
         참여하기
       </button>
       </div>
+
+      <div className={styles.testbox}>
+      </div>
+
+
+
     </div>
   );
 };
