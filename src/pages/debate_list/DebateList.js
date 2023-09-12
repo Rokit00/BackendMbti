@@ -13,55 +13,73 @@ const DebateList = () => {
   const { isLoggedIn } = useAuth();
   const [searchKeyword, setSearchKeyword] = useState("");
   const [sortOption, setSortOption] = useState("");
-  const [debateComments, setDebateComments] = useState([]);
   const [searchResults, setSearchResults] = useState([]);
+  const [originalData, setOriginalData] = useState([]);
   useEffect(() => {
     async function fetchAllDebates() {
       try {
         const response = await axios.get("/post/lists");
-        console.log("data: ", response.data);
-        const promises = response.data.map(async (post) => {
-          const postDate = new Date(post.createdAt);
-          const currentDate = new Date();
-          const timeDiff = currentDate - postDate;
-          const daysDiff = timeDiff / (1000 * 60 * 60 * 24);
 
-          // // 각 게시물의 댓글 수 가져오기
-          const commentCountResponse = await axios.get(
-            `/comment/${post.id}/count`
-          );
-          const commentCount = commentCountResponse.data.count;
+        const dataWithComments = await Promise.all(
+          response.data.map(async (post) => {
+            const commentCountResponse = await axios.get(
+              `/comment/${post.id}/count`
+            );
 
-          console.log(post);
-          return {
-            id: post.id,
-            title: post.title,
-            nickname: post.nickname,
-            A: post.optionA,
-            B: post.optionB,
-            messages: commentCount,
-            views: Math.round(post.viewCount / 2),
-            likes: post.likeCount,
-            bookMark: post.bookmark,
-            isUnderway: daysDiff <= 7,
-            dates: post.createdAt,
-          };
-        });
+            return {
+              ...post,
+              messages: commentCountResponse.data.count,
+            };
+          })
+        );
 
-        const transformedData = await Promise.all(promises);
-        setDebateComments(transformedData);
+        const transformedData = transformData(dataWithComments);
+        setOriginalData(transformedData);
+        setSearchResults(transformedData);
       } catch (error) {
-        console.error("Error fetching all the debate comments", error);
+        console.error("Error fetching the posts", error.response.data || error);
       }
+    }
+
+    function transformData(data) {
+      return data.map((post) => {
+        const postDate = new Date(post.createdAt);
+        const currentDate = new Date();
+        const timeDiff = currentDate - postDate;
+        const daysDiff = timeDiff / (1000 * 60 * 60 * 24);
+
+        return {
+          id: post.id,
+          title: post.title,
+          nickname: post.nickname,
+          A: post.optionA,
+          B: post.optionB,
+          messages: post.messages,
+          views: Math.round(post.viewCount / 2),
+          likes: post.likeCount,
+          bookMark: post.bookmark,
+          isUnderway: daysDiff <= 7,
+          dates: post.createdAt,
+        };
+      });
     }
 
     fetchAllDebates();
   }, []);
+  useEffect(() => {
+    handleSearch();
+  }, [sortOption]);
   const handleWriteDebate = () => {
     navigate("/newDebate");
   };
-  useEffect(() => {
-    let results = [...debateComments];
+
+  const handleSearch = () => {
+    const results = filterAndSortResults(originalData);
+    setSearchResults(results);
+  };
+
+  const filterAndSortResults = (data) => {
+    let results = [...data];
 
     if (searchKeyword.trim() !== "") {
       results = results.filter((debate) =>
@@ -70,22 +88,19 @@ const DebateList = () => {
     }
 
     switch (sortOption) {
-      case "likes":
+      case "views":
         results.sort(sortByLikes);
-        break;
-      case "date":
-        results.sort(sortByDate);
         break;
       case "messages":
         results.sort(sortByMessages);
         break;
       default:
+        results.sort(sortByDate);
         break;
     }
 
-    setSearchResults(results);
-  }, [searchKeyword, sortOption, debateComments]);
-
+    return results;
+  };
   return (
     <div className={styles.listContainer}>
       <NavBar />
@@ -95,7 +110,7 @@ const DebateList = () => {
         onChange={(e) => setSearchKeyword(e.target.value)}
         placeholder="토론 주제 검색..."
       />
-      <button>search</button>
+      <button onClick={handleSearch}>search</button>
       <div className={styles.cardContainer}>
         {searchResults.length > 0 && (
           <SearchResults results={searchResults} onSortChange={setSortOption} />

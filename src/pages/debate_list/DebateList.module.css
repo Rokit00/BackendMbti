@@ -30,9 +30,20 @@
   grid-template-columns: repeat(3, 1fr);
   gap: 20px;
 }
-input[type="text"] {
+.inputText {
   padding: 10px;
   border: none;
   border-radius: 4px;
   margin-right: 10px;
+}
+
+.button {
+  height: 35px;
+  font-size: 16px;
+  padding: 10px 20px;
+  border-radius: 25px;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+  align-items: centers;
 }

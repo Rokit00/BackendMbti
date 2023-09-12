@@ -4,7 +4,7 @@ export const sortByLikes = (a, b) => {
 };
 
 export const sortByDate = (a, b) => {
-  return new Date(b.createdDate) - new Date(a.createdDate);
+  return new Date(b.dates) - new Date(a.dates);
 };
 
 export const sortByMessages = (a, b) => {

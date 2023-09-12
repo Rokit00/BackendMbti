@@ -9,26 +9,26 @@ export const AuthProvider = ({ children }) => {
   );
   const [user, setUser] = useState(null);
 
-  const isTokenExpired = (token) => {
+  const getTokenExpiration = (token) => {
     try {
       const payload = JSON.parse(atob(token.split(".")[1]));
-      const userId = payload.userId;
-      setUser({ ...user, userId }); // 여기서 userId만 업데이트
-      const currentTime = Date.now() / 1000;
-      return currentTime > payload.exp;
+      return payload.exp;
     } catch (e) {
-      return true;
+      return null;
     }
   };
 
   useEffect(() => {
     const checkTokenValidity = async () => {
       const token = sessionStorage.getItem("token");
-      if (token && isTokenExpired(token)) {
+      const tokenExpiration = getTokenExpiration(token);
+      const currentTime = Date.now() / 1000;
+
+      if (token && tokenExpiration && currentTime > tokenExpiration) {
         console.log("Token is expired");
         setIsLoggedIn(false);
         setUser(null);
-        localStorage.removeItem("token");
+        sessionStorage.removeItem("token");
       } else if (token) {
         try {
           const response = await axios.get("/mypage", {
@@ -45,8 +45,15 @@ export const AuthProvider = ({ children }) => {
 
     checkTokenValidity();
 
-    const intervalId = setInterval(checkTokenValidity, 60000);
-    return () => clearInterval(intervalId);
+    const token = sessionStorage.getItem("token");
+
+    const tokenExpiration = getTokenExpiration(token);
+    if (tokenExpiration) {
+      const timeoutId = setTimeout(() => {
+        checkTokenValidity();
+      }, (tokenExpiration - Date.now() / 1000) * 1000);
+      return () => clearTimeout(timeoutId);
+    }
   }, []);
 
   return (

@@ -58,7 +58,6 @@ const SectionTwo = ({ handleScrollToSectionTwo }) => {
 
   return (
     <div className={styles.sectionTwo}>
-     
       {showLoading ? (
         <Loading />
       ) : !showContent && !showResult ? (

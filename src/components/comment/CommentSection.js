@@ -13,28 +13,73 @@ const CommentSection = ({
   const [allComments, setAllComments] = useState(initialComments || []);
   const endOfCommentsRef = useRef(null);
 
+  useEffect(() => {
+    if (initialComments) {
+      setAllComments(initialComments);
+    }
+  }, [initialComments]);
+
+  useEffect(() => {
+    if (endOfCommentsRef.current) {
+      endOfCommentsRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [allComments]);
+
   const handleCommentSubmit = async (newCommentData) => {
+    const token = sessionStorage.getItem("token");
+
+    if (!token) {
+      alert("로그인한 뒤에 이용할 수 있습니다.");
+      return;
+    }
+
     try {
       const response = await axios.post(`/comment/${postId}`, newCommentData, {
         headers: {
-          Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+          Authorization: `Bearer ${token}`,
         },
       });
       setAllComments((prevComments) => [...prevComments, response.data]);
       onNewComment();
     } catch (error) {
-      console.error("Error posting the comment", error);
+      console.error("Error", error);
       alert("댓글 작성에 실패했습니다.");
     }
   };
 
-  useEffect(() => {
-    setAllComments(initialComments);
+  const handleLike = async (commentId) => {
+    const token = sessionStorage.getItem("token");
 
-    if (endOfCommentsRef.current) {
-      endOfCommentsRef.current.scrollIntoView({ behavior: "smooth" });
+    if (!token) {
+      alert("로그인한 뒤에 이용할 수 있습니다.");
+      return;
     }
-  }, [initialComments]);
+
+    try {
+      const response = await axios.post(
+        `/comment/${commentId}/like`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      const updatedLikes = response.data;
+      setAllComments((prevComments) => {
+        const updatedComments = prevComments.map((comment) =>
+          comment.id === commentId
+            ? { ...comment, likeCount: updatedLikes }
+            : comment
+        );
+        return updatedComments;
+      });
+    } catch (error) {
+      console.error("Error", error);
+      alert("댓글 좋아요 변경에 실패했습니다.");
+    }
+  };
+
   return (
     <div>
       <div className={styles.commentsContainer}>
@@ -57,6 +102,7 @@ const CommentSection = ({
               likes={comment.likeCount}
               date={comment.createdAt}
               opinion={comment.selectOption}
+              onLike={() => handleLike(comment.id)}
             />
           </div>
         ))}

@@ -12,11 +12,36 @@ const DebateDetail = () => {
   const { id } = useParams();
   const [debate, setDebate] = useState(null);
   const [comments, setComments] = useState([]);
+  const [topCommentA, setTopCommentA] = useState(null);
+  const [topCommentB, setTopCommentB] = useState(null);
+
+  const updateTopComments = () => {
+    const topAComments = comments
+      .filter((c) => c.selectOption === "A")
+      .sort(
+        (a, b) =>
+          b.likes - a.likes || new Date(a.createdAt) - new Date(b.createdAt)
+      );
+    const topBComments = comments
+      .filter((c) => c.selectOption === "B")
+      .sort(
+        (a, b) =>
+          b.likes - a.likes || new Date(a.createdAt) - new Date(b.createdAt)
+      );
+
+    const newTopCommentA = topAComments[0];
+    const newTopCommentB = topBComments[0];
+
+    setTopCommentA(newTopCommentA);
+    setTopCommentB(newTopCommentB);
+  };
 
   const handleNewComment = async () => {
     try {
       const commentsResponse = await axios.get(`/comment/${id}`);
-      setComments(commentsResponse.data);
+      const newComments = commentsResponse.data;
+      setComments(newComments);
+      updateTopComments(); // 댓글이 추가될 때 최상단 댓글 업데이트
     } catch (error) {
       console.error("Error fetching the updated comments", error);
     }
@@ -27,8 +52,30 @@ const DebateDetail = () => {
       try {
         const debateResponse = await axios.get(`/post/${id}`);
         setDebate(debateResponse.data);
+
         const commentsResponse = await axios.get(`/comment/${id}`);
-        setComments(commentsResponse.data);
+        const loadedComments = commentsResponse.data;
+        console.log(loadedComments);
+        setComments(loadedComments);
+
+        // 초기 댓글 로딩 시 최상단 댓글 설정
+        const initialTopAComments = loadedComments
+          .filter((c) => c.selectOption === "A")
+          .sort(
+            (a, b) =>
+              b.likeCount - a.likeCount ||
+              new Date(a.createdAt) - new Date(b.createdAt)
+          );
+        const initialTopBComments = loadedComments
+          .filter((c) => c.selectOption === "B")
+          .sort(
+            (a, b) =>
+              b.likeCount - a.likeCount ||
+              new Date(a.createdAt) - new Date(b.createdAt)
+          );
+
+        setTopCommentA(initialTopAComments[0]);
+        setTopCommentB(initialTopBComments[0]);
       } catch (error) {
         console.error("Error fetching the data", error);
       }
@@ -54,16 +101,6 @@ const DebateDetail = () => {
     opinionCounts.A,
     opinionCounts.B
   );
-
-  const topAComments = comments
-    .filter((c) => c.selectOption === "A")
-    .sort((a, b) => b.likes - a.likes || a.createdAt - b.createdAt);
-  const topBComments = comments
-    .filter((c) => c.selectOption === "B")
-    .sort((a, b) => b.likes - a.likes || a.createdAt - b.createdAt);
-
-  const topCommentA = topAComments[0];
-  const topCommentB = topBComments[0];
 
   return (
     <div className={styles.detailContainer}>

@@ -1,159 +1,53 @@
-.body {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  width: 100vw;
-  height: 100vh;
-  background-origin: border-box;
-  background-clip: content-box, border-box;
+.modalBackground {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(1px);
+  z-index: 999;
 }
 
-@property --rotate {
-  syntax: "<angle>";
-  initial-value: 132deg;
-  inherits: false;
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+}
+
+.modalContent {
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  flex-grow: 1;
+}
+
+.modalLogin {
+  border: 4px solid #fff;
+  box-shadow: 0 0 15px #fff, inset 0 0 5px #fff;
+  height: 680px;
+  background-image: none;
+  top: -40px;
 }
 
 .card {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  width: 440px;
-  height: 750px;
-  margin: 12vh 0 0;
-  position: relative;
-  border: 4px solid transparent;
-  border-top-width: 3px;
-  border-bottom-width: 5px;
-  border-radius: 10px;
-  background-color: black;
+  border: 4px solid #fff;
+  height: 600px;
 }
 
-.card::before {
-  content: "";
-  width: 104%;
-  height: 102.5%;
-  border-radius: 8px;
-  background-image: linear-gradient(
-    var(--rotate),
-    #f5765a 2.16%,
-    #687ff7 100.33%
-  );
+.closeButton {
   position: absolute;
-  z-index: -1;
-  top: -1%;
-  left: -2%;
-  animation: spin 2.5s linear infinite;
-}
-
-.card::after {
-  position: absolute;
-  content: "";
-  top: calc(var(--card-height) / 6);
-  left: 0;
-  right: 0;
-  z-index: -1;
-  height: 100%;
-  width: 100%;
-  margin: 0 auto;
-  transform: scale(0.8);
-  filter: blur(calc(var(--card-height) / 6));
-  background-image: linear-gradient(
-    var(--rotate),
-    #f5765a 2.16%,
-    #687ff7 100.33%
-  );
-  opacity: 1;
-  transition: opacity 0.5s;
-  animation: spin 2.5s linear infinite;
-}
-
-@keyframes spin {
-  0% {
-    --rotate: 0deg;
-  }
-  100% {
-    --rotate: 360deg;
-  }
-}
-
-.logo,
-.kakao_image {
-  width: 100%;
-}
-.logo {
-  box-sizing: border-box;
-  height: 100px;
-  margin-bottom: 60px;
-  padding-right: 25px;
-}
-.kakao_image {
-  margin-bottom: 30px;
+  top: 120px;
+  right: 680px;
   cursor: pointer;
-}
-.form {
-  padding: 0 40px 20px;
-}
-
-.form_down {
-  margin-top: 40px;
-}
-
-.form_control {
-  margin-bottom: 5px;
-  padding-bottom: 20px;
-  position: relative;
-}
-
-.form_control input {
-  border: 1px solid #fff;
-  background-color: black;
-  border-radius: 5px;
-  display: block;
-  width: 90%;
-  height: 35px;
-  padding: 10px;
-  font-size: 14px;
-  color: #ffffff;
-}
-
-.form_control input:focus {
-  outline: 0;
-  border-color: #ffffff;
-}
-
-.login_button {
-  cursor: pointer;
-  background-color: #91c5eb;
-  color: #fff;
-  display: block;
-  font-size: 16px;
-  width: 100%;
-  border: none;
-  height: 60px;
-}
-
-.login_signup {
-  text-align: center;
-  margin-top: 20px;
-}
-
-.login_signup_desc {
-  font-size: 14px;
-  color: #ffffff;
-  margin-top: 80px;
-  display: inline;
-}
-
-.login_signup_link {
-  color: #67bfff;
-  text-decoration: none;
-  display: inline;
-  font-size: 14px;
-  margin-left: 5px;
   background-color: transparent;
-  cursor: pointer;
   border: none;
+  font-size: 30px;
+  color: white;
+  z-index: 1001;
 }

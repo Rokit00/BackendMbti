@@ -17,10 +17,10 @@
   width: 33%;
 }
 
-.middle-content{
+.middle-content {
   display: flex;
-    flex-direction: column;
-    align-items: center;
+  flex-direction: column;
+  align-items: center;
   border: none;
   width: 20%;
 }
@@ -50,7 +50,7 @@
   font-size: 25px;
 }
 
-.imgBox{
+.imgBox {
   position: relative;
   width: 400px;
 }
@@ -59,44 +59,41 @@
 .Solji_A {
   width: 350px;
   animation: Solji_A 3s infinite alternate;
-
 }
 
 @keyframes Solji_A {
-	0%,100% {
+  0%,
+  100% {
     transform: scale(1);
-    
-	}
-	30% {
-		transform:scale(1.03);
+  }
+  30% {
+    transform: scale(1.03);
   }
   60% {
-		transform: scale(1);
-    
+    transform: scale(1);
   }
 }
 
 .Solji_B {
   position: relative;
   right: -44px;
-    width: 91px;
-    top: -267px;
-    animation: Solji_B 3s infinite alternate;
+  width: 91px;
+  top: -267px;
+  animation: Solji_B 3s infinite alternate;
 }
 
 @keyframes Solji_B {
-	0% {
+  0% {
     transform: translateX(0%);
     opacity: 1;
-	}
-	25% {
-		transform: translateX(30%) translatey(-30%);
+  }
+  25% {
+    transform: translateX(30%) translatey(-30%);
   }
   50% {
     opacity: 0;
   }
 }
-
 
 /*
 @keyframes Solji_B {
@@ -116,18 +113,16 @@
 
 /*Suhun set*/
 
-
-.Suhun_A{
+.Suhun_A {
   width: 300px;
 }
-.Suhun_B{
+.Suhun_B {
   position: relative;
   bottom: 266px;
   right: -88px;
   width: 111px;
   animation: Suhun_B 1s infinite alternate;
 }
-
 
 @keyframes Suhun_B {
   0% {
@@ -147,9 +142,8 @@
   }
 }
 
-
 /*Yeonjin set*/
-.Yeonjin_A{
+.Yeonjin_A {
   width: 300px;
   animation: Yeonjin_A 1.5s infinite alternate;
 }
@@ -159,13 +153,11 @@
     transform: rotate3d(0, 0, 1, -2deg);
   }
   100% {
-    
     transform: rotate3d(0, 0, 1, 2deg);
   }
 }
 
-
-.Yeonjin_B{
+.Yeonjin_B {
   /*움직임 효과*/
   position: relative;
   width: 263px;
@@ -184,27 +176,25 @@
 }
 
 /*Seonghwan img set*/
-.Seonghwan_a{
+.Seonghwan_a {
   width: 400px;
 }
-.Seonghwan_b{
+.Seonghwan_b {
   width: 26px;
   position: relative;
   bottom: 206px;
   right: 51px;
-    border-radius: 50%;
-    box-shadow: 0px 0px 2px rgba(255,165,0,0.4),
-    0px 0px 4px rgba(255,153,0,0.4),
-    0px 0px 6px rgba(255,140,0,0.4),
-    0px 0px 8px rgba(255,102,0,0.4),
-    0px 0px 10px rgba(255,69,0,0.6),
-    0px 0px 12px rgba(255,0,0,0.8);
-    animation: blink 3s infinite alternate;
-    opacity: 1;
+  border-radius: 50%;
+  box-shadow: 0px 0px 2px rgba(255, 165, 0, 0.4),
+    0px 0px 4px rgba(255, 153, 0, 0.4), 0px 0px 6px rgba(255, 140, 0, 0.4),
+    0px 0px 8px rgba(255, 102, 0, 0.4), 0px 0px 10px rgba(255, 69, 0, 0.6),
+    0px 0px 12px rgba(255, 0, 0, 0.8);
+  animation: blink 3s infinite alternate;
+  opacity: 1;
 }
 
 @keyframes blink {
-  0% { 
+  0% {
     box-shadow: none;
     opacity: 0.05;
   }
@@ -212,10 +202,8 @@
   100% {
     opacity: 1;
     box-shadow: 0px 0px 2px rgba(255, 165, 0, 0.4),
-      0px 0px 4px rgba(255, 153, 0, 0.4),
-      0px 0px 6px rgba(255, 140, 0, 0.4),
-      0px 0px 8px rgba(255, 102, 0, 0.4),
-      0px 0px 10px rgba(255, 69, 0, 0.6),
+      0px 0px 4px rgba(255, 153, 0, 0.4), 0px 0px 6px rgba(255, 140, 0, 0.4),
+      0px 0px 8px rgba(255, 102, 0, 0.4), 0px 0px 10px rgba(255, 69, 0, 0.6),
       0px 0px 12px rgba(255, 0, 0, 0.8);
   }
 }

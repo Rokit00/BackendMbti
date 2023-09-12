@@ -1,6 +1,5 @@
-// SearchResults.js
 import React from "react";
-import Card from "./card/Card";
+import CardComponent from "./card/Card";
 import SortSelect from "./SortSelect";
 import styles from "./SearchResults.module.css";
 
@@ -12,14 +11,13 @@ const SearchResults = ({ results, onSortChange }) => {
         <SortSelect onSortChange={onSortChange} />
       </div>
       <div className={styles.cardRow}>
-        {results.map((debate) => {
-          return <MemoizedCard key={debate.id} debate={debate} />;
-        })}
+        {results.map((debate) => (
+          <Card key={debate.id} debate={debate} />
+        ))}
       </div>
     </div>
   );
 };
-
-const MemoizedCard = React.memo(Card);
+const Card = React.memo(CardComponent);
 
 export default SearchResults;

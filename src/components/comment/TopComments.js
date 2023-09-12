@@ -15,7 +15,7 @@ const TopComments = ({ topCommentsA, topCommentsB }) => {
       <CommentText
         comment={comment.content}
         opinion={comment.selectOption}
-        likes={comment.likes}
+        likes={comment.likeCount}
       />
     </div>
   );
