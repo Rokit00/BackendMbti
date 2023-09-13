@@ -2,7 +2,7 @@ package backend.mbti.service.mypage;
 
 import backend.mbti.domain.dto.mypage.MbtiGroupRequest;
 import backend.mbti.domain.dto.mypage.MemberUpdateRequest;
-import backend.mbti.domain.mbti.Mbti;
+import backend.mbti.domain.mbti.MbtiGroup;
 import backend.mbti.domain.member.Member;
 import backend.mbti.domain.post.Post;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,10 +24,10 @@ public interface MypageService {
     String getProfile(Long memberId);
 
     // 내가 만든 케미 저장
-    Mbti createMbtiGroup(MbtiGroupRequest request, String userId);
+    MbtiGroup createMbtiGroup(MbtiGroupRequest request, String userId);
 
     // 내가 만든 케미 불러오기
-    List<Mbti> viewMbtiGroup(String userId);
+    List<MbtiGroup> findGroupsByMember(String userId);
 
     // 내가 만든 토론
     List<Post> getPostsByMember(String userId);

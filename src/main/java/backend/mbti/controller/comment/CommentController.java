@@ -26,7 +26,6 @@ import java.util.Map;
 public class CommentController {
 
     private final CommentService commentService;
-    private final PostService postService;
 
     // 댓글 보여주기 (유저 정보 필요함)
     @GetMapping("/{postId}")

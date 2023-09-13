@@ -39,7 +39,7 @@ public class Comment {
 
     // 프로필
     @Column
-    private String profile;
+    private String memberProfile;
 
     // 좋아요 수
     @Column(name = "like_count")
@@ -79,12 +79,20 @@ public class Comment {
     @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CommentLike> likes = new ArrayList<>();
 
+    // Member의 프로필 불러오기
+    public String getMemberProfile() {
+        if (member != null) {
+            return member.getProfileImage();
+        }
+        return null;
+    }
 
-    public Comment(String userId, String mbti,String content,Character selectOption, String profile, Post post, Member member) {
+
+    public Comment(String userId, String mbti, String memberProfile,String content,Character selectOption, Post post, Member member) {
         this.userId = userId;
         this.mbti = mbti;
+        this.memberProfile = memberProfile;
         this.content = content;
-        this.profile = profile;
         this.post = post;
         this.member = member;
         this.selectOption = selectOption;

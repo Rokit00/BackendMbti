@@ -2,7 +2,7 @@ package backend.mbti.controller.mypage;
 
 import backend.mbti.domain.dto.mypage.MbtiGroupRequest;
 import backend.mbti.domain.dto.mypage.MemberUpdateRequest;
-import backend.mbti.domain.mbti.Mbti;
+import backend.mbti.domain.mbti.MbtiGroup;
 import backend.mbti.domain.member.Member;
 import backend.mbti.domain.post.Post;
 import backend.mbti.service.mypage.MypageService;
@@ -14,6 +14,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -55,29 +56,19 @@ public class MypageController {
         return ResponseEntity.ok("프로필 업데이트 완료");
     }
 
-    // 프로필 불러오기
-    @GetMapping("/{memberId}/profile-image-url")
-    public ResponseEntity<String> getProfileImageUrl(@PathVariable Long memberId) {
-        String imageUrl = mypageService.getProfile(memberId);
-        return ResponseEntity.ok(imageUrl);
-    }
-
-
-
     // 내가 만든 케미 저장
     @PostMapping("/mbti")
-    public ResponseEntity<Mbti> createMbtiGroup(@RequestBody MbtiGroupRequest request, Authentication authentication) {
+    public ResponseEntity<MbtiGroup> createMbtiGroup(@RequestBody MbtiGroupRequest mbtiGroupRequest, Authentication authentication) {
         String userId = authentication.getName();
-        Mbti createdGroup = mypageService.createMbtiGroup(request, userId);
-        return ResponseEntity.ok(createdGroup);
+        MbtiGroup savedMbtiGroup = mypageService.createMbtiGroup(mbtiGroupRequest, userId);
+        return ResponseEntity.ok(savedMbtiGroup);
     }
 
     // 내가 만든 케미 불러오기
     @GetMapping("/mbti")
-    public ResponseEntity<List<Mbti>> viewMbtiGroup(Authentication authentication) {
+    public ResponseEntity<List<MbtiGroup>> getGroupsByMember(Authentication authentication) {
         String userId = authentication.getName();
-        List<Mbti> viewMbtiGroup = mypageService.viewMbtiGroup(userId);
-        return ResponseEntity.ok(viewMbtiGroup);
+        return ResponseEntity.ok(mypageService.findGroupsByMember(userId));
     }
 
     // 내가 만든 토론

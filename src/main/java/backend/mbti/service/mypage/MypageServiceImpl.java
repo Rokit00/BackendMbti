@@ -1,11 +1,13 @@
 package backend.mbti.service.mypage;
 
+import backend.mbti.domain.dto.mbti.MbtiAndMemberRequest;
 import backend.mbti.domain.dto.mypage.MbtiGroupRequest;
 import backend.mbti.domain.dto.mypage.MemberUpdateRequest;
-import backend.mbti.domain.mbti.Mbti;
+import backend.mbti.domain.mbti.MbtiAndMember;
+import backend.mbti.domain.mbti.MbtiGroup;
 import backend.mbti.domain.member.Member;
 import backend.mbti.domain.post.Post;
-import backend.mbti.repository.mbti.MbtiRepository;
+import backend.mbti.repository.mbti.MbtiGroupRepository;
 import backend.mbti.repository.member.MemberRepository;
 import backend.mbti.repository.post.PostRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,11 +19,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityNotFoundException;
+import javax.transaction.Transactional;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.UUID;
 
@@ -32,7 +34,7 @@ public class MypageServiceImpl implements MypageService {
 
     private final MemberRepository memberRepository;
     private final PostRepository postRepository;
-    private final MbtiRepository mbtiRepository;
+    private final MbtiGroupRepository mbtiGroupRepository;
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
@@ -113,28 +115,29 @@ public class MypageServiceImpl implements MypageService {
     }
 
     // 내가 만든 케미 저장
+    @Transactional
     @Override
-    public Mbti createMbtiGroup(MbtiGroupRequest request, String userId) {
-        Member member = memberRepository.findByUserId(userId)
-                .orElseThrow(() -> new EntityNotFoundException("회원을 찾을 수 없습니다."));
-
-        Mbti mbtiGroup = new Mbti();
-        mbtiGroup.setMbtiTypes(request.getMbtiTypes());
+    public MbtiGroup createMbtiGroup(MbtiGroupRequest request, String userId) {
+        MbtiGroup mbtiGroup = new MbtiGroup();
         mbtiGroup.setGroupName(request.getGroupName());
-        mbtiGroup.setMember(member);
+        mbtiGroup.setMember(userId);
 
-        return mbtiRepository.save(mbtiGroup);
+        for (MbtiAndMemberRequest item : request.getMbtiAndMembers()) {
+            MbtiAndMember mbtiAndMember = new MbtiAndMember();
+            mbtiAndMember.setName(item.getName());
+            mbtiAndMember.setMbtiType(item.getMbtiType());
+            mbtiGroup.getMbtiAndMembers().add(mbtiAndMember);
+        }
+
+        return mbtiGroupRepository.save(mbtiGroup);
     }
 
     // 내가 만든 케미 불러오기
     @Override
-    public List<Mbti> viewMbtiGroup(String userId) {
-        Member member = memberRepository.findByUserId(userId)
-                .orElseThrow(() -> new EntityNotFoundException("회원을 찾을 수 없습니다"));
-
-        List<Mbti> mbti = mbtiRepository.findByMember(member);
-        return mbti;
+    public List<MbtiGroup> findGroupsByMember(String userId) {
+        return mbtiGroupRepository.findByMember(userId);
     }
+
 
     // 내가 만든 토론
     @Override
