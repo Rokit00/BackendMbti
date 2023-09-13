@@ -1,14 +1,18 @@
 package backend.mbti.service.api;
 
+import backend.mbti.configuration.jwt.JwtProvider;
 import backend.mbti.configuration.kakao.KakaoProfile;
 import backend.mbti.configuration.kakao.OAuthToken;
 import backend.mbti.domain.dto.member.MemberSignUpRequest;
 import backend.mbti.domain.member.Member;
+import backend.mbti.exception.AppException;
+import backend.mbti.exception.ErrorCode;
 import backend.mbti.repository.member.MemberRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 
 import org.springframework.security.authentication.AuthenticationManager;
@@ -28,11 +32,17 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Slf4j
 public class KakaoServiceImpl implements KakaoService {
+
     private final AuthenticationManager authenticationManager;
     private final MemberRepository memberRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    // JWT
+    @Value("${jwt.secret}")
+    private String key;
+    private Long expireTimeMs = 1000 * 60 * 60L; // 1시간
     @Override
-    public void processKakaoCallback(String code) {
+    public String processKakaoCallback(String code) {
         RestTemplate rt = new RestTemplate();
 
 
@@ -119,9 +129,12 @@ public class KakaoServiceImpl implements KakaoService {
             kakaoSignup(kakaoUser);
         }
 
-//        //로그인 처리
-//        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(kakaoUser.getUserId(), kakaoUser.getPassword()));
-//        SecurityContextHolder.getContext().setAuthentication(authentication);
+        Member selectedUser = memberRepository.findByUserId(kakaoUser.getUserId())
+                .orElseThrow(() ->new AppException(ErrorCode.USERNAME_NOT_FOUND, kakaoUser.getUserId() + "없습니다"));
+
+        String token = JwtProvider.createToken(selectedUser.getUserId(), key, expireTimeMs);
+
+        return token;
     }
 
     //카카오 회원가입
