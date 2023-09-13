@@ -14,7 +14,7 @@ import org.springframework.web.client.RestTemplate;
 @Slf4j
 public class KakaoServiceImpl implements KakaoService {
     @Override
-    public void processKakaoCallback(String code) {
+    public String processKakaoCallback(String code) {
         RestTemplate rt = new RestTemplate();
 
 
@@ -41,5 +41,6 @@ public class KakaoServiceImpl implements KakaoService {
                 kakaoTokenRequest,
                 Object.class
         );
+        return code;
     }
 }
