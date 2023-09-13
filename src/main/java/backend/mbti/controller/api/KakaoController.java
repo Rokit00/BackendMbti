@@ -17,8 +17,7 @@ public class KakaoController {
 
     @GetMapping("/kakao")
     public ResponseEntity<String> kakaoCallback(@RequestParam String code) {
-        log.info(code);
-        String auth = kakaoService.processKakaoCallback(code);
-        return ResponseEntity.ok(auth);
+        kakaoService.processKakaoCallback(code);
+        return ResponseEntity.ok("카카오 로그인 완료");
     }
 }

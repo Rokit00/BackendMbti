@@ -14,6 +14,8 @@ public class KakaoProfile {
     @Data
     public class Properties {
         public String nickname;
+        public String profileImage;
+        public String thumbnailImage;
     }
 
     @Data
