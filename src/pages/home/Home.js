@@ -6,14 +6,23 @@ import SectionThree from "./sections/SectionThree";
 import Login from "../../components/login/Login";
 import axios from "axios";
 import { calculatePercentage } from "../../utils/calculatePercent";
+import { useAuth } from "../../components/AuthContext";
 
 const Home = () => {
+  const { isLoggedIn } = useAuth();
   const sectionTwoRef = useRef(null);
+  const sectionThreeRef = useRef(null);
+
   const [sharedData, setSharedData] = useState(null);
   const [randomDebate, setRandomDebate] = useState(null);
   const [comments, setComments] = useState([]);
   const handleScrollToSectionTwo = () => {
     sectionTwoRef.current.scrollIntoView({ behavior: "smooth" });
+  };
+  const handleScrollToSectionThree = () => {
+    if (sectionThreeRef.current) {
+      sectionThreeRef.current.scrollIntoView({ behavior: "smooth" });
+    }
   };
 
   useEffect(() => {
@@ -52,7 +61,8 @@ const Home = () => {
 
   return (
     <div>
-      <SectionOne handleScrollToSectionTwo={handleScrollToSectionTwo} />
+        <SectionOne handleScrollToSectionTwo={handleScrollToSectionTwo}
+       handleScrollToSectionThree={handleScrollToSectionThree} />
 
       <div ref={sectionTwoRef}>
         <SectionTwo setSharedData={setSharedData} />
@@ -64,15 +74,16 @@ const Home = () => {
         </div>
       )}
       {randomDebate && (
+        <div ref={sectionThreeRef}>
         <SectionThree
           debate={randomDebate}
           percentageA={percentageA}
           percentageB={percentageB}
         />
+        </div>
       )}
 
-<Login />
-
+      {!isLoggedIn && <Login />}
     </div>
   );
 };

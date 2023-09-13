@@ -39,32 +39,58 @@ const Myinfor = () => {
     }));
   };
 
+  const handleImageUpload = async (e) => {
+    try {
+      const file = e.target.files[0];
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const token = sessionStorage.getItem("token");
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+        },
+      };
+
+      const response = await axios.post("/mypage/profile", formData, config);
+      if (response.status === 200) {
+        alert("프로필 업데이트 완료");
+      } else {
+        alert("프로필 업데이트 실패");
+      }
+    } catch (error) {
+      console.error("Error uploading profile picture", error);
+      alert("프로필 업로드 중 오류가 발생했습니다.");
+    }
+  };
+
   const handleSubmit = async () => {
     try {
-        const token = sessionStorage.getItem("token");
-        const config = {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        };
+      const token = sessionStorage.getItem("token");
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
 
-        const response = await axios.put(
-            `/mypage/update-all`,
-            userDetails,
-            config
-        );
+      const response = await axios.put(
+        `/mypage/update-all`,
+        userDetails,
+        config
+      );
 
-        if (response.status === 200) {
-            alert("정보가 성공적으로 수정되었습니다.");
-            setUser(response.data);
-        } else {
-            alert("정보 수정에 실패했습니다.");
-        }
+      if (response.status === 200) {
+        alert("정보가 성공적으로 수정되었습니다.");
+        setUser(response.data);
+      } else {
+        alert("정보 수정에 실패했습니다.");
+      }
     } catch (error) {
-        console.error("Error updating user info", error);
-        alert("정보 수정 중 오류가 발생했습니다.");
+      console.error("Error updating user info", error);
+      alert("정보 수정 중 오류가 발생했습니다.");
     }
-};
+  };
 
   return (
     <section className={styles.Myinfo}>
@@ -91,6 +117,7 @@ const Myinfor = () => {
               </div>
             );
           })}
+          <input type="file" onChange={handleImageUpload} />
           <button onClick={handleSubmit}>정보 수정</button>
         </div>
       </div>

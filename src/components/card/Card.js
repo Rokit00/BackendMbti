@@ -1,19 +1,14 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import {
-  FaBookmark,
-  FaRegBookmark,
-  FaShare,
-  FaComment,
-  FaEye,
-} from "react-icons/fa";
+import { FaHeart, FaRegHeart, FaShare, FaComment, FaEye } from "react-icons/fa";
 import styles from "./DebateCard.module.css";
 import { calculatePercentage } from "../../utils/calculatePercent";
 
 const DebateCard = ({ debate }) => {
-  const { id, title, A, B, messages, views, isUnderway, hashtags } = debate;
-  const [isBookmarked, setIsBookmarked] = useState(false);
+  const { id, title, A, B, messages, views, isUnderway, hashtags, likes } =
+    debate;
+  const [isLiked, setIsLiked] = useState(false);
   const [comments, setComments] = useState([]);
   const [showModal, setShowModal] = useState(false);
 
@@ -28,7 +23,7 @@ const DebateCard = ({ debate }) => {
     setShowModal(!showModal);
   };
 
-  const handleBookmarkClick = async (event) => {
+  const handleLikeClick = async (event) => {
     event.stopPropagation();
     event.preventDefault();
 
@@ -48,18 +43,17 @@ const DebateCard = ({ debate }) => {
           },
         }
       );
-      setIsBookmarked(!isBookmarked);
-      if (isBookmarked) {
-        alert("북마크를 취소했습니다.");
+      setIsLiked(!isLiked);
+      if (isLiked) {
+        alert("좋아요를 취소했습니다.");
       } else {
-        alert("북마크를 추가했습니다.");
+        alert("좋아요를 눌렀습니다.");
       }
     } catch (error) {
       console.error("Error", error);
-      alert("북마크 추가에 실패했습니다.");
+      alert("좋아요 추가에 실패했습니다.");
     }
   };
-
   useEffect(() => {
     const fetchComments = async () => {
       try {
@@ -90,8 +84,9 @@ const DebateCard = ({ debate }) => {
     { Icon: FaComment, data: messages },
     { Icon: FaEye, data: views },
     {
-      Icon: isBookmarked ? FaBookmark : FaRegBookmark,
-      onClick: handleBookmarkClick,
+      Icon: FaHeart,
+      onClick: handleLikeClick,
+      data: likes,
     },
     { Icon: FaShare, onClick: handleModalClick },
   ];

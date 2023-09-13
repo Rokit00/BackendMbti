@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./Start.module.css"; // Start 컴포넌트에 적용할 CSS 스타일 임포트
-import style from "./Input.module.css"
+import style from "./Input.module.css";
 
 //솔지님 이미지 세트//
 import Solji_A from "../assets/Solji_A.png";
@@ -35,14 +35,23 @@ const Start = ({ handleStart }) => {
       </div>
 
       <div className={styles["middle-content"]}>
-        <h3>케미 확인하기</h3> {/* 제목 */}
-        <p>
-          상대방과의 얼마나 잘맞는지 궁금한가요? <br></br>지금 바로 결과를
-          확인해 보세요.
+        <h3 className={styles.h3}>Chemi 핯 Check</h3> {/* 제목 */}
+        <p className={styles.p}>
+          <b className={styles.b}>핮</b> 너랑 나랑, 얘랑 재랑{" "}
+          <b className={styles.b}>핱</b>
+          <br></br>
+          <b className={styles.b}>럾</b>
+          <br></br>
+          <b className={styles.b}>볅</b> 우리 성격 잘 맞을까?{" "}
+          <b className={styles.b}>슿</b> <br></br>
+          <b className={styles.b}>낰</b>
+          <br></br>
         </p>{" "}
         {/* 설명 */}
         {/* 시작하기 버튼, 'handleStart' 함수 실행 */}
-        <button className={style.contentsbutton} onClick={handleStart}>시작하기</button>
+        <button className={style.contentsbutton} onClick={handleStart}>
+          확인해보자
+        </button>
       </div>
 
       {/* 오른쪽 컨텐츠: 제목, 설명, 시작하기 버튼 */}

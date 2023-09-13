@@ -15,6 +15,9 @@ function Login({ customStyle, onLoginSuccess }) {
   const userId = useInput("");
   const password = useInput("");
   const [errorMessage, setErrorMessage] = useState("");
+  const REST_API_KEY = "9394c1ee0de2fd55a8ccc154f6cc5114";
+  const REDIRECT_URI = "http://localhost/auth/kakao/callback";
+  const KAKAO_LOGIN_URL = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}`;
   let from = { pathname: "/lists" };
   if (location && location.state && location.state.from) {
     from = location.state.from;
@@ -51,15 +54,23 @@ function Login({ customStyle, onLoginSuccess }) {
   const handleSignUp = () => {
     navigate("/signup");
   };
-
+  const handleKakaoLogin = () => {
+    window.location.href = KAKAO_LOGIN_URL;
+  };
   return (
     <div className={styles.body}>
       <div className={styles.card} style={customStyle}>
         <form id="form" className={styles.form} onSubmit={handleLogin}>
           <div className={styles.logobox}>
-           <img className={styles.logo_login} src={logo_login} ></img>
+            <img className={styles.logo_login} src={logo_login}></img>
           </div>
-          <img src={kakao} className={styles.kakaoImage} alt="kakao" />
+
+          <img
+            src={kakao}
+            className={styles.kakaoImage}
+            alt="kakao"
+            onClick={handleKakaoLogin}
+          />
           <HorizonLine text="   or  " />
           <div className={styles.formDown}>
             <div className={styles.formControl}>

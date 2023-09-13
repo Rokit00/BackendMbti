@@ -115,30 +115,30 @@ const relations = {
 };
 
 export const checkCompatibility = (mbti1, mbti2) => {
-  if (mbti1 === mbti2) return "좋음";
+  if (mbti1 === mbti2) return "탕후루후루촵\n 달달한 사이핱 ";
 
   if (
     exceptionalRelations[mbti1] &&
     exceptionalRelations[mbti1].includes(mbti2)
   )
-    return "매우 좋음";
+    return "폼 미첬다";
   if (
     exceptionalRelations[mbti2] &&
     exceptionalRelations[mbti2].includes(mbti1)
   )
-    return "매우 좋음";
+    return "폼 미첬다";
 
   for (let rating in relations[mbti1]) {
     if (relations[mbti1][rating].includes(mbti2)) {
       switch (parseInt(rating)) {
         case 1:
-          return "좋음";
+          return "분모자처럼\n 찰떡인사이슿";
         case 2:
-          return "반반";
+          return "우리 너무 잘 맞아 \n낰\n 라고 할 뻔~";
         case 3:
-          return "나쁘지않음";
+          return "우리 나중에 꾸웨엑엨 \n 할 일 없도록 하자";
         default:
-          return "나쁨";
+          return "서로가 서로의 스블재 썯월요일 그 잡채";
       }
     }
   }

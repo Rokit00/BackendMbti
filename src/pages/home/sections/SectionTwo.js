@@ -7,7 +7,7 @@ import Input from "../../../components/Input";
 import Result from "../../../components/Result";
 import styles from "./SectionTwo.module.css";
 import Loading from "../../../components/loading/Loading";
-
+import NavBar from "../../../components/nav_bar/NavBar";
 const SectionTwo = ({ handleScrollToSectionTwo }) => {
   const { data } = useParams();
   const {
@@ -57,32 +57,36 @@ const SectionTwo = ({ handleScrollToSectionTwo }) => {
   }, [data]);
 
   return (
-    <div className={styles.sectionTwo}>
-      {showLoading ? (
-        <Loading />
-      ) : !showContent && !showResult ? (
-        <Start handleStart={() => setShowContent(true)} />
-      ) : showContent && !showResult ? (
-        <Input
-          name={name}
-          handleNameChange={handleNameChange}
-          selectedImageIndexes={selectedImageIndexes}
-          handleImageClick={handleImageClick}
-          handleSave={handleSave}
-          renderSavedData={renderSavedData}
-          handleShowResult={handleShowResult}
-          mbtiTexts={mbtiTexts}
-        />
-      ) : showResult ? (
-        <Result
-          savedData={savedData}
-          mbtiTexts={mbtiTexts}
-          setShowContent={setShowContent}
-          setShowResult={setShowResult}
-          setSavedData={setSavedData}
-        />
-      ) : null}
-    </div>
+    <>
+      <NavBar />
+
+      <div className={styles.sectionTwo}>
+        {showLoading ? (
+          <Loading />
+        ) : !showContent && !showResult ? (
+          <Start handleStart={() => setShowContent(true)} />
+        ) : showContent && !showResult ? (
+          <Input
+            name={name}
+            handleNameChange={handleNameChange}
+            selectedImageIndexes={selectedImageIndexes}
+            handleImageClick={handleImageClick}
+            handleSave={handleSave}
+            renderSavedData={renderSavedData}
+            handleShowResult={handleShowResult}
+            mbtiTexts={mbtiTexts}
+          />
+        ) : showResult ? (
+          <Result
+            savedData={savedData}
+            mbtiTexts={mbtiTexts}
+            setShowContent={setShowContent}
+            setShowResult={setShowResult}
+            setSavedData={setSavedData}
+          />
+        ) : null}
+      </div>
+    </>
   );
 };
 

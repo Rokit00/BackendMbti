@@ -79,6 +79,7 @@ const CommentSection = ({
       alert("댓글 좋아요 변경에 실패했습니다.");
     }
   };
+  console.log(allComments);
 
   return (
     <div>
@@ -92,7 +93,7 @@ const CommentSection = ({
             }`}
           >
             <UserInfo
-              userImage={comment.userImage}
+              userImage={comment.profileImage}
               userId={comment.userId}
               mbti={comment.mbti}
               opinion={comment.selectOption}

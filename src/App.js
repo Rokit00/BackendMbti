@@ -15,6 +15,7 @@ import Mydiscussion from "./pages/mypages/Mydiscussion";
 import Myinfor from "./pages/mypages/Myinfor";
 import Qa from "./pages/mypages/Qa";
 import DeleteAccount from "./pages/mypages/DeleteAccount";
+import KakaoCallback from "./components/login/KakaoCallback";
 const App = () => {
   return (
     <AuthProvider>
@@ -33,6 +34,11 @@ const App = () => {
           <Route path="/profile" element={<Myinfor />} />
           <Route path="/Q&A" element={<Qa />} />
           <Route path="/delete-account" element={<DeleteAccount />} />
+          <Route
+            exact
+            path="/auth/kakao/callback"
+            element={<KakaoCallback />}
+          />
         </Routes>
       </Router>
     </AuthProvider>

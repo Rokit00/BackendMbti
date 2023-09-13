@@ -3,6 +3,8 @@ import { checkCompatibility, mbtiToAlphabet } from "../utils/compatibility";
 import LZString from "lz-string";
 import styles from "./Result.module.css";
 import LinkModal from "./LinkModal";
+import axios from "axios";
+import { useAuth } from "./AuthContext";
 
 const UserData = ({
   savedData,
@@ -72,7 +74,8 @@ const CompatibilityResult = ({ savedData, selectedUserIndex }) => {
               className={`${styles.compatibilityResult} ${styles.fadeInOut}`}
             >
               <p>
-                {name1}님({mbti1})과 {name2}님({mbti2}) 의 궁합 결과: {result}
+                {name1}님({mbti1})과 {name2}님({mbti2}) 의 궁합 결과: <br></br><br></br>
+                <p className={styles.result}>{result} </p>
               </p>
             </div>
           );
@@ -94,19 +97,44 @@ const Result = ({
   const [showModal, setShowModal] = useState(false);
   const [sharedLink, setSharedLink] = useState("");
   const [selectedUserIndex, setSelectedUserIndex] = useState(0);
-
+  const [groupName, setGroupName] = useState("");
+  const { user } = useAuth();
   const handleGoBack = () => {
     setShowContent(false);
     setShowResult(false);
     setSavedData([]);
   };
+  // API 호출 함수
+  const saveMbtiGroup = async (groupName) => {
+    const headers = {
+      Authorization: `Bearer ${user.token}`,
+    };
+    const data = {
+      groupName: groupName,
+    };
+    try {
+      const response = await axios.post("/mypage", data, { headers });
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  };
 
+  // 저장하기 버튼에 기능 추가
+  const handleSaveGroup = async () => {
+    try {
+      const result = await saveMbtiGroup(groupName);
+      console.log("Group saved successfully:", result);
+    } catch (error) {
+      console.error("Error saving group:", error);
+    }
+  };
   const handleShareLink = () => {
     const host = window.location.host;
     const compressedData = LZString.compressToEncodedURIComponent(
       JSON.stringify(savedData)
     );
-    const link = `http://${host}/section2/${compressedData}`;
+    const link = `http://mbtichemi.com/section2/${compressedData}`;
     setSharedLink(link);
     setShowModal(true);
   };
@@ -137,15 +165,15 @@ const Result = ({
           />
         </div>
       </div>
+
       <div className={styles.buttonContainer}>
         <button className={styles.contentsbutton} onClick={handleShareLink}>
           링크 공유
         </button>
-        {isLoggedIn && (
-          <button className={styles.contentsbutton} onClick={() => {}}>
-            저장하기
-          </button>
-        )}
+        {/* "저장하기" 버튼에 handleSaveGroup 함수 연결 */}
+        <button className={styles.contentsbutton} onClick={handleSaveGroup}>
+          저장하기
+        </button>
         <button className={styles.contentsbutton} onClick={handleGoBack}>
           처음화면으로 돌아가기
         </button>
@@ -155,7 +183,15 @@ const Result = ({
           sharedLink={sharedLink}
           handleCopyLink={handleCopyLink}
           closeModal={() => setShowModal(false)}
-        />
+        >
+          <input
+            type="text"
+            value={groupName}
+            onChange={(e) => setGroupName(e.target.value)}
+            placeholder="그룹명을 입력하세요."
+          />
+          <button onClick={handleSaveGroup}>그룹 저장</button>
+        </LinkModal>
       )}
     </div>
   );
