@@ -22,6 +22,8 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -89,11 +91,55 @@ public class KakaoServiceImpl implements KakaoService {
 
         ObjectMapper objectMapper2 = new ObjectMapper();
         KakaoProfile kakaoProfile = null;
+
+        String responseBody = response2.getBody();
+
         try {
-            kakaoProfile = objectMapper2.readValue(response2.getBody(), KakaoProfile.class);
+            kakaoProfile = objectMapper2.readValue(responseBody, KakaoProfile.class);
         } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
-        log.info(kakaoProfile.kakao_account.getEmail());
+        log.info(kakaoProfile.getProperties().getNickname());
+
+        //Member 오브젝트
+        MemberSignUpRequest kakaoUser = MemberSignUpRequest.builder()
+                .userId(kakaoProfile.getProperties().getNickname())
+                .password("1111saddas123wefd324")
+                .nickName(kakaoProfile.getProperties().getNickname())
+                .birthday(kakaoProfile.getKakao_account().getBirthday())
+                .profileImage(kakaoProfile.getProperties().getProfile_image())
+                .mbti("NULL")
+                .email(kakaoProfile.getKakao_account().getEmail())
+                .oAuth("Kakao")
+                .build();
+
+        Optional<Member> originUserOpt = findMember(kakaoUser.getUserId());
+
+        if (!originUserOpt.isPresent()) {
+            kakaoSignup(kakaoUser);
+        }
+
+//        //로그인 처리
+//        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(kakaoUser.getUserId(), kakaoUser.getPassword()));
+//        SecurityContextHolder.getContext().setAuthentication(authentication);
+    }
+
+    //카카오 회원가입
+    @Override
+    public Long kakaoSignup(MemberSignUpRequest memberSignUpRequest) {
+
+        String encPwd = bCryptPasswordEncoder.encode(memberSignUpRequest.getPassword());
+
+        Member member = memberRepository.save(memberSignUpRequest.toEntity(encPwd));
+
+        if (member != null) {
+            return member.getId();
+        }
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+    }
+
+    //회원 찾기
+    public Optional<Member> findMember (String userId) {
+        return memberRepository.findByUserId(userId);
     }
 }

@@ -18,9 +18,11 @@ public class MemberSignUpRequest {
 
     private String nickName;
 
-    private String mbti;
-
     private String birthday;
+
+    private String profileImage;
+
+    private String mbti;
 
     private String email;
 
@@ -33,7 +35,9 @@ public class MemberSignUpRequest {
                 .nickName(nickName)
                 .mbti(mbti)
                 .birthday(birthday)
+                .profileImage(profileImage)
                 .email(email)
+                .oAuth(oAuth)
                 .build();
     }
 }

@@ -1,43 +1,43 @@
 package backend.mbti.configuration.kakao;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
-
 
 @Data
 public class KakaoProfile {
-
-    public Long id;
-    public String connected_at;
-    public Properties properties;
-    public KakaoAccount kakao_account;
+    private long id;
+    private String connected_at;
+    private Properties properties;
+    private KakaoAccount kakao_account;
 
     @Data
-    public class Properties {
-        public String nickname;
-        public String profileImage;
-        public String thumbnailImage;
+    public static class Properties {
+        private String nickname;
+        private String profile_image;
+        private String thumbnail_image;
     }
 
     @Data
-    public class KakaoAccount {
-        public Boolean profile_nickname_needs_agreement;
-        public Profile profile;
-        public Boolean has_email;
-        public Boolean email_needs_agreement;
-        public Boolean is_email_valid;
-        public Boolean is_email_verified;
-        public String email;
-        public Boolean has_birthday;
-        public Boolean birthday_needs_agreement;
-        public String birthday;
-        public String birthday_type;
+    public static class KakaoAccount {
+        private Boolean profile_nickname_needs_agreement;
+        private Boolean profile_image_needs_agreement;
+        private Profile profile;
+        private Boolean has_email;
+        private Boolean email_needs_agreement;
+        private Boolean is_email_valid;
+        private Boolean is_email_verified;
+        private String email;
+        private Boolean has_birthday;
+        private Boolean birthday_needs_agreement;
+        private String birthday;
+        private String birthday_type;
 
         @Data
-        public class Profile {
-            public String nickname;
+        public static class Profile {
+            private String nickname;
+            private String thumbnail_image_url;
+            private String profile_image_url;
+            private Boolean is_default_image;
         }
-
     }
-
-
 }
