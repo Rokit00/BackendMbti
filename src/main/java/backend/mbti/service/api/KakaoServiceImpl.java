@@ -55,7 +55,7 @@ public class KakaoServiceImpl implements KakaoService {
         params.add("grant_type", "authorization_code");
         params.add("client_id", "9394c1ee0de2fd55a8ccc154f6cc5114"); //카카오 디벨로퍼의 REST API 키
         params.add("client_secret", "vDoTob3tFhPi0BPrrZEfTwc01tvcjb8S");
-        params.add("redirect_uri", "http://localhost:8080/kakao");
+        params.add("redirect_uri", "http://localhost:3000/kakao");
         params.add("code", code);
 
 
