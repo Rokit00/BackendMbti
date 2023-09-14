@@ -15,42 +15,83 @@ const UserData = ({
   !savedData || savedData.length === 0 ? (
     <p>데이터가 없습니다.</p>
   ) : (
-    <div className={styles.userData}>
-      {savedData.map((user, index) => (
-        <div
-          key={index}
-          className={`${styles.user} ${
-            index === selectedUserIndex ? styles.selected : ""
-          }`}
-          onClick={() => setSelectedUserIndex(index)}
-        >
-          <div className={styles.userContainer}>
-            <p className={styles.userName}>{user.name}님</p>
-            <div className={styles.userImages}>
-              {user.mbti.map((textIndex, rowIndex) => {
-                const textValue = mbtiTexts[textIndex];
-                if (textIndex !== -1 && textValue) {
-                  return (
-                    <div key={rowIndex} className={styles.resultTexts}>
-                      <span
-                        className={`${styles.resultText} ${styles[textValue]}
-                          ${
-                            index === selectedUserIndex ? styles.selected : ""
-                          }`}
-                        onClick={() => setSelectedUserIndex(index)}
-                      >
-                        {textValue}
-                      </span>
-                    </div>
-                  );
-                }
-                return null;
-              })}
-            </div>
-          </div>
-        </div>
-      ))}
-    </div>
+    <table className={styles["saved-data-table"]}>
+      <tbody>
+        {savedData.map((_, index) => {
+          if (index % 2 !== 0) return null;
+          return (
+            <tr key={index}>
+              <td>
+                <div
+                  key={index}
+                  className={`${styles.user} ${
+                    index === selectedUserIndex ? styles.selected : ""
+                  }`}
+                  onClick={() => setSelectedUserIndex(index)}
+                >
+                  <div className={styles.userContainer}>
+                    <p className={styles.userName}>{savedData[index].name}님</p>
+                    {savedData[index].mbti.map((textIndex, rowIndex) => {
+                      const textValue = mbtiTexts[textIndex];
+                      if (textIndex !== -1 && textValue) {
+                        return (
+                          <span
+                            key={rowIndex}
+                            className={`${styles.resultText} ${
+                              styles[textValue]
+                            } ${
+                              index === selectedUserIndex ? styles.selected : ""
+                            }`}
+                          >
+                            {textValue}
+                          </span>
+                        );
+                      }
+                      return null;
+                    })}
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div
+                  key={index + 1}
+                  className={`${styles.user} ${
+                    index + 1 === selectedUserIndex ? styles.selected : ""
+                  }`}
+                  onClick={() => setSelectedUserIndex(index + 1)}
+                >
+                  <div className={styles.userContainer}>
+                    <p className={styles.userName}>
+                      {savedData[index + 1]?.name}님
+                    </p>
+                    {savedData[index + 1]?.mbti.map((textIndex, rowIndex) => {
+                      const textValue = mbtiTexts[textIndex];
+                      if (textIndex !== -1 && textValue) {
+                        return (
+                          <span
+                            key={rowIndex}
+                            className={`${styles.resultText} ${
+                              styles[textValue]
+                            } ${
+                              index + 1 === selectedUserIndex
+                                ? styles.selected
+                                : ""
+                            }`}
+                          >
+                            {textValue}
+                          </span>
+                        );
+                      }
+                      return null;
+                    })}
+                  </div>
+                </div>
+              </td>
+            </tr>
+          );
+        })}
+      </tbody>
+    </table>
   );
 
 const CompatibilityResult = ({ savedData, selectedUserIndex }) => {

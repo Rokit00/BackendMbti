@@ -4,7 +4,7 @@ import "./SectionOne.css";
 import styles from "../../../components/Input.module.css"
 import Checking from "../../../assets/WE-Checking.png";
 import Talking from "../../../assets/WE-Talking.png";
-import Yeonjin from "../../../assets/ISFP-B.png";
+import Sumin from "../../../assets/Sumin.png";
 
 const SectionOne = ({ handleScrollToSectionTwo, handleScrollToSectionThree }) => {
   return (
@@ -49,7 +49,7 @@ const SectionOne = ({ handleScrollToSectionTwo, handleScrollToSectionThree }) =>
       </div>
       {/*박스구분*/}
       <div>
-        <img src={Yeonjin} className="Yeonjin"></img>
+        <img src={Sumin} className="Sumin"></img>
        {/* <button className={styles.contentsbutton} onClick={() => (window.location.href = "/Mychemilist")}>
           마이페이지
   </button> */}

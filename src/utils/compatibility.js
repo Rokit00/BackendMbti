@@ -38,7 +38,7 @@ const relations = {
     4: ["ISFP", "ESFP", "ISTP", "ESTP", "ISFJ", "ESFJ", "ISTJ", "ESTJ"],
   },
   INFJ: {
-    1: ["INFP", "INFJ", "ENFJ", "INTJ", "ENTJ", "INTP", "ENTP"],
+    1: ["INFP", "INFJ", "ENFJ", "INTJ", "ENTJ", "INTP"],
     4: ["ISFP", "ESFP", "ISTP", "ESTP", "ISFJ", "ESFJ", "ISTJ", "ESTJ"],
   },
   ENFJ: {
@@ -47,8 +47,8 @@ const relations = {
   },
   INTJ: {
     1: ["INFP", "INFJ", "ENFJ", "INTJ", "ENTJ", "INTP"],
-    2: ["ISFJ", "ESFJ", "ISTJ", "ESTJ"],
-    3: ["ISFP", "ESFP", "ISTP", "ESTP"],
+    2: ["ESFJ", "ISTJ", "ESTJ", "ESFP"],
+    3: ["ISFJ", "ISFP", "ISTP", "ESTP"],
   },
   ENTJ: {
     1: ["ENFP", "INFJ", "ENFJ", "INTJ", "ENTJ", "ENTP"],
@@ -66,9 +66,8 @@ const relations = {
     3: ["ISFJ", "ESFJ", "ISTJ", "ESTJ"],
   },
   ISFP: {
-    1: ["ISFJ", "ISTJ"],
-    2: ["INTJ", "ENTJ", "INTP", "ENTP", "ISFJ", "ISTJ"],
-    3: ["ISFP", "ESFP", "ESTP", "ISTP"],
+    2: ["INTJ", "ISFJ", "ISTJ", "ENTJ", "INTP", "ENTP"],
+    3: ["ESFP", "ESTP", "ISTP", "ISFP"],
     4: ["INFP", "ENFP", "INFJ"],
   },
   ESFP: {
@@ -77,13 +76,11 @@ const relations = {
     3: ["ISFP", "ESFP", "ISTP", "ESTP"],
   },
   ISTP: {
-    1: ["ISFJ", "ISTJ"],
     2: ["INTJ", "ENTJ", "INTP", "ENTP", "ISFJ", "ISTJ"],
     3: ["ISFP", "ESFP", "ESTP", "ISTP"],
     4: ["INFP", "ENFP", "INFJ", "ENFJ"],
   },
   ESTP: {
-    1: ["ESFJ", "ESTJ"],
     2: ["INTJ", "ENTJ", "INTP", "ENTP", "ISTJ", "ESFJ", "ESTJ"],
     3: ["ISFP", "ESFP", "ISTP", "ESTP"],
     4: ["INFP", "ENFP", "INFJ", "ENFJ"],
@@ -115,30 +112,30 @@ const relations = {
 };
 
 export const checkCompatibility = (mbti1, mbti2) => {
-  if (mbti1 === mbti2) return "탕후루후루촵\n 달달한 사이핱 ";
+  if (mbti1 === mbti2) return "좋음";
 
   if (
     exceptionalRelations[mbti1] &&
     exceptionalRelations[mbti1].includes(mbti2)
   )
-    return "우리 폼 미첬다킝\n 오우 옉 씨몬!";
+    return "매우 좋음";
   if (
     exceptionalRelations[mbti2] &&
     exceptionalRelations[mbti2].includes(mbti1)
   )
-    return "우리 폼 미첬다킝\n 오우 옉 씨몬!";
+    return "매우 좋음";
 
   for (let rating in relations[mbti1]) {
     if (relations[mbti1][rating].includes(mbti2)) {
       switch (parseInt(rating)) {
         case 1:
-          return "분모자처럼\n 찰떡인사이슿";
+          return "좋음";
         case 2:
-          return "우리 너무 잘 맞아 \n낰\n 라고 할 뻔~";
+          return "반반";
         case 3:
-          return "우리 나중에 꾸웨엑엨 \n 할 일 없도록 하자";
+          return "나쁘지않음";
         default:
-          return "서로가 서로의 스블재 썯월요일 그 잡채";
+          return "나쁨";
       }
     }
   }

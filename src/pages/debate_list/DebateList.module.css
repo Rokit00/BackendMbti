@@ -1,13 +1,12 @@
 .listContainer {
-  
   background-color: #000;
   color: #fff;
   text-align: center;
   min-height: 100vh;
   padding-bottom: 20px;
 }
-.mainTitle {
-}
+
+
 .postList {
   list-style: none;
   padding: 0;

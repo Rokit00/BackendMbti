@@ -75,7 +75,7 @@ function NewDebate() {
               name="title"
               value={newDebateData.title}
               onChange={handleInputChange}
-              maxLength={30}
+              maxLength={50}
               className={styles.input}
             ></input>
           </div>
@@ -84,7 +84,7 @@ function NewDebate() {
             <input
               type="text"
               name="A"
-              maxLength={10}
+              maxLength={20}
               value={newDebateData.A}
               onChange={handleInputChange}
               className={styles.input}
@@ -95,7 +95,7 @@ function NewDebate() {
             <input
               type="text"
               name="B"
-              maxLength={10}
+              maxLength={20}
               value={newDebateData.B}
               onChange={handleInputChange}
               className={styles.input}

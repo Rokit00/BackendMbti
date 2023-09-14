@@ -63,6 +63,8 @@ input {
 }
 
 .user {
+  font-size: 50px;
+  margin: 20px;
   border-radius: 10px;
   cursor: pointer;
   display: flex;
@@ -70,8 +72,11 @@ input {
   align-items: center;
   color: #fff;
 }
-
+.user span {
+  font-family: "Monoton", cursive;
+}
 .user p {
+  text-align: center;
   font-size: 15px;
   margin-bottom: 10px;
 }
@@ -82,6 +87,7 @@ input {
 }
 
 .leftContent {
+  width: 350px;
   height: 544px;
   display: flex;
   flex-direction: column;

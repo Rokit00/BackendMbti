@@ -25,6 +25,7 @@
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
   flex-grow: 1;
+  text-align: right !important;
 }
 
 .modalLogin {
@@ -43,7 +44,7 @@
 .closeButton {
   position: relative;
   top: 368px;
-  right: -197px;
+  right: 7px;
   cursor: pointer;
   background-color: transparent;
   border: none;
