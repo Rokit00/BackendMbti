@@ -93,7 +93,7 @@ const CommentSection = ({
             }`}
           >
             <UserInfo
-              userImage={comment.profileImage}
+              userImage={comment.memberProfile}
               userId={comment.userId}
               mbti={comment.mbti}
               opinion={comment.selectOption}

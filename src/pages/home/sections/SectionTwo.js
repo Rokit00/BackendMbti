@@ -9,6 +9,7 @@ import styles from "./SectionTwo.module.css";
 import Loading from "../../../components/loading/Loading";
 import NavBar from "../../../components/nav_bar/NavBar";
 const SectionTwo = ({ handleScrollToSectionTwo }) => {
+  
   const { data } = useParams();
   const {
     name,

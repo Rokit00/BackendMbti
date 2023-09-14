@@ -121,12 +121,12 @@ export const checkCompatibility = (mbti1, mbti2) => {
     exceptionalRelations[mbti1] &&
     exceptionalRelations[mbti1].includes(mbti2)
   )
-    return "폼 미첬다";
+    return "우리 폼 미첬다킝\n 오우 옉 씨몬!";
   if (
     exceptionalRelations[mbti2] &&
     exceptionalRelations[mbti2].includes(mbti1)
   )
-    return "폼 미첬다";
+    return "우리 폼 미첬다킝\n 오우 옉 씨몬!";
 
   for (let rating in relations[mbti1]) {
     if (relations[mbti1][rating].includes(mbti2)) {

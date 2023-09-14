@@ -96,7 +96,7 @@ const useSharedLogic = (satellites, initialData) => {
     setTimeout(() => {
       setShowResult(true);
       setShowLoading(false);
-    }, 5000);
+    }, 2500);
   };
 
   const areAllImagesLoaded = () => {

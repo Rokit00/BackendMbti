@@ -7,7 +7,6 @@ export const Mypage = () => {
     "내가 만든 케미",
     "내가 만든 토론",
     "내 정보",
-    "문의하기",
     "회원탈퇴",
   ];
   return (
@@ -26,11 +25,8 @@ export const Mypage = () => {
         <NavLink to="/profile" className={styles["no-decoration"]}>
           <span>{menu[2]}</span>
         </NavLink>
-        <NavLink to="/Q&A" className={styles["no-decoration"]}>
-          <span>{menu[3]}</span>
-        </NavLink>
         <NavLink to="/delete-account" className={styles["no-decoration"]}>
-          <span>{menu[4]}</span>
+          <span>{menu[3]}</span>
         </NavLink>
       </div>
     </div>

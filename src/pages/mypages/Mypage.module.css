@@ -118,3 +118,35 @@ a.active span {
   color: white;
   font-size: 18px;
 }
+.Myinfo strong {
+  color: white;
+  font-size: 1.5em;
+  margin-bottom: 0.5em;
+  display: block;
+}
+.Myinfo ul {
+  list-style-type: none;
+  padding-left: 0;
+  width: 80%;
+  margin: 0 auto;
+}
+.Myinfo li {
+  background-color: #333;
+  color: white;
+  padding: 1em;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1em;
+  transition: box-shadow 0.3s ease-in-out;
+}
+.Myinfo li:hover {
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+.Myinfo li li {
+  color: white;
+  margin-top: 0.5em;
+}
+.card {
+  width: 80%;
+  margin: 20px auto;
+}

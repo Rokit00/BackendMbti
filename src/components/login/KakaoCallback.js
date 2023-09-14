@@ -1,21 +1,24 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useAuth } from "../AuthContext";
 const KakaoCallback = () => {
-  const code = window.location.search;
   const navigate = useNavigate();
-
+  const { isLoggedIn, setIsLoggedIn } = useAuth();
   useEffect(() => {
-    const code = new URL(document.location.toString()).searchParams.get("code");
+    const code = new URL(window.location.href).searchParams.get("code");
     console.log(code);
-    console.log("/auth/kakao/callback");
-    axios.get(`/auth/kakao/callback?code=${code}`).then((r) => {
-      console.log(r.data);
 
-      localStorage.setItem("name", r.data.user_name);
-
-      navigate("/loginSuccess");
-    });
+    axios
+      .get(`/kakao?code=${code}`)
+      .then((res) => {
+        sessionStorage.setItem("token", res.data);
+        setIsLoggedIn(true);
+        navigate("/lists");
+      })
+      .catch((error) => {
+        console.error("Error during Kakao login:", error);
+      });
   }, []);
 
   return <div>로그인 중입니다.</div>;

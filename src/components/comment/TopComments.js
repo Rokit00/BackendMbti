@@ -7,7 +7,7 @@ const TopComments = ({ topCommentsA, topCommentsB }) => {
   const renderComment = (comment, opinionStyle) => (
     <div className={`${styles.comment} ${opinionStyle}`}>
       <UserInfo
-        userImage={comment.userImage}
+        userImage={comment.memberProfile}
         userId={comment.userId}
         opinion={comment.selectOption}
         mbti={comment.mbti}

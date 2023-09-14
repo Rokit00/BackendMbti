@@ -16,12 +16,9 @@ function Login({ customStyle, onLoginSuccess }) {
   const password = useInput("");
   const [errorMessage, setErrorMessage] = useState("");
   const REST_API_KEY = "9394c1ee0de2fd55a8ccc154f6cc5114";
-  const REDIRECT_URI = "http://localhost/auth/kakao/callback";
+  const REDIRECT_URI = "http://mbtichemi.com/kakao";
   const KAKAO_LOGIN_URL = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}`;
   let from = { pathname: "/lists" };
-  if (location && location.state && location.state.from) {
-    from = location.state.from;
-  }
   const { isLoggedIn, setIsLoggedIn } = useAuth();
   const handleLogin = (e) => {
     e.preventDefault();

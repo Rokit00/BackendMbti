@@ -74,7 +74,8 @@ const CompatibilityResult = ({ savedData, selectedUserIndex }) => {
               className={`${styles.compatibilityResult} ${styles.fadeInOut}`}
             >
               <p>
-                {name1}님({mbti1})과 {name2}님({mbti2}) 의 궁합 결과: <br></br><br></br>
+                {name1}님({mbti1})과 {name2}님({mbti2}) 의 궁합 결과: <br></br>
+                <br></br>
                 <p className={styles.result}>{result} </p>
               </p>
             </div>
@@ -85,35 +86,62 @@ const CompatibilityResult = ({ savedData, selectedUserIndex }) => {
     </div>
   );
 };
-
+const SaveGroupModal = ({
+  closeModal,
+  groupName,
+  setGroupName,
+  handleSaveGroup,
+}) => {
+  return (
+    <div className={styles.modalOverlay}>
+      <div className={styles.modalContent}>
+        <h2>그룹 저장하기</h2>
+        <input
+          type="text"
+          value={groupName}
+          onChange={(e) => setGroupName(e.target.value)}
+          placeholder="그룹명을 입력하세요."
+        />
+        <button onClick={handleSaveGroup}>그룹 저장</button>
+        <button onClick={closeModal}>닫기</button>
+      </div>
+    </div>
+  );
+};
 const Result = ({
   savedData,
   mbtiTexts,
   setShowContent,
   setShowResult,
   setSavedData,
-  isLoggedIn,
 }) => {
   const [showModal, setShowModal] = useState(false);
   const [sharedLink, setSharedLink] = useState("");
   const [selectedUserIndex, setSelectedUserIndex] = useState(0);
   const [groupName, setGroupName] = useState("");
-  const { user } = useAuth();
+  const [showSaveModal, setShowSaveModal] = useState(false);
+  const { isLoggedIn } = useAuth();
+  const token = sessionStorage.getItem("token");
   const handleGoBack = () => {
     setShowContent(false);
     setShowResult(false);
     setSavedData([]);
   };
-  // API 호출 함수
+  console.log(savedData);
   const saveMbtiGroup = async (groupName) => {
     const headers = {
-      Authorization: `Bearer ${user.token}`,
+      Authorization: `Bearer ${token}`,
     };
+    const mbtiAndMemberRequests = savedData.map((member) => ({
+      name: member.name,
+      mbtiType: member.mbtiType,
+    }));
     const data = {
       groupName: groupName,
+      mbtiAndMembers: mbtiAndMemberRequests,
     };
     try {
-      const response = await axios.post("/mypage", data, { headers });
+      const response = await axios.post("/mypage/mbti", data, { headers });
       return response.data;
     } catch (error) {
       throw error;
@@ -123,10 +151,10 @@ const Result = ({
   // 저장하기 버튼에 기능 추가
   const handleSaveGroup = async () => {
     try {
-      const result = await saveMbtiGroup(groupName);
-      console.log("Group saved successfully:", result);
+      const result = await saveMbtiGroup(groupName, savedData);
+      console.log("그룹이 저장 되었습니다. ", result);
     } catch (error) {
-      console.error("Error saving group:", error);
+      console.error("저장중 에러가 발생했습니다 ", error);
     }
   };
   const handleShareLink = () => {
@@ -170,10 +198,14 @@ const Result = ({
         <button className={styles.contentsbutton} onClick={handleShareLink}>
           링크 공유
         </button>
-        {/* "저장하기" 버튼에 handleSaveGroup 함수 연결 */}
-        <button className={styles.contentsbutton} onClick={handleSaveGroup}>
-          저장하기
-        </button>
+        {isLoggedIn && (
+          <button
+            className={styles.contentsbutton}
+            onClick={() => setShowSaveModal(true)}
+          >
+            저장하기
+          </button>
+        )}
         <button className={styles.contentsbutton} onClick={handleGoBack}>
           처음화면으로 돌아가기
         </button>
@@ -183,15 +215,15 @@ const Result = ({
           sharedLink={sharedLink}
           handleCopyLink={handleCopyLink}
           closeModal={() => setShowModal(false)}
-        >
-          <input
-            type="text"
-            value={groupName}
-            onChange={(e) => setGroupName(e.target.value)}
-            placeholder="그룹명을 입력하세요."
-          />
-          <button onClick={handleSaveGroup}>그룹 저장</button>
-        </LinkModal>
+        ></LinkModal>
+      )}
+      {showSaveModal && (
+        <SaveGroupModal
+          groupName={groupName}
+          setGroupName={setGroupName}
+          handleSaveGroup={handleSaveGroup}
+          closeModal={() => setShowSaveModal(false)}
+        />
       )}
     </div>
   );

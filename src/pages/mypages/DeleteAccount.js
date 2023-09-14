@@ -41,7 +41,13 @@ const DeleteAccount = () => {
     }
   };
 
-  return null;
+  return (
+    <div className={styles.deleteContainer}>
+      <button className={styles.deleteButton} onClick={handleDeleteAccount}>
+        계정 삭제
+      </button>
+    </div>
+  );
 };
 
 export default DeleteAccount;

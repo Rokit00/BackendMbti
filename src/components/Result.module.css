@@ -13,7 +13,7 @@ h3 {
   font-size: 18px;
 }
 
-.result{
+.result {
   font-size: 25px;
   text-align: center;
   color: #fff;
@@ -22,7 +22,6 @@ h3 {
   white-space: pre-wrap;
   text-shadow: 3px 3px 2px gray;
 }
-
 
 .resultContainer {
   display: flex;
@@ -82,7 +81,6 @@ input {
   transition: filter 0.3s ease;
 }
 
-
 .leftContent {
   height: 544px;
   display: flex;
@@ -97,7 +95,7 @@ input {
   background: rgba(0, 0, 0, 0.8);
   z-index: 1;
   overflow-y: auto;
-  transition: border 0.5s ease, box-shadow 0.5s ease, transform 0.5s ease ;
+  transition: border 0.5s ease, box-shadow 0.5s ease, transform 0.5s ease;
   transform: perspective(100px) rotatey(2deg);
 }
 
@@ -138,7 +136,7 @@ input {
   background: rgba(0, 0, 0, 0.8);
   z-index: 1;
   overflow-y: auto;
-  transition: border 0.5s ease, box-shadow 0.5s ease, transform 0.5s ease ;
+  transition: border 0.5s ease, box-shadow 0.5s ease, transform 0.5s ease;
   transform: perspective(100px) rotatey(-2deg);
 }
 
@@ -147,9 +145,6 @@ input {
   box-shadow: 0px 0px 15px #ffffff, inset 0px 0px 5px #ffffff;
   transform: perspective(100px) rotatey(0deg);
 }
-
-
-
 
 /*
 .rightContent {
@@ -165,8 +160,6 @@ input {
   overflow-y: auto;
 }
 */
-
-
 
 .rightContent::-webkit-scrollbar {
   width: 0.5em;
@@ -254,9 +247,7 @@ input {
   margin-bottom: 10px;
 }
 
-
 /*버튼 시작*/
-
 
 .contentsbutton {
   position: relative;
@@ -272,7 +263,6 @@ input {
   margin: 10px 10px;
 }
 
-
 .contentsbutton::after {
   content: "";
   position: absolute;
@@ -286,7 +276,6 @@ input {
   transition: transform 0.2s;
   border-radius: 10px;
 }
-
 
 .contentsbutton::before {
   content: "";
@@ -302,7 +291,6 @@ input {
   border-radius: 10px;
 }
 
-
 .contentsbutton:hover::before {
   transform: translate(5px, 5px);
   background: linear-gradient(
@@ -312,7 +300,6 @@ input {
   );
 }
 
-
 .contentsbutton:hover::after {
   transform: translate(-5px, -5px);
   background: linear-gradient(
@@ -321,7 +308,6 @@ input {
     rgba(131, 220, 183, 0.2)
   );
 }
-
 
 .contentsbutton:hover {
   color: #ffffff;
@@ -371,4 +357,16 @@ input {
   color: #cca9dd;
   text-shadow: 0px 0px 5px #6937a1, 0px 0px 30px #6937a1, 0px 0px 40px #6937a1,
     0px 0px 50px #fff, 0px 0px 6px #6937a1;
+}
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5); /* 반투명한 검은색 배경 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
 }
